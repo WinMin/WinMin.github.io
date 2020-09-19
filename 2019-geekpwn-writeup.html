@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="题记​     作为国际化的智能生活安全社区，GeekPwn 是安全极客们施展才华和分享研究成果的舞台。GeekPwn 大赛将在 2019 年 10 月 24 日中国上海举行，力邀才华横溢的极客选手报名，突破安全的边界 今年的geekpwn 有两场，一是7月24日华为专场，针对华为设备进行的破解，二是10月24日上海geekpwn主场，可惜的是今年只有一天。有幸的是，今年我两场都以“长亭科技”安全">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="2019 年geekpwn 日记">
 <meta property="og:url" content="https://bestwing.me/2019-geekpwn-writeup.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="题记​     作为国际化的智能生活安全社区，GeekPwn 是安全极客们施展才华和分享研究成果的舞台。GeekPwn 大赛将在 2019 年 10 月 24 日中国上海举行，力邀才华横溢的极客选手报名，突破安全的边界 今年的geekpwn 有两场，一是7月24日华为专场，针对华为设备进行的破解，二是10月24日上海geekpwn主场，可惜的是今年只有一天。有幸的是，今年我两场都以“长亭科技”安全">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028215127.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028220803.png">
@@ -120,7 +118,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">题记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%9C%8824%E6%97%A5-%E5%8D%8E%E4%B8%BA%E4%B8%93%E5%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">7月24日 华为专场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E6%9C%8824%E6%97%A5-%E4%B8%8A%E6%B5%B7%E4%B8%BB%E5%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">10月24日 上海主场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%9C%8824%E6%97%A5-%E5%8D%8E%E4%B8%BA%E4%B8%93%E5%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">7月24日 华为专场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E6%9C%8824%E6%97%A5-%E4%B8%8A%E6%B5%B7%E4%B8%BB%E5%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">10月24日 上海主场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -169,13 +167,13 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="题记"><a href="#题记" class="headerlink" title="题记"></a>题记</h2><p>​    </p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="题记"><a href="#题记" class="headerlink" title="题记"></a>题记</h2><p>​    </p>
 <p><em>作为国际化的智能生活安全社区，GeekPwn 是安全极客们施展才华和分享研究成果的舞台。GeekPwn 大赛将在 2019 年 10 月 24 日中国上海举行，力邀才华横溢的极客选手报名，突破安全的边界</em></p>
 <p>今年的geekpwn 有两场，一是7月24日华为专场，针对华为设备进行的破解，二是10月24日上海geekpwn主场，可惜的是今年只有一天。有幸的是，今年我两场都以“长亭科技”安全研究员的身份参与了。</p>
 <h2 id="7月24日-华为专场"><a href="#7月24日-华为专场" class="headerlink" title="7月24日 华为专场"></a>7月24日 华为专场</h2><p>​    由于涉及到漏洞公开原则，漏洞细节在此文中是不会提及的，此文主要写一些这段时间内以来的一些感触，漏洞挖掘经验以及在长亭科技的一些感受。</p>
 <p>​    6月底的时候刚好我毕业答辩，那个时候公司里也刚好差不多结束了“护网”的活动，那段时间，explore、晨升大佬在准备7月24日华为专场geekpwn。</p>
 <p>​    7月初的时候，m4x拉了一个华为IoT的群组</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028215127.png"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028215127.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028215127.png"></a></p>
 <p>​    正式以晨升前期挖掘的一个漏洞进行进一步的利用，后面晨升基本就没来过公司Orz…</p>
 <p>​    整个过程，我们经历了大起大落，每次都觉得要成了，然后就又都沉底了..（Ps： 华为的产品真难打）…我们从一个入口，获取root shell 花了大概两个礼拜的时间。中间利用包括任意命令执行、提权等漏洞差不多有四五个个小的问题组成了一个完整的利用链…整个过程还是比较有意思的..以及能明显感受到 长亭安研的氛围，真的有一种打“CTF”的错觉 233</p>
 <p>当然最后好像完成这个 geekpwn华为专场的一共只有三个队伍，当然包括 “长亭科技”是其中的一个。感谢队友一下不分顺序：晨升、wupco、explore、杰克马、m4x的带飞</p>
@@ -191,8 +189,13 @@
 <p>2、学习了一些windows 下defender 的一些绕过的简单思路</p>
 <p>​    对 shellcode 多次加密 绕过defender 静态文件扫描</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>还有一些故事有时间再分享，先贴一张最后的大合影：</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028220803.png"></p>
-
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028220803.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191028220803.png"></a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -229,7 +232,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">题记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%9C%8824%E6%97%A5-%E5%8D%8E%E4%B8%BA%E4%B8%93%E5%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">7月24日 华为专场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E6%9C%8824%E6%97%A5-%E4%B8%8A%E6%B5%B7%E4%B8%BB%E5%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">10月24日 上海主场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%9C%8824%E6%97%A5-%E5%8D%8E%E4%B8%BA%E4%B8%93%E5%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">7月24日 华为专场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E6%9C%8824%E6%97%A5-%E4%B8%8A%E6%B5%B7%E4%B8%BB%E5%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">10月24日 上海主场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

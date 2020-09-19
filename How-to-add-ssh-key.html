@@ -118,7 +118,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">第一步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">第二步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">第三步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">第四步：</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">第二步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">第三步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">第四步：</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -167,12 +167,17 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h2><p>客户机 生成公钥<br>        <code>ssh-keygen -t rsa</code></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h2><p>客户机 生成公钥<br>        <code>ssh-keygen -t rsa</code></p>
 <h2 id="第二步："><a href="#第二步：" class="headerlink" title="第二步："></a>第二步：</h2><p>将公钥传到服务器<br><code>scp id_rsa.pub root@ip:/root/.ssh/</code><br>    将公钥导入keys文件<br><code>cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</code></p>
 <h2 id="第三步："><a href="#第三步：" class="headerlink" title="第三步："></a>第三步：</h2><p>修改ssh配置文件<br>        <code>Vim /etc/ssh/sshd_config</code></p>
-<p><img src="http://oayoilchh.bkt.clouddn.com/17-8-16/92667768.jpg"></p>
+<p><a href="http://oayoilchh.bkt.clouddn.com/17-8-16/92667768.jpg" class="gallery-item"><img src="http://oayoilchh.bkt.clouddn.com/17-8-16/92667768.jpg"></a></p>
 <h2 id="第四步："><a href="#第四步：" class="headerlink" title="第四步："></a>第四步：</h2><p>重启服务<br>    <code>service sshd restart</code></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -209,7 +214,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">第一步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">第二步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">第三步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">第四步：</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">第二步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">第三步：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">第四步：</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

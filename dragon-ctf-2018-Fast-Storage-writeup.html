@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="周末随意看了 Dragon CTF 2018 的题，主要看了两个 Pwn。两个都挺有意思的，但是这个题有个冷门知识。所以想稍微记录下。 0x01 abs(0x8000000) &#x3D;&#x3D; 0x8000000首先，我们先了解下 abs 这个函数。 123456789101112131415161718192021222324252627NAME       abs, labs, llabs, imaxab">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="Dragon CTF 2018 Fast Storage Writeup">
 <meta property="og:url" content="https://bestwing.me/dragon-ctf-2018-Fast-Storage-writeup.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="周末随意看了 Dragon CTF 2018 的题，主要看了两个 Pwn。两个都挺有意思的，但是这个题有个冷门知识。所以想稍微记录下。 0x01 abs(0x8000000) &#x3D;&#x3D; 0x8000000首先，我们先了解下 abs 这个函数。 123456789101112131415161718192021222324252627NAME       abs, labs, llabs, imaxab">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-09-30T16:00:00.000Z">
 <meta property="article:modified_time" content="2019-10-28T13:32:11.000Z">
@@ -165,7 +163,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>周末随意看了 Dragon CTF 2018 的题，主要看了两个 Pwn。两个都挺有意思的，但是这个题有个冷门知识。所以想稍微记录下。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>周末随意看了 Dragon CTF 2018 的题，主要看了两个 Pwn。两个都挺有意思的，但是这个题有个冷门知识。所以想稍微记录下。</p>
 <h3 id="0x01-abs-0x8000000-0x8000000"><a href="#0x01-abs-0x8000000-0x8000000" class="headerlink" title="0x01 abs(0x8000000) == 0x8000000"></a>0x01 abs(0x8000000) == 0x8000000</h3><p>首先，我们先了解下 <code>abs</code> 这个函数。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       <span class="built_in">abs</span>, <span class="built_in">labs</span>, llabs, imaxabs - compute the absolute value of an integer</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">int</span> <span class="title">abs</span><span class="params">(<span class="keyword">int</span> j)</span></span>;</span><br><span class="line">       <span class="function"><span class="keyword">long</span> <span class="keyword">int</span> <span class="title">labs</span><span class="params">(<span class="keyword">long</span> <span class="keyword">int</span> j)</span></span>;</span><br><span class="line">       <span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">llabs</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> j)</span></span>;</span><br><span class="line"></span><br><span class="line">       <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;inttypes.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">intmax_t</span> <span class="title">imaxabs</span><span class="params">(<span class="keyword">intmax_t</span> j)</span></span>;</span><br><span class="line"></span><br><span class="line">   <span class="function">Feature Test Macro Requirements <span class="keyword">for</span> <span class="title">glibc</span> <span class="params">(see feature_test_macros(<span class="number">7</span>))</span>:</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">       <span class="title">llabs</span><span class="params">()</span>:</span></span><br><span class="line">           _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       The  abs()  function  computes  the  absolute value of the integer argument j.  The labs(),</span><br><span class="line">       llabs() and imaxabs() functions compute the absolute value of the argument j of the  appro-</span><br><span class="line">       priate integer type <span class="keyword">for</span> the function.</span><br><span class="line"></span><br><span class="line">RETURN VALUE</span><br><span class="line">       Returns the absolute value of the integer argument, of the appropriate integer type <span class="keyword">for</span> the</span><br><span class="line">       function.</span><br></pre></td></tr></table></figure>
 
@@ -235,7 +233,12 @@
 
 <p>所以，我这里字符串 取 <code>\xa1\xf8\xe6\xa9</code></p>
 <p>剩下的利用 参考 <a href="https://xz.aliyun.com/t/2831#toc-2">https://xz.aliyun.com/t/2831#toc-2</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

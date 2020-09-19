@@ -116,7 +116,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">4.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">4.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">3.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">3.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">3.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>前往 LEDE 官网下载固件并验证：</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>前往 LEDE 官网下载固件并验证：</p>
 <p><a href="https://downloads.lede-project.org/releases/17.01.4/targets/brcm2708/bcm2710/lede-17.01.4-brcm2708-bcm2710-rpi-3-ext4-sdcard.img.gz">https://downloads.lede-project.org/releases/17.01.4/targets/brcm2708/bcm2710/lede-17.01.4-brcm2708-bcm2710-rpi-3-ext4-sdcard.img.gz</a></p>
 <p>注：bcm2710 是专为树莓派3准备的。<br>刷机软件：</p>
 <p>SD卡烧录工具：Win32DiskImager (windows)</p>
@@ -192,7 +192,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;uhttpd enable</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;uhttpd start</span><br></pre></td></tr></table></figure>
 <h3 id="安装ss"><a href="#安装ss" class="headerlink" title="安装ss"></a>安装ss</h3><p><a href="http://openwrt-dist.sourceforge.net/">http://openwrt-dist.sourceforge.net</a><br>直接看上面！</p>
 <h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="http://www.openwrt.pro/post-207.html">http://www.openwrt.pro/post-207.html</a><br><a href="http://www.wzero.net/?p=137">http://www.wzero.net/?p=137</a><br><a href="http://shumeipai.nxez.com/2015/07/28/install-openwrt-will-be-transformed-into-a-versatile-router-raspberry-pi.html">http://shumeipai.nxez.com/2015/07/28/install-openwrt-will-be-transformed-into-a-versatile-router-raspberry-pi.html</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -229,7 +234,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">4.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">4.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">3.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">3.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">3.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

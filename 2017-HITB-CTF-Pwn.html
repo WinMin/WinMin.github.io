@@ -128,7 +128,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">程序分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%80-go"><span class="toc-number">1.1.</span> <span class="toc-text">功能一 go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BA%8C-Hint"><span class="toc-number">1.2.</span> <span class="toc-text">功能二 Hint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%89-give-up"><span class="toc-number">1.3.</span> <span class="toc-text">功能三 give up</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">利用思路</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%80-go"><span class="toc-number">1.</span> <span class="toc-text">功能一 go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BA%8C-Hint"><span class="toc-number">2.</span> <span class="toc-text">功能二 Hint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%89-give-up"><span class="toc-number">3.</span> <span class="toc-text">功能三 give up</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number"></span> <span class="toc-text">利用思路</span></a>
     </div>
   </span>
 </div>
@@ -177,30 +177,35 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><p>这是一个菜单程序。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-01.jpg"><br>其有三个主要功能</p>
-<h3 id="功能一-go"><a href="#功能一-go" class="headerlink" title="功能一 go"></a>功能一 go</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitc-pwn-02.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><p>这是一个菜单程序。<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-01.jpg"></a><br>其有三个主要功能</p>
+<h3 id="功能一-go"><a href="#功能一-go" class="headerlink" title="功能一 go"></a>功能一 go</h3><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitc-pwn-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitc-pwn-02.jpg"></a></p>
 <p>首先，其会询问你要挑战的总关卡<br>之后会再一次询问，是否要增加关卡</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitbctf-pwn-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitbctf-pwn-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitbctf-pwn-03.jpg"></a></p>
 <p>有一个地方值得注意，如果我们在询问level的时候 输入 负数，那么程序将打印出Coward，然后继续询问因此，这一次无论大小，Any more后输入的值都将直接加在v5上， 然而现在的v5还没有进行初始化。</p>
 <p>以及，第二次询问的时候没有判断是否小于0.<br>我们可以看到 level 函数 如图</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-04.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-04.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-04.jpg"></a></p>
 <p>往buf 读入了0x400的数据，有一个明显的栈溢出。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-05.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-05.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-05.jpg"></a></p>
 <p>检查一下程序开启的保护。</p>
-<h3 id="功能二-Hint"><a href="#功能二-Hint" class="headerlink" title="功能二 Hint"></a>功能二 Hint</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-06.jpg"></p>
+<h3 id="功能二-Hint"><a href="#功能二-Hint" class="headerlink" title="功能二 Hint"></a>功能二 Hint</h3><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-06.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-06.jpg"></a></p>
 <p>从汇编代码中，我们可以看到，当执行 hint后，无论在哪个分支上，system函数地址都被放到了栈上。</p>
 <h3 id="功能三-give-up"><a href="#功能三-give-up" class="headerlink" title="功能三 give up"></a>功能三 give up</h3><p>退出程序，</p>
 <h2 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路"></a>利用思路</h2><p>我们在调试的时候会发现，未初始化的v5 和 system的地址复用了，这就意味着我们已经得到了一个地址，但是由于开启了pie，我们还是不不能完全的控制这个地址去getshell。</p>
-<p>题目给了libc  那么我是否能利用libc？<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-07.jpg"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-08.jpg"></p>
+<p>题目给了libc  那么我是否能利用libc？<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-07.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-07.jpg"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-08.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-08.jpg"></a></p>
 <p>在libc中，我们发现，system的地址和one gadget rce 的地址 相差0x4526a-0x45390</p>
 <p>那么如果我们对那个未初始化的参数进行减法运算最后是不是就而已调用到one gadget rce了呢？</p>
 <p>那么接下来的另外一个问题，就是如何控制eip，跳转到这个参数地址了</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-09.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-09.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-09.jpg"></a></p>
 <p>vmmp中存在 vsyscall</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-10.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-10.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hitb-pwn-10.jpg"></a></p>
 <p>构造一个ret rop链，不断的去接近目标地址即可。</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -237,7 +242,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">程序分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%80-go"><span class="toc-number">1.1.</span> <span class="toc-text">功能一 go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BA%8C-Hint"><span class="toc-number">1.2.</span> <span class="toc-text">功能二 Hint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%89-give-up"><span class="toc-number">1.3.</span> <span class="toc-text">功能三 give up</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">利用思路</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%80-go"><span class="toc-number">1.</span> <span class="toc-text">功能一 go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BA%8C-Hint"><span class="toc-number">2.</span> <span class="toc-text">功能二 Hint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%89-give-up"><span class="toc-number">3.</span> <span class="toc-text">功能三 give up</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number"></span> <span class="toc-text">利用思路</span></a>
     </div>
 
     <div id="share-footer" style="display: none">

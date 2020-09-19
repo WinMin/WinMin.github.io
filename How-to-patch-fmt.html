@@ -174,13 +174,13 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>CTF 中Patch 格式化字符串简便的方法</p>
-<h1 id="方法-—–-gt-替换printf-为puts"><a href="#方法-—–-gt-替换printf-为puts" class="headerlink" title="方法 —–&gt; 替换printf 为puts"></a>方法 —–&gt; 替换printf 为puts</h1><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>CTF 中Patch 格式化字符串简便的方法</p>
+<h1 id="方法-—–-gt-替换printf-为puts"><a href="#方法-—–-gt-替换printf-为puts" class="headerlink" title="方法 —–&gt; 替换printf 为puts"></a>方法 —–&gt; 替换printf 为puts</h1><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg"></a></p>
 <h2 id="0x1-确定计算方法"><a href="#0x1-确定计算方法" class="headerlink" title="0x1 确定计算方法"></a>0x1 确定计算方法</h2><p>由于地址是相对的 所以</p>
 <p><code>新地址 = 目标地址（这里即为 puts的plt地址） - 当前修改指令地址的下一指令地址</code></p>
 <h2 id="0x02-确定目标地址"><a href="#0x02-确定目标地址" class="headerlink" title="0x02 确定目标地址"></a>0x02 确定目标地址</h2><p>在plt 段 可以看到 puts_plt 地址为 0x08048410</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-02.jpg"></p>
-<h2 id="0x03-确定当前地址"><a href="#0x03-确定当前地址" class="headerlink" title="0x03 确定当前地址"></a>0x03 确定当前地址</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-02.jpg"></a></p>
+<h2 id="0x03-确定当前地址"><a href="#0x03-确定当前地址" class="headerlink" title="0x03 确定当前地址"></a>0x03 确定当前地址</h2><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-03.jpg"></a></p>
 <p>当前指令 <code>call _printf</code>的地址为 0x08048618  下一指令地址为 0x0804861D</p>
 <h2 id="0x04-计算"><a href="#0x04-计算" class="headerlink" title="0x04 计算"></a>0x04 计算</h2><p>计算结果 如果为负数 记得补码~</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>puts_plt = <span class="number">0x8048410</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>call_net_addr = <span class="number">0x0804861d</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>offset = puts_plt - call_next_addr</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>offset</span><br><span class="line"><span class="number">-525</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(offset)</span><br><span class="line"><span class="string">&#x27;-0x20d&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(<span class="number">0xffffffff</span><span class="number">-0x20d</span>+<span class="number">1</span>)</span><br><span class="line"><span class="string">&#x27;0xfffffdf3L&#x27;</span></span><br></pre></td></tr></table></figure>
@@ -188,17 +188,22 @@
 
 
 <h2 id="0x05-修改"><a href="#0x05-修改" class="headerlink" title="0x05 修改"></a>0x05 修改</h2><p>Edit –&gt; Patch Program –&gt; Change Byte </p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-04.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-04.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-04.jpg"></a></p>
 <p>E8 是操作码  后四位是偏移 即  又因为高字节在后面~ </p>
-<p><img src="http://oayoilchh.bkt.clouddn.com/17-5-25/54216390.jpg"></p>
+<p><a href="http://oayoilchh.bkt.clouddn.com/17-5-25/54216390.jpg" class="gallery-item"><img src="http://oayoilchh.bkt.clouddn.com/17-5-25/54216390.jpg"></a></p>
 <p><code>E8 C3 FD FF FF C7 04 24 72 87 04 08 E8 E7 FD FF</code></p>
 <p>我们需要修改 <code>C3 FD FF FF</code>  —&gt; <code>F3 FD FF FF</code></p>
 <p>修改后 F5 伪代码~ </p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-05.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-05.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-05.jpg"></a></p>
 <h2 id="0x06-保存"><a href="#0x06-保存" class="headerlink" title="0x06 保存"></a>0x06 保存</h2><p>Edit –&gt; Patch Program –&gt; Apply patches to input file</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-06.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-06.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-06.png"></a></p>
 <p>运行情况~</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

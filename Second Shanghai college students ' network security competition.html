@@ -172,15 +172,20 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>用查找关键字符串的方法，很容易就找到了main函数<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-01.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>用查找关键字符串的方法，很容易就找到了main函数<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-01.jpg"></a></p>
 <p>程序逻辑很简单，就是check一下输入的函数，正确就Right错误，<br> 我们进入到<strong>sub_401510</strong>函数里面</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-02.jpg"></p>
-<p>先是判断字符不能为非字母非数字<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-04.jpg"></p>
-<p>再取输入的字符串的前5位为key 作DES的密钥<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-05.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-02.jpg"></a></p>
+<p>先是判断字符不能为非字母非数字<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-04.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-04.jpg"></a></p>
+<p>再取输入的字符串的前5位为key 作DES的密钥<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-05.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddctf-oline-05.jpg"></a></p>
 <p>之后再做base64编码<br>与最后main函数里的chekc比较</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddcff-oline-06.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddcff-oline-06.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-ddcff-oline-06.jpg"></a></p>
 <p>所以我们可以做个暴力破解</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

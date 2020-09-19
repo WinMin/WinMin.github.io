@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>前两天在360安全客看到了一篇文章，《格式化字符串blind pwn详细教程》，看了下内容，大概就是教我们如何利用格式化串漏洞dump 程序，但是在二进制漏洞中，以及CTF Pwn题型中，还有一种考点？说利用方式吧，叫Bind ROP。对于这些相关的东西，我们其实可以在浏览器搜索到，比如K0师傅<a href="http://bobao.360.cn/learning/detail/3415.html">《BROP Attack之Nginx远程代码执行漏洞分析及利用》</a>，以及mctrain前辈在wooyun社区发布的《Blind Return Oriented Programming (BROP) Attack - 攻击原理》。其实都能很详细看到了解BROP的攻击原理，以及攻击样例。<br>当然这个也是《 基础栈溢出及其利用方式的》系列的一部分。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>前两天在360安全客看到了一篇文章，《格式化字符串blind pwn详细教程》，看了下内容，大概就是教我们如何利用格式化串漏洞dump 程序，但是在二进制漏洞中，以及CTF Pwn题型中，还有一种考点？说利用方式吧，叫Bind ROP。对于这些相关的东西，我们其实可以在浏览器搜索到，比如K0师傅<a href="http://bobao.360.cn/learning/detail/3415.html">《BROP Attack之Nginx远程代码执行漏洞分析及利用》</a>，以及mctrain前辈在wooyun社区发布的《Blind Return Oriented Programming (BROP) Attack - 攻击原理》。其实都能很详细看到了解BROP的攻击原理，以及攻击样例。<br>当然这个也是《 基础栈溢出及其利用方式的》系列的一部分。</p>
 <h1 id="什么是BROP"><a href="#什么是BROP" class="headerlink" title="什么是BROP"></a>什么是BROP</h1><p>那么我也只是在这里尽量让大家先明白，什么是BORP，以及BROP的攻击原理，以及在后面放一个最近CTF中，及HCTF –出题人跑路了的PWN题的详细分析。</p>
 <p>BROP 原文：<a href="http://www.scs.stanford.edu/brop/">Blind Return Oriented Programming (BROP) Website</a></p>
 <p>其核心要义就是，通过ROP的方法，远程攻击一个应用程序，劫持程序控制流程。其难点在于，我们并没有程序的源代码以及二进制程序。<br>详细的东西，我也不想再继续搬了，mctrain在文章讲得已经非常不错了，我在这里提供我的drop地址，不过大家少用阿，这玩意儿吃流量 <a href="http://wooyun.bestwing.top:5000/static/drops/tips-3071.html">Blind Return Oriented Programming (BROP) Attack - 攻击原理</a></p>
@@ -226,7 +226,12 @@
 <li>muhe博客 <a href="http://o0xmuhe.me/2017/01/22/Have-fun-with-Blind-ROP/">http://o0xmuhe.me/2017/01/22/Have-fun-with-Blind-ROP/</a></li>
 <li>以及队内 师傅的Writeup</li>
 </ul>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

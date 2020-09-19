@@ -118,7 +118,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">2.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B4%E6%97%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">临时解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%B9%85%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">长久解决方案</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B4%E6%97%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.</span> <span class="toc-text">临时解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%B9%85%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.</span> <span class="toc-text">长久解决方案</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -167,7 +167,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg"></a></p>
 <p>发现 <code>gdb.attach</code>弹不出gdb窗口了…</p>
 <p> 后来发现问题出在ubuntu身上，</p>
 <p>Ubuntu引入了一个补丁来禁止非root用户对非子进程的追踪 - 即。只有作为另一个进程的父进程的进程可以为普通用户追踪它，而root仍然可以追踪每个进程。所以为什么你可以使用gdb来通过sudo来附加。</p>
@@ -177,7 +177,12 @@
 <h1 id="长久解决方案"><a href="#长久解决方案" class="headerlink" title="长久解决方案"></a>长久解决方案</h1><p>修改 <code>/etc/sysctl.d/10-ptrace.conf</code></p>
 <p>​    修改内容 <code>kernel.yama.ptrace_scope = 1</code> </p>
 <p>​    结果为       <code>kernel.yama.ptrace_scope = 0    </code></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -214,7 +219,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">2.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B4%E6%97%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">临时解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%B9%85%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">长久解决方案</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B4%E6%97%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.</span> <span class="toc-text">临时解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%B9%85%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.</span> <span class="toc-text">长久解决方案</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

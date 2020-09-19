@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="前言最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差…… 概述其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。 0x01 跑字典一开始我试了几个弱口令，但是虽然是小村子，">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="蹭隔壁的WiFI">
 <meta property="og:url" content="https://bestwing.me/WiFi_Attack.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="前言最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差…… 概述其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。 0x01 跑字典一开始我试了几个弱口令，但是虽然是小村子，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67">
 <meta property="og:image" content="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67">
@@ -119,7 +117,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">3.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">4.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">2.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">3.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -168,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差……</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差……</p>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。</p>
 <h1 id="0x01-跑字典"><a href="#0x01-跑字典" class="headerlink" title="0x01 跑字典"></a>0x01 跑字典</h1><p>一开始我试了几个弱口令，但是虽然是小村子，但是隔壁的wifi还是不少，我总不能一个一个试吧，这一点都不优雅，所以想到之前看到的python的一个模块，叫<strong>pywifi</strong>。得 咱们写一个脚本来跑跑密码吧。</p>
 <p>关键代码如下<br><strong>热点扫描</strong></p>
@@ -189,9 +187,14 @@
 <p><strong>Usage</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wifiphisher -aI wlan0 -jI wlan4 -p firmware-upgrade</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wifiphisher --essid CONFERENCE_WIFI -p plugin_update -pK s3cr3tp4ssw0rd</span><br></pre></td></tr></table></figure>
-<p><img src="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67"><br><img src="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67"></p>
+<p><a href="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67" class="gallery-item"><img src="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67"></a><br><a href="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67" class="gallery-item"><img src="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67"></a></p>
 <p>更多详细资料 <a href="https://github.com/sophron/wifiphisher">项目地址</a><br><a href="http://www.leiphone.com/news/201510/bKHbxozIz7zyYCFy.html">文章地址</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -228,7 +231,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">3.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">4.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">2.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">3.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

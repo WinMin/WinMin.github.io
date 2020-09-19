@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>默认情况下ssl模块并未被安装，如果要使用该模块则需要在编译时指定–with-http_ssl_module参数，安装模块依赖于OpenSSL库和一些引用文件，通常这些文件并不在同一个软件包中。通常这个文件名类似libssl-dev。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>默认情况下ssl模块并未被安装，如果要使用该模块则需要在编译时指定–with-http_ssl_module参数，安装模块依赖于OpenSSL库和一些引用文件，通常这些文件并不在同一个软件包中。通常这个文件名类似libssl-dev。</p>
 <p>生成证书</p>
 <p>可以通过以下步骤生成一个简单的证书：<br>首先，进入你想创建证书和私钥的目录，例如：</p>
 <p>$ cd /usr/local/nginx/conf<br>创建服务器私钥，命令会让你输入一个口令：</p>
@@ -180,7 +180,12 @@
 
 <p>nginx就只监听2个端口，80和443，而80的话，意思就是只要你访问80，我全给你rewrite成https，用户就会自己跳转去访问443</p>
 <p>443的内容，根据访问的内容，比如/就去访问本地8080端口，admin就去访问本地8888端口</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

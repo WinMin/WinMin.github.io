@@ -123,7 +123,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn1"><span class="toc-number">1.</span> <span class="toc-text">Pwn1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn2"><span class="toc-number">2.</span> <span class="toc-text">Pwn2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn3"><span class="toc-number">3.</span> <span class="toc-text">Pwn3</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn2"><span class="toc-number">1.</span> <span class="toc-text">Pwn2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn3"><span class="toc-number">2.</span> <span class="toc-text">Pwn3</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -172,19 +172,24 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="Pwn1"><a href="#Pwn1" class="headerlink" title="Pwn1"></a>Pwn1</h1><p>这个题目是我Yllen师傅提醒了我的，但是我依旧不知道怎么写代码！  大写的尴尬</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-45-19.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="Pwn1"><a href="#Pwn1" class="headerlink" title="Pwn1"></a>Pwn1</h1><p>这个题目是我Yllen师傅提醒了我的，但是我依旧不知道怎么写代码！  大写的尴尬</p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-45-19.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-45-19.jpg"></a></p>
 <p>关键在这 func这个数组可达到越界的效果，v6的下标是可以控制的，最后我们要达到的结果是什么<br>就是控制的结果到</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-47-02.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-47-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-47-02.jpg"></a></p>
 <p>buf里面即可。</p>
 <h1 id="Pwn2"><a href="#Pwn2" class="headerlink" title="Pwn2"></a>Pwn2</h1><p>Pwn2 根据我Chu大表哥所说是格式化字符串漏洞。有点难度等我学习一段时间再来写吧。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-57-01.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-57-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-15-57-01.jpg"></a></p>
 <h1 id="Pwn3"><a href="#Pwn3" class="headerlink" title="Pwn3"></a>Pwn3</h1><p>根据Chu表哥的描述<br>这个题目是栈溢出,X64 ROP…我也不太清楚，像我这连pwntools的不会用的渣渣。只能多多学习了。<br>#Pwn4<br>说时候这个好简单…好傻的题。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-16-00-31.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-16-00-31.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2016-07-04-16-00-31.jpg"></a></p>
 <p>buf的空间是40，scanf的大小也是40这样就导致了一个问题。去掉尾部的”、00”,然后name2下方相邻的就是flag的每个字节。所以最终可以达到把flag一个一个leak出来。</p>
-<p><img src="http://7xt21h.com1.z0.glb.clouddn.com/2016-07-04%2023-48-58.jpg?imageView2/2/w/640/h/427/interlace/1/q/100"></p>
+<p><a href="http://7xt21h.com1.z0.glb.clouddn.com/2016-07-04%2023-48-58.jpg?imageView2/2/w/640/h/427/interlace/1/q/100" class="gallery-item"><img src="http://7xt21h.com1.z0.glb.clouddn.com/2016-07-04%2023-48-58.jpg?imageView2/2/w/640/h/427/interlace/1/q/100"></a></p>
 <p>#一些相关<br><a href="http://sh3ll.me/2016/07/04/ichunqiu-tenCentAp/">Chu表哥博客文章</a><br><a href="http://www.freebuf.com/articles/system/74224.html">字符串格式化漏洞</a><br><a href="https://yunpan.cn/cBQHR9WjrI9Ra">Pwn题目打包</a>  PS:（提取码：745c）</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -221,7 +226,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn1"><span class="toc-number">1.</span> <span class="toc-text">Pwn1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn2"><span class="toc-number">2.</span> <span class="toc-text">Pwn2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn3"><span class="toc-number">3.</span> <span class="toc-text">Pwn3</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn2"><span class="toc-number">1.</span> <span class="toc-text">Pwn2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn3"><span class="toc-number">2.</span> <span class="toc-text">Pwn3</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

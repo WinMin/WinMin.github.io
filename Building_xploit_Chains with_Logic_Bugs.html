@@ -119,7 +119,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Building-Exploit-Chains-with-Logic-Bugs"><span class="toc-number">1.</span> <span class="toc-text">Building Exploit Chains with Logic Bugs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-Approach"><span class="toc-number">1.1.</span> <span class="toc-text">Traditional Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Automation"><span class="toc-number">1.2.</span> <span class="toc-text">Process Automation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Automation-Overview"><span class="toc-number">1.3.</span> <span class="toc-text">Automation Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static-Analysis-at-Scale"><span class="toc-number">1.4.</span> <span class="toc-text">Static Analysis at Scale</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-Approach"><span class="toc-number">1.</span> <span class="toc-text">Traditional Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Automation"><span class="toc-number">2.</span> <span class="toc-text">Process Automation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Automation-Overview"><span class="toc-number">3.</span> <span class="toc-text">Automation Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static-Analysis-at-Scale"><span class="toc-number">4.</span> <span class="toc-text">Static Analysis at Scale</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -168,7 +168,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="Building-Exploit-Chains-with-Logic-Bugs"><a href="#Building-Exploit-Chains-with-Logic-Bugs" class="headerlink" title="Building Exploit Chains with Logic Bugs"></a>Building Exploit Chains with Logic Bugs</h2><h3 id="Traditional-Approach"><a href="#Traditional-Approach" class="headerlink" title="Traditional Approach"></a>Traditional Approach</h3><p>•Search for commonly misused methods</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="Building-Exploit-Chains-with-Logic-Bugs"><a href="#Building-Exploit-Chains-with-Logic-Bugs" class="headerlink" title="Building Exploit Chains with Logic Bugs"></a>Building Exploit Chains with Logic Bugs</h2><h3 id="Traditional-Approach"><a href="#Traditional-Approach" class="headerlink" title="Traditional Approach"></a>Traditional Approach</h3><p>•Search for commonly misused methods</p>
 <p>•Class loading</p>
 <p>•Unzip path traversals</p>
 <p>•External storage operations</p>
@@ -187,9 +187,14 @@
 <p>4.Find any instances of methods exported in Manifest</p>
 <p>在<a href="https://zh.wikipedia.org/wiki/Java%E5%B9%B3%E8%87%BA">Java平台</a>中, <strong>清单文件</strong>（Manifest file）是<a href="https://zh.wikipedia.org/wiki/JAR_(%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F)">JAR档案</a>[<a href="https://zh.wikipedia.org/wiki/%E6%B8%85%E5%8D%95%E6%96%87%E4%BB%B6#cite_note-1">1]</a>[<a href="https://zh.wikipedia.org/wiki/%E6%B8%85%E5%8D%95%E6%96%87%E4%BB%B6#cite_note-2">2]</a>中包含的特殊文件。<strong>Manifest</strong>文件被用来定义扩展或档案打包相关数据，是一个<a href="https://zh.wikipedia.org/wiki/%E5%85%83%E6%95%B0%E6%8D%AE">元数据</a>文件，它包含了不同部分中的<a href="https://zh.wikipedia.org/w/index.php?title=%E5%90%8D/%E5%80%BC%E5%AF%B9&action=edit&redlink=1">名/值对</a>数据。如果一个JAR文件被用来作为可执行文件，那么其中的Manifest文件需要指出该程序的主类文件。通常Manifest文件的文件名为<code>MANIFEST.MF</code>。</p>
 <p>通常Manifest文件都与Java档案相关，其他的情况比较少见。</p>
-<h3 id="Static-Analysis-at-Scale"><a href="#Static-Analysis-at-Scale" class="headerlink" title="Static Analysis at Scale"></a>Static Analysis at Scale</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190110013902.png"></p>
+<h3 id="Static-Analysis-at-Scale"><a href="#Static-Analysis-at-Scale" class="headerlink" title="Static Analysis at Scale"></a>Static Analysis at Scale</h3><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190110013902.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190110013902.png"></a></p>
 <p>还在阅读中：</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -226,7 +231,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Building-Exploit-Chains-with-Logic-Bugs"><span class="toc-number">1.</span> <span class="toc-text">Building Exploit Chains with Logic Bugs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-Approach"><span class="toc-number">1.1.</span> <span class="toc-text">Traditional Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Automation"><span class="toc-number">1.2.</span> <span class="toc-text">Process Automation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Automation-Overview"><span class="toc-number">1.3.</span> <span class="toc-text">Automation Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static-Analysis-at-Scale"><span class="toc-number">1.4.</span> <span class="toc-text">Static Analysis at Scale</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-Approach"><span class="toc-number">1.</span> <span class="toc-text">Traditional Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Automation"><span class="toc-number">2.</span> <span class="toc-text">Process Automation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Automation-Overview"><span class="toc-number">3.</span> <span class="toc-text">Automation Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static-Analysis-at-Scale"><span class="toc-number">4.</span> <span class="toc-text">Static Analysis at Scale</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

@@ -173,22 +173,27 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>遇到了一个炒鸡难看的问题，对只是难看~</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme1.png"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>遇到了一个炒鸡难看的问题，对只是难看~</p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme1.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme1.png"></a></p>
 <p>像这样~<br>还有这样</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme2.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme2.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme2.png"></a></p>
 <p>是不是特别丑  因为正常是只有外面那个滚轮的 那怎么解决呢 ~   我请教了一下一个朋友就带我用<code>F12开发者工具</code>调试了一波~   </p>
 <h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>检查了一下 发现是<code>highlight </code>CSS中<code>Pre</code>的问题</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme3.png"></p>
-<p>如图当把这个去掉之后  滚轮就没了<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-3.png">解决办法 </p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme3.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-theme3.png"></a></p>
+<p>如图当把这个去掉之后  滚轮就没了<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-3.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-3.png"></a>解决办法 </p>
 <p>我有两个解决办法 暂时不知道有没有其他BUG  反正能解决这个问题就够了<br>首先 打开</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\themes\spfk\source\css\_partial</span><br></pre></td></tr></table></figure>
 <p>路径下的这个文件   <code>highlight.styl</code></p>
 <ol>
-<li>方法一<br>应该是210 +左右的这个代码去掉 (或者你改大点) 这个参数限制了高度  所以造成了代码内还有一层上下都滚轮<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-6.png"></li>
-<li>方法二<br>这方法比较粗暴 不建议<br>我将pre 的<code>padding:0</code>都删了 如图<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-7.png"><h1 id="最后-哗啦啦好啦"><a href="#最后-哗啦啦好啦" class="headerlink" title="最后 哗啦啦好啦"></a>最后 哗啦啦好啦</h1><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-9.png"></li>
+<li>方法一<br>应该是210 +左右的这个代码去掉 (或者你改大点) 这个参数限制了高度  所以造成了代码内还有一层上下都滚轮<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-6.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-6.png"></a></li>
+<li>方法二<br>这方法比较粗暴 不建议<br>我将pre 的<code>padding:0</code>都删了 如图<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-7.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-7.png"></a><h1 id="最后-哗啦啦好啦"><a href="#最后-哗啦啦好啦" class="headerlink" title="最后 哗啦啦好啦"></a>最后 哗啦啦好啦</h1><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-9.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/change-hexo-9.png"></a></li>
 </ol>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

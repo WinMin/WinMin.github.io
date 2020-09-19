@@ -116,7 +116,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8"><span class="toc-number">1.</span> <span class="toc-text">python沙箱逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">1.2.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">1.3.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.</span> <span class="toc-text">参考连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">1.5.</span> <span class="toc-text">后记</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">3.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">参考连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">5.</span> <span class="toc-text">后记</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="python沙箱逃逸"><a href="#python沙箱逃逸" class="headerlink" title="python沙箱逃逸"></a>python沙箱逃逸</h1><p>本文由 安全客 翻译，转载请注明“转自安全客”，并附上链接。<a href="http://bobao.360.cn/learning/detail/3542.html">http://bobao.360.cn/learning/detail/3542.html</a><br>原文链接：<a href="http://blog.isis.poly.edu/ctf/exploitation%20techniques/2012/10/26/escaping-python-sandboxes/">http://blog.isis.poly.edu/ctf/exploitation%20techniques/2012/10/26/escaping-python-sandboxes/</a></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="python沙箱逃逸"><a href="#python沙箱逃逸" class="headerlink" title="python沙箱逃逸"></a>python沙箱逃逸</h1><p>本文由 安全客 翻译，转载请注明“转自安全客”，并附上链接。<a href="http://bobao.360.cn/learning/detail/3542.html">http://bobao.360.cn/learning/detail/3542.html</a><br>原文链接：<a href="http://blog.isis.poly.edu/ctf/exploitation%20techniques/2012/10/26/escaping-python-sandboxes/">http://blog.isis.poly.edu/ctf/exploitation%20techniques/2012/10/26/escaping-python-sandboxes/</a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为一个CTF爱好者，又是一个Bin选手，在国外各种受虐的同时，总是能学到不少的东西。最近，和师傅们在做国外的CTF题，做到一种Pwn题目，是需要选手在Python的沙箱达到逃逸的目的，获取flag。在谷歌的过程中，找到了一篇不错的博文。</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>注意：这是为Python 2.7.3编写的。这些细节可能在其他版本的Python - 特别是Python3 - 有所不同！</p>
 <p>尝试逃离沙箱总是一个有趣的挑战。Python沙箱也不例外。在静态语言中，这通常通过分析代码来查看是否调用某些函数，或者用确认验证的代码包装危险函数来完成。然而，这在动态语言（如Python）中有点更具挑战性。</p>
@@ -230,7 +230,12 @@
 <li>Ned Batchelder的博文：http : //nedbatchelder.com/blog/201206/eval really is_dangerous.html</li>
 </ul>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>其实发现，国内的比赛和国外的比赛，有些赛事质量真的差很多，国内很多比赛都是为了出题而出题，相反，其实国外的比赛虽然很难，但是攻克的过程中，都能学到许多的姿势。</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -267,7 +272,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8"><span class="toc-number">1.</span> <span class="toc-text">python沙箱逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">1.2.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">1.3.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.</span> <span class="toc-text">参考连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">1.5.</span> <span class="toc-text">后记</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">3.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">参考连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">5.</span> <span class="toc-text">后记</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

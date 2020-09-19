@@ -170,14 +170,14 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg"></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg"></a></p>
 <h1 id="Baby-Stack"><a href="#Baby-Stack" class="headerlink" title="Baby Stack"></a>Baby Stack</h1><p>一个简单的缓冲区溢题目，程序由go 语言编写而成，所以并不能直接F5去分析。</p>
-<h2 id="analysis"><a href="#analysis" class="headerlink" title="analysis"></a>analysis</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-01.jpg"></p>
+<h2 id="analysis"><a href="#analysis" class="headerlink" title="analysis"></a>analysis</h2><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-01.jpg"></a></p>
 <p>程序的<code>main_memcpy</code>存在漏洞，可发生栈溢出</p>
-<p>在调试的过程中，我们会发现一个不一样的地方<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-02.jpg"></p>
+<p>在调试的过程中，我们会发现一个不一样的地方<br><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-02.jpg"></a></p>
 <p>正常，我们都是rip储存着返回地址，而这确实rsp存储的，这就意味着函数入口时的rsp指向retn地址，下面跟着参数</p>
 <p>另外还有一个问题，如果是只是单纯的<code>&quot;A&quot;*192+p64(ret)</code>程序是会报错的，</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-03.jpg"></a></p>
 <p>在<code>call main_memcpy </code>结束后，我们可以看到有两条汇编</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000004012A4                 mov     rbx, [rsp+1f8h+name.str]</span><br><span class="line">.text:00000000004012AC                 mov     [rsp+1F8h+var_E0], rbx</span><br><span class="line">.text:00000000004012B4                 mov     rbx, [rsp+1f8h+name.len]</span><br></pre></td></tr></table></figure>
 <p>有两条栈操作，对象分别是name的字符串以及一个name的长度，于是我们构造一个<br><code>payload = &quot;B&quot; * 104 + p64(0x0000000000599940) + p64(0x200) + &quot;D&quot; * 8</code></p>
@@ -193,7 +193,12 @@
 <p>确定偏移后 就是暴力出奇迹的时候了</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">f = open(<span class="string">&quot;./tktk&quot;</span>)</span><br><span class="line">origin = f.read()</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">byte =  <span class="number">623</span></span><br><span class="line">bit = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">True</span>):</span><br><span class="line">    <span class="comment">#if(raw_input() == &quot;b&quot;):</span></span><br><span class="line">    <span class="comment">#    break</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Byte, bit: %d, %d&quot;</span> % (byte, bit)</span><br><span class="line">    content = origin[:byte] + chr(ord(origin[byte]) ^ (<span class="number">1</span> &lt;&lt; bit)) + origin[byte+<span class="number">1</span>:]</span><br><span class="line">    outfile = open(<span class="string">&quot;./tktkout.jpg&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">    outfile.write(content)</span><br><span class="line">    outfile.close()</span><br><span class="line">    bit += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(bit == <span class="number">8</span>):</span><br><span class="line">        bit = <span class="number">0</span></span><br><span class="line">        byte += <span class="number">1</span></span><br><span class="line">    os.system(<span class="string">&quot;/Users/xxx/.iterm2/imgcat ./tktkout.jpg&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>[[‘T’, ‘h’, ‘e’, ‘q’, ‘u’, ‘i’, ‘c’], [‘k’, ‘b’, ‘r’, ‘o’, ‘w’, ‘n’, ‘f’], [‘o’, ‘x’, ‘j’, ‘u’, ‘m’, ‘p’, ‘s’], [‘o’, ‘v’, ‘e’, ‘r’, ‘t’, ‘h’, ‘e’], [‘l’, ‘a’, ‘z’,’y’, ‘d’, ‘o’, ‘g’]]</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

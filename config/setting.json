@@ -1,0 +1,6 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"{"config":{"platform":"github","domain":"","repository":"","branch":"","username":"","email":"","token":""},"comment":{"commentPlatform":"gitalk","disqusSetting":{"api":"","apikey":"","shortname":""},"gitalkSetting":{"clientId":"","clientSecret":"","owner":"","repository":""},"showComment":false}}</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>

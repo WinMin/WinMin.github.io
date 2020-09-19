@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。 断点设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种  软断点 硬件">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="断点的那些事">
 <meta property="og:url" content="https://bestwing.me/Those-of-the-Breakpoint.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。 断点设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种  软断点 硬件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-02-01T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-02-16T16:57:23.000Z">
@@ -165,7 +163,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。</p>
 <h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><p>设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种</p>
 <ul>
 <li>软断点</li>
@@ -194,7 +192,12 @@
 <li>当数据被写入一个特定内存弟子时触发断点</li>
 <li>当数据被读出或写入，这是不包括执行，一个特定非可执行内存地址触发断点<br>因此DR7实质上是硬件断点的激活开关。</li>
 </ul>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

@@ -121,7 +121,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">流量分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><p>由于某些需求，需要伪造个登陆过程，然后就花了点时间分析了下过程。由于我拿到的是板子而且是开发板，我拥有 telnet 接口。于是我 telnet 上去用 tcpdump 抓取了流量。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><p>由于某些需求，需要伪造个登陆过程，然后就花了点时间分析了下过程。由于我拿到的是板子而且是开发板，我拥有 telnet 接口。于是我 telnet 上去用 tcpdump 抓取了流量。</p>
 <p><code>tcpdump -i any -w target.cap</code></p>
 <p>为什么我不在本地抓本地 web 登录的流量呢？ 因为我那个时候在做 App 一些功能测试。我需要抓取全部经过路由器的流量。</p>
 <p>然后我需要把 cap 文件拿出来。由于是在板子里面，虽然 DEBUG 版本用于 tftp 可以做简单的文件传输。但是由于需要一个 server 服务器。所以我这里需要在本地搭建一个 tftp server。踩了一个坑..最后用 Python 现有的模块两句话完成。</p>
@@ -174,9 +174,9 @@
 <p>然后起 server，紧接着在板子里使用：</p>
 <p><code>tftp -l target.cap -p 192.168.0.4</code> (192.168.0.4 是我本地的 ip ，也就是这个时候的 server)</p>
 <p>拿到流量后用 wireshark 打开分析，我过滤了 HTTP 流呈现的效果如下：</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png"></a></p>
 <p>主要是分析验证登陆过程关键地方在 <strong>web_login.cgi ** 和 **get_rand_key.cgi</strong></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174806.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174806.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174806.png"></a></p>
 <p>首先登陆的时候，先从 <strong>get_rand_key</strong> 获取一个 <strong>rand_key</strong>:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">POST /router/get_rand_key.cgi HTTP/1.1</span><br><span class="line">Referer: http://guanli.luyou.360.cn</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 0</span><br><span class="line">Host: guanli.luyou.360.cn</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Accept-Encoding: gzip</span><br><span class="line">User-Agent: okhttp/3.7.0</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Boa/0.94</span><br><span class="line">Date: Sat, 21 Dec 2013 12:00:00 GMT</span><br><span class="line">Connection: close</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Content-Type: text/plain; charset=UTF-8</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;rand_key&quot;</span>:<span class="string">&quot;9332c90abc850ef93f9a600eff5606ba20c9bdd11c07c704a9b8e3faddbfd713&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
 
@@ -192,7 +192,7 @@
 <p> <code>pass = 9332c90abc850ef93f9a600eff5606ba5328c9362bc131db6047cfbc481523f9</code></p>
 <p>我们会发现 pass 与上面的 rand_key :</p>
 <p>9332c90abc850ef93f9a600eff5606ba20c9bdd11c07c704a9b8e3faddbfd713,前32 位一致，后32位不一样。</p>
-<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911175940.png"></p>
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911175940.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911175940.png"></a></p>
 <p>简单分析下代码：</p>
 <p>str 是 路由器的管理密码，最后形成的 pass 由 rand_key 的后32位对 str 进行 AES 加密，加密结果再与 rank_key 前32位拼接。</p>
 <p>简单的讲就是</p>
@@ -204,8 +204,13 @@
 
 
 
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911180642.png"></p>
-
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911180642.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911180642.png"></a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -242,7 +247,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">流量分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

@@ -117,7 +117,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="toc-number">1.</span> <span class="toc-text">文件头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">段表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="toc-number">2.1.</span> <span class="toc-text">段的标志位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E9%93%BE%E6%8E%A5%E4%BF%A1%E6%81%AF-sh-link-%E3%80%81sh-info"><span class="toc-number">2.2.</span> <span class="toc-text">段的链接信息(sh_link 、sh_info)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-number">3.</span> <span class="toc-text">重定位表</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">段表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="toc-number">1.1.</span> <span class="toc-text">段的标志位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E9%93%BE%E6%8E%A5%E4%BF%A1%E6%81%AF-sh-link-%E3%80%81sh-info"><span class="toc-number">1.2.</span> <span class="toc-text">段的链接信息(sh_link 、sh_info)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">重定位表</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -166,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h4 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h4><p><code>readelf -h </code> 查看ELF文件</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h4 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h4><p><code>readelf -h </code> 查看ELF文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">wings@sw:~/桌面/0ctf/Print$ readelf -h ./EasiestPrintf</span><br><span class="line">ELF 头：</span><br><span class="line">  Magic：   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  类别:                              ELF32</span><br><span class="line">  数据:                              2 补码，小端序 (little endian)</span><br><span class="line">  版本:                              1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - System V</span><br><span class="line">  ABI 版本:                          0</span><br><span class="line">  类型:                              EXEC (可执行文件)</span><br><span class="line">  系统架构:                          Intel 80386</span><br><span class="line">  版本:                              0x1</span><br><span class="line">  入口点地址：               0x8048610</span><br><span class="line">  程序头起点：          52 (bytes into file)</span><br><span class="line">  Start of section headers:          6588 (bytes into file)</span><br><span class="line">  标志：             0x0</span><br><span class="line">  本头的大小：       52 (字节)</span><br><span class="line">  程序头大小：       32 (字节)</span><br><span class="line">  Number of program headers:         9</span><br><span class="line">  节头大小：         40 (字节)</span><br><span class="line">  节头数量：         29</span><br><span class="line">  字符串表索引节头： 26</span><br></pre></td></tr></table></figure>
 <p>可能是由于是中文版的，直接给我翻译了。<br>ELF 文件头中，有ELF 魔数（Magic）、文件机器字节长度，数据存储方式，版本，运行平台，ABI版本,ELF重定位类型，等等等，中文很明显都能看出来了。</p>
 <p>ELF 文件头 相关常数定义在“/usr/include/elf.h”,ELF 文件有32版本 和64位版本，文件头内容一样，有些成员不一样。两者文件分别叫”Elf_32Ehdr”和“Elf64_Ehdr”.</p>
@@ -194,7 +194,12 @@
 <p>我的这个文件有29个段，Type描述了段的类型。书中告诉我们，段表是以“Elf32_Shdr”结构体为元素的数组。<br>#####　段的类型（sh_type）<br>段的类型常量，以<code>SHT_</code>开头。</p>
 <h5 id="段的标志位"><a href="#段的标志位" class="headerlink" title="段的标志位"></a>段的标志位</h5><p>段的标志位表示段在进程虚拟地址空间中的属性，比如是否可写，是否可执行等。相关常量以<code>SHF_</code>开头</p>
 <h5 id="段的链接信息-sh-link-、sh-info"><a href="#段的链接信息-sh-link-、sh-info" class="headerlink" title="段的链接信息(sh_link 、sh_info)"></a>段的链接信息(sh_link 、sh_info)</h5><p>段的类型与链接相关，如重定位表，符号表，这两个成员就有意义。</p>
-<h4 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h4>
+<h4 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h4></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -231,7 +236,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="toc-number">1.</span> <span class="toc-text">文件头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">段表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="toc-number">2.1.</span> <span class="toc-text">段的标志位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E9%93%BE%E6%8E%A5%E4%BF%A1%E6%81%AF-sh-link-%E3%80%81sh-info"><span class="toc-number">2.2.</span> <span class="toc-text">段的链接信息(sh_link 、sh_info)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-number">3.</span> <span class="toc-text">重定位表</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">段表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="toc-number">1.1.</span> <span class="toc-text">段的标志位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E7%9A%84%E9%93%BE%E6%8E%A5%E4%BF%A1%E6%81%AF-sh-link-%E3%80%81sh-info"><span class="toc-number">1.2.</span> <span class="toc-text">段的链接信息(sh_link 、sh_info)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">重定位表</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

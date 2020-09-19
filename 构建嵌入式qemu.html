@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。 编译安装qemu为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。 首先从github上下载qemu。 1">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="构建嵌入式qemu">
 <meta property="og:url" content="https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。 编译安装qemu为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。 首先从github上下载qemu。 1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-09-17T03:27:15.000Z">
 <meta property="article:modified_time" content="2020-06-22T17:56:18.424Z">
@@ -165,7 +163,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。</p>
 <h2 id="编译安装qemu"><a href="#编译安装qemu" class="headerlink" title="编译安装qemu"></a>编译安装qemu</h2><p>为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。</p>
 <p>首先从github上下载qemu。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/qemu/qemu.git</span><br></pre></td></tr></table></figure>
@@ -216,7 +214,12 @@
 
 <p>到这里我们的嵌入式虚拟环境就搭建好了。</p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://gist.github.com/takeshixx/686a4b5e057deff7892913bf69bcb85a">ubuntu-xenial-armfh-qemu.md</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

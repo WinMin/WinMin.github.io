@@ -1,0 +1,6 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"{"config":{"footerInfo":"Powered by <a href=\"https://github.com/getgridea/gridea\" target=\"_blank\">Gridea</a>","postPageSize":10,"archivesPageSize":50,"showFeatureImage":true,"siteDescription":"温故而知新","siteName":"Gridea","themeName":"notes","dateFormat":"YYYY-MM-DD","postUrlFormat":"SLUG","tagUrlFormat":"SHORT_ID","feedCount":10,"feedFullText":true},"customConfig":{}}</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>

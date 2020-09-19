@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="PPCLostme与人工智障斗智斗勇系列，下输即获得flag N1CTF{Oh!you_1ose_t0_AI_hhhhhh} MiscLipstick先是一层LSB，得到一个ZIP 文件，然而ZIP是有密码的。  在红色通道发现了YSL字样，以及hint给的21个二进制字符串，于是猜测压缩包密码为YSL口红色号且有21个数值。  通过取色器的对比，找到色号 1，27 ，59  ，11  ，23 ，">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="2018 N1CTF Misc部分">
 <meta property="og:url" content="https://bestwing.me/2018-N1CTF-Misc-part.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="PPCLostme与人工智障斗智斗勇系列，下输即获得flag N1CTF{Oh!you_1ose_t0_AI_hhhhhh} MiscLipstick先是一层LSB，得到一个ZIP 文件，然而ZIP是有密码的。  在红色通道发现了YSL字样，以及hint给的21个二进制字符串，于是猜测压缩包密码为YSL口红色号且有21个数值。  通过取色器的对比，找到色号 1，27 ，59  ，11  ，23 ，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-01.jpg">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-02.jpg">
@@ -128,7 +126,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PPC"><span class="toc-number">1.</span> <span class="toc-text">PPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lostme"><span class="toc-number">1.1.</span> <span class="toc-text">Lostme</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number">2.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lipstick"><span class="toc-number">2.1.</span> <span class="toc-text">Lipstick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APFS"><span class="toc-number">2.2.</span> <span class="toc-text">APFS</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lostme"><span class="toc-number">1.</span> <span class="toc-text">Lostme</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number"></span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lipstick"><span class="toc-number">1.</span> <span class="toc-text">Lipstick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APFS"><span class="toc-number">2.</span> <span class="toc-text">APFS</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -177,38 +175,43 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="PPC"><a href="#PPC" class="headerlink" title="PPC"></a>PPC</h1><h2 id="Lostme"><a href="#Lostme" class="headerlink" title="Lostme"></a>Lostme</h2><p>与人工智障斗智斗勇系列，下输即获得flag</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="PPC"><a href="#PPC" class="headerlink" title="PPC"></a>PPC</h1><h2 id="Lostme"><a href="#Lostme" class="headerlink" title="Lostme"></a>Lostme</h2><p>与人工智障斗智斗勇系列，下输即获得flag</p>
 <p>N1CTF{Oh!you_1ose_t0_AI_hhhhhh}</p>
 <h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><h2 id="Lipstick"><a href="#Lipstick" class="headerlink" title="Lipstick"></a>Lipstick</h2><p>先是一层LSB，得到一个ZIP 文件，然而ZIP是有密码的。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-01.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-01.jpg"></a></p>
 <p>在红色通道发现了YSL字样，以及hint给的21个二进制字符串，于是猜测压缩包密码为YSL口红色号且有21个数值。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-02.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-lipstick-02.jpg"></a></p>
 <p>通过取色器的对比，找到色号</p>
 <p>1，27 ，59  ，11  ，23 ，7  ，57，1 ，1 ，76 ，222 ，1，1，50 ，214 ，6 ，77 ，50，53，214 ，6 </p>
 <p>紧接着将色号转为二进制数值，</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/n1ctf-misc01-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/n1ctf-misc01-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/n1ctf-misc01-03.jpg"></a></p>
 <p>得到ZIP密码为白学家。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-misc01-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-misc01-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-misc01-03.jpg"></a></p>
 <p>得到flag：</p>
 <p>flag{White_Album_is_Really_worth_watching_on_White_Valentine’s_Day}</p>
 <h2 id="APFS"><a href="#APFS" class="headerlink" title="APFS"></a>APFS</h2><p>首先题目下载下来是一个dmg文件，有一个加密key，通过strings可以获取Key为 N1CTF_APFS</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-01.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-01.jpg"></a></p>
 <p>通过题目的hint 得知 题目相关点应为APFS的snapshot新特性。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-02.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-02.jpg"></a></p>
 <p>通过 tmutil listlocalsnapshots . 得到当前APFS的一个快照为CTF,通过mount_apfs -s ctf /Volumes/N1CTF_APFS ~/temp/ 进行挂载。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-03.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-03.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-03.jpg"></a></p>
 <p>根据几个提示，不难猜测数据 为MODIFY TIME的最低有效为，首先分别获取快照前和快照后两部分的MODIFY时间。且为纳秒级别数据。</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-04.jpg"></p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-05.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-04.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-04.jpg"></a></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-05.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-05.jpg"></a></p>
 <p>获取时间后，去取两个串的最低有效位。分别是</p>
 <p>2 4 0 4 5 4 0 3 0 1 0 0 5 0 0 0 0 0 2 0 4 0 0 0 0 0 0 6 7 5 6 3 3 1 4 4 6 1 7 2 4 3 3 4 6 6 1 6 1 4 2 0 0 0 0 0 0 0 0 2 2 4 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 3 1 4 6 6 1 4 1 3 1 6 2 7 1 6 4 3 6 0 7 2 3 7 4 6 6 4 5 6 2 3 2 3 3 2 1 2 6 6 5 3 6 6 5 6 2 2 6 3 0 7 4 4 3 0 4 7 5 6 2 6 1 6 5 6 7 4 7 2 7 1 4 5 6 3 5 3 1 5 7 5 3 5 6 6 7 2 2 5 1 5 5 1 4 5 0 6 3 2 1 4 3 1 3 1 2 1 5 3 7 5 6 2 4 5 1 5 5 0 6 4 5 3 7 4 3 2 4 4 5 1 3 0 5 4 4 6 5 7 3 3 0 6 2 5 6 3 3 0 0 0 6 2 4 0 4 5 4 0 1 0 0 4 3 7 4 0 0 0 2 4 0 0 0 0 1 0 2 0 0 0 0 0 0 3 3 6 7 1 5 4 6 2 3 0 7 5 2 1 5 6 3 3 0 7 0 6 1 0 0 0 0 0 0 0 0 1 1 2 0 0 0 0 0 0 0 0 0 4 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 3 1 5 4 3 0 2 6 3 4 5 6 3 5 0 7 4 1 6 4 0 2 4 0 0 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 4 0 0 0 1 2 3 7 4 7 6 4 1 4 6 1 2 2 6 5 6 4 6 0 0 4 6 2 3 7 3 5 4 1 7 2 0 4 5 3 2 3 2 3 0 0 2 6 7 3 3 6 2 0 2 5 0 3 0 3 5 4 7 5 1 4 0 1 2 4 0 4 5 4 0 5 0 1 4 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 4 0 0 2 6 4 0 0 0 0 0 0 0 0 5 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
 <p>和</p>
 <p>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 3 0 1 0 0 4 0 0 0 0 7 3 6 5 5 3 5 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 3 5 1 1 0 5 6 0 6 7 2 4 6 0 6 7 1 0 3 2 2 5 2 5 6 2 6 1 2 2 5 1 0 2 3 0 7 2 6 0 3 5 7 0 6 1 3 1 2 3 5 7 3 2 7 3 2 0 2 2 3 4 5 6 6 1 7 4 2 4 5 1 2 5 3 2 0 5 6 5 1 1 2 4 7 4 0 2 1 1 1 6 2 1 6 5 6 7 4 7 3 2 6 7 6 7 3 0 4 5 6 3 7 4 1 6 3 1 2 5 6 4 0 1 1 7 4 4 7 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 6 5 4 0 4 0 2 0 0 0 0 3 5 7 2 6 5 6 4 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 4 3 1 5 0 3 5 7 3 5 3 4 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
 <p>前后分别异或得到另外一组，然后进行一次二进制转换。然后进行拼接，8bit一个字节，</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-06.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-06.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-n1ctf-apfs-06.jpg"></a></p>
 <p>得到ZIP，尝试了一开始dmg的密码，即为ZIP密码，得到flag</p>
 <p>N1CTF{APFS_a_N3xt_30_Year_Filesystem}</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -245,7 +248,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PPC"><span class="toc-number">1.</span> <span class="toc-text">PPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lostme"><span class="toc-number">1.1.</span> <span class="toc-text">Lostme</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number">2.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lipstick"><span class="toc-number">2.1.</span> <span class="toc-text">Lipstick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APFS"><span class="toc-number">2.2.</span> <span class="toc-text">APFS</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lostme"><span class="toc-number">1.</span> <span class="toc-text">Lostme</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number"></span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lipstick"><span class="toc-number">1.</span> <span class="toc-text">Lipstick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APFS"><span class="toc-number">2.</span> <span class="toc-text">APFS</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

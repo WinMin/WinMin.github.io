@@ -179,7 +179,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>仅仅一点经验之谈</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>仅仅一点经验之谈</p>
 <h2 id="0x01-get-u-binary"><a href="#0x01-get-u-binary" class="headerlink" title="0x01 get u binary"></a>0x01 get u binary</h2><ul>
 <li><p>dump binary from flash</p>
 </li>
@@ -188,33 +188,33 @@
 </li>
 </ul>
 <h2 id="0x02-loader-to-ida"><a href="#0x02-loader-to-ida" class="headerlink" title="0x02 loader to ida"></a>0x02 loader to ida</h2><p>like this ，I have a bluetooth binary ..</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115210.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115210.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115210.png"></a></p>
 <p>we got a firmware from some one smart door lock, in he firmware upgrade traffic.</p>
 <p>When we use ida open it,we can see it .</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115607.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115607.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115607.png"></a></p>
 <ul>
 <li>Firstly ,we know it is arm</li>
 <li>Secondlye ,we guess it is  arm little-endian</li>
 </ul>
 <p>So,we choice Processor type:</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115911.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115911.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129115911.png"></a></p>
 <p>than ,we press ok… we can see:</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129120005.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129120005.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129120005.png"></a></p>
 <p>we choice yes, than..</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129122829.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129122829.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129122829.png"></a></p>
 <p>How to fill this table?  Keep the default and press ok.</p>
 <h2 id="0x03-fix-the-binary"><a href="#0x03-fix-the-binary" class="headerlink" title="0x03 fix the binary"></a>0x03 fix the binary</h2><p>when the ida auto analysis has been finished.we saw like this.</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129123558.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129123558.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129123558.png"></a></p>
 <p>what fuck this????</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129124202.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129124202.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129124202.png"></a></p>
 <p>Only rom segmentation,we should create other segmentation and find the code seg. so we should to find some information and analysis this bin .</p>
 <p>we use hot-key “D”,to fix some data.</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125802.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125802.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125802.png"></a></p>
 <p>Generally peaking , </p>
 <p><code>:00000000                 DCD 0x20007AD8</code> after is  interupt vector</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125846.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125846.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129125846.png"></a></p>
 <p>In the red box is function pointer. and first function pointer is odd number ,so we can think this bin is 16-bit. So we change it use <code>alt g</code> and choice T register value 0 to 1</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129130204.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129130204.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129130204.png"></a></p>
 <blockquote>
 <h2 id="控制位-含义"><a href="#控制位-含义" class="headerlink" title="控制位                        含义"></a>控制位                        含义</h2><p>I                             I=1 禁用IRO中断<br>F                             F=1 禁用FIQ中断<br>T                             ARMv4以上T版本T=0 执行ARM指令,T=1执行Thumb指令。<br>                              ARMv5以上非T版本T=0 执行ARM指令,T=1表示下一条指令产生未定义指令中断。M[4:0]                  </p>
 </blockquote>
@@ -223,18 +223,18 @@
 </blockquote>
 <p>than we should guest the binary base address</p>
 <p>we know ,usually the base low 3 bit is zero..and the interupt vector addr after of the base…so we guest the base addr is 0x1b000 ..so we try change base addr.</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144317.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144317.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144317.png"></a></p>
 <p>set the value equal 0x1b000</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144340.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144340.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129144340.png"></a></p>
 <p>now ,these interrupt is functuon pointer:</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129150705.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129150705.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129150705.png"></a></p>
 <p>Next step ,we should restore code </p>
 <p>use P and C hot-key..</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145126.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145126.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145126.png"></a></p>
 <p>like this 0x10 data ,it maybe is <code>push</code> opcode so we press P to analysis…</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/1.gif"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/1.gif" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/1.gif"></a></p>
 <p>if we finish ,than we shoulde create some seg</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145832.png"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145832.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129145832.png"></a></p>
 <p>like this url <a href="https://www.youtube.com/watch?v=V6ZySLopflk">Setup and Find Entry-point in ARM Firmware - Hardware Wallet Research #4</a></p>
 <p>先写到这。。还原 seg 我写脚本 恢复代码去了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> idaapi</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_addr_shoulde_P</span>(<span class="params">i</span>):</span></span><br><span class="line">    <span class="keyword">if</span> Byte(i) == <span class="number">0x10</span>:</span><br><span class="line">        MakeFunction(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_addr_P</span>(<span class="params">va_start,va_end</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(va_start,va_end):</span><br><span class="line">        is_addr_shoulde_P(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    do_addr_P(<span class="number">0x01B5B4</span>,<span class="number">0x02B5B4</span>)</span><br></pre></td></tr></table></figure>
@@ -242,8 +242,13 @@
 
 
 <p>run this script we got </p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129154752.png"></p>
-
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129154752.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190129154752.png"></a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

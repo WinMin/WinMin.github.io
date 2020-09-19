@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="学习了一下这 ripper 20的两个洞 CVE-2020-11896IPv4 分片IP分片使得即使在IP分组的大小大于网络的特定链路中允许的最大大小的情况下，也可以在网络中发送IP分组。IP分段是一种将分组分成几个较小部分(“片段”)以支持在这些链路和网络上传输的技术。该协议支持TH分组的分段然后重组。 使用IP报头中的标识字段将不同的片段分组。该标识字段描述片段属于哪个分组。这允许不同的数据包">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="关于 CVE-2020-11896和CVE-2020-11898 的学习笔记">
 <meta property="og:url" content="https://bestwing.me/Ripple20-overview.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="学习了一下这 ripper 20的两个洞 CVE-2020-11896IPv4 分片IP分片使得即使在IP分组的大小大于网络的特定链路中允许的最大大小的情况下，也可以在网络中发送IP分组。IP分段是一种将分组分成几个较小部分(“片段”)以支持在这些链路和网络上传输的技术。该协议支持TH分组的分段然后重组。 使用IP报头中的标识字段将不同的片段分组。该标识字段描述片段属于哪个分组。这允许不同的数据包">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lh4.googleusercontent.com/hELEgQOjkR6bZJsVt5BABrxheHT47maZrgrlrQQ_et0IyFebfxL1JhnUHtdEE-0TWN92dxV5i4AYbKqUru0fVz12lAyXlf0V-5fvHLepAWkJQSt8T-pO79BdoW6UZ821xxMUOpA">
 <meta property="og:image" content="https://lh5.googleusercontent.com/xX_OIWoDTddPFXkKXpjKXd5tROmOlFf7V-xipWAHODKoI1Ke_dk23YSytZYHTHZ50I67C4hCKqbHbQzaGBKXi5u24BTDy_ulnsLTbgHyKxXtKB0UfS8Yec-Jz01QcISgvik_I5Y">
@@ -176,7 +174,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>学习了一下这 ripper 20的两个洞</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>学习了一下这 ripper 20的两个洞</p>
 <h2 id="CVE-2020-11896"><a href="#CVE-2020-11896" class="headerlink" title="CVE-2020-11896"></a>CVE-2020-11896</h2><h3 id="IPv4-分片"><a href="#IPv4-分片" class="headerlink" title="IPv4 分片"></a>IPv4 分片</h3><p>IP分片使得即使在IP分组的大小大于网络的特定链路中允许的最大大小的情况下，也可以在网络中发送IP分组。IP分段是一种将分组分成几个较小部分(“片段”)以支持在这些链路和网络上传输的技术。该协议支持TH分组的分段然后重组。</p>
 <p>使用IP报头中的标识字段将不同的片段分组。该标识字段描述片段属于哪个分组。这允许不同的数据包在网络中分段传输，并在另一端正确重组。最后一个片段的MF(更多片段)位标志设置为0，而所有其他片段的MF=1。</p>
 <p>网络堆栈负责对大型数据包进行分段，并通过网络发送多个分段。请求发送大型数据报的UDP应用程序就是一个例子。网络堆栈还负责在接收到分段的数据包时对其进行重组。</p>
@@ -207,7 +205,7 @@
 
 
 <p>在本例中，0xE(十进制14)是以太网头的大小(6(Dst MAC)+6(Src MAC)+2(EtherType))。<br>当tfEtherRecv完成数据包处理时，它会使用代表下一层协议的EtherType字段将数据包转发到下一层处理。遇到的支持的以太网类型有ARP、IPv4和IPv6。</p>
-<img src="https://lh4.googleusercontent.com/hELEgQOjkR6bZJsVt5BABrxheHT47maZrgrlrQQ_et0IyFebfxL1JhnUHtdEE-0TWN92dxV5i4AYbKqUru0fVz12lAyXlf0V-5fvHLepAWkJQSt8T-pO79BdoW6UZ821xxMUOpA" alt="img" style="zoom:50%;" />
+<a href="https://lh4.googleusercontent.com/hELEgQOjkR6bZJsVt5BABrxheHT47maZrgrlrQQ_et0IyFebfxL1JhnUHtdEE-0TWN92dxV5i4AYbKqUru0fVz12lAyXlf0V-5fvHLepAWkJQSt8T-pO79BdoW6UZ821xxMUOpA" title="img" class="gallery-item"><img src="https://lh4.googleusercontent.com/hELEgQOjkR6bZJsVt5BABrxheHT47maZrgrlrQQ_et0IyFebfxL1JhnUHtdEE-0TWN92dxV5i4AYbKqUru0fVz12lAyXlf0V-5fvHLepAWkJQSt8T-pO79BdoW6UZ821xxMUOpA" alt="img" style="zoom:50%;" /></a>
 
 <p>在此的示例中，当IPv4层接收到数据包(在函数tfIpIncomingPacket中)时，指针pktuLinkDataPtr已经指向以太网头，因此可以安全地假设pktuLinkDataPtr指向的数据是IPv4头。<br>传入的数据由具有相同命名约定TF<em>IncomingPacket的函数处理(正如我们已经看到的)，其中</em>是协议名称。在以太网/IPv4/ICMP的情况下，包将由函数tfEtherRecv、tfIpIncomingPacket处理。<br>和tfIcmpIncomingPacket。<br>Treck堆栈处理从tfIpIncomingPacket调用的过程tfIpReAssemblePacket中的片段重组。每当接收到发往设备的IP片段时，都会调用此过程。如果缺少片段，则函数返回NULL。否则，如果所有片段都到达并且没有漏洞，则网络堆栈使用pktuLinkNextPtr字段将片段链接在一起，并传递数据包以供下一层进一步处理。在此上下文中的单词“重组”并不意味着将分组复制到连续的存储块，而是简单地将它们链接在一个链表中。</p>
 <h3 id="漏洞原因"><a href="#漏洞原因" class="headerlink" title="漏洞原因"></a>漏洞原因</h3><p>为了了解漏洞的根本原因，我们将快速查看IP标头中的两个字段：</p>
@@ -221,12 +219,12 @@
 
 <p>这就是漏洞所在。回想一下，pktuLinkDataLength保存当前片段的大小，pktuChainDataLength保存整个数据包的大小。如果执行上述操作，则会创建不一致，其中pkt-&gt;pktuChainDataLength。<br>==pkt-&gt;pktuLinkDataLength，但可能有其他片段指向。<br>pkt-&gt;pktuLinkNextPtr.。另一种方式是将其视为一种虚构的不一致状态，其中链表上片段的总大小大于pktuChainDataLength中存储的大小。<br>由弱修剪操作产生的不一致对于处理的其余部分来说不是好兆头。然而，我们还有另一个挑战需要克服。每次使用一个接收到的片段调用tfIpIncomingPacket函数，并调用tfIpReAssemblePacket来处理它。tfIpReAssemblePacket负责将片段插入到上述链表中。它不会将片段复制到连续的内存缓冲区。收到所有片段后，tfIpReAssemblePacket以片段链接列表的形式返回完整的数据包，以便在下一个协议层进行进一步处理。该重组操作在易受攻击的修剪操作之后执行。一旦可靠的操作完成，tfIpIncomingPacket将返回或转发数据包，以便在下一网络层(例如：UDP)进行处理。这会阻止我们执行利用漏洞攻击，因为我们需要分段的数据包才能达到不一致的状态。换句话说，易受攻击的代码应该只在每个片段的基础上执行(或在单个片段的数据包上执行)。如果以这种方式执行，它实际上并不容易受到攻击。<br>那么，我们如何才能用传入的碎片数据触发易受攻击的修剪流，从而实现上述不一致呢？</p>
 <h4 id="在IP层处理分段数据包"><a href="#在IP层处理分段数据包" class="headerlink" title="在IP层处理分段数据包"></a>在IP层处理分段数据包</h4><p>为了使分段的数据包在IP层得到处理并到达易受攻击的流，我们使用隧道。<br>隧道允许tfIpIncomingPacket将内部IP数据包作为非分段数据包进行处理。函数tfIpIncomingPacket将被递归调用两次，一次用于IP隧道的内层，多次用于外层(每个片段一次)。首先，tfIpIncomingPacket将接收来自外层的所有片段，在每个片段上调用tfIpReAssemblePacket，一旦它们都被接收，它将把执行传递到下一个协议层，在本例中再次是IPv4，因此将从具有内部IP层的tfIpIncomingPacket调用tfIpIncomingPacket。</p>
-<p><img src="https://lh5.googleusercontent.com/xX_OIWoDTddPFXkKXpjKXd5tROmOlFf7V-xipWAHODKoI1Ke_dk23YSytZYHTHZ50I67C4hCKqbHbQzaGBKXi5u24BTDy_ulnsLTbgHyKxXtKB0UfS8Yec-Jz01QcISgvik_I5Y" alt="img"></p>
+<p><a href="https://lh5.googleusercontent.com/xX_OIWoDTddPFXkKXpjKXd5tROmOlFf7V-xipWAHODKoI1Ke_dk23YSytZYHTHZ50I67C4hCKqbHbQzaGBKXi5u24BTDy_ulnsLTbgHyKxXtKB0UfS8Yec-Jz01QcISgvik_I5Y" title="img" class="gallery-item"><img src="https://lh5.googleusercontent.com/xX_OIWoDTddPFXkKXpjKXd5tROmOlFf7V-xipWAHODKoI1Ke_dk23YSytZYHTHZ50I67C4hCKqbHbQzaGBKXi5u24BTDy_ulnsLTbgHyKxXtKB0UfS8Yec-Jz01QcISgvik_I5Y" alt="img"></a></p>
 <p>对外部IP分组进行分段会导致使用内部分组调用tfIpIncomingPacket，该内部分组现在由几个分段组成，但在IP报头中标记为未分段(MF=0)。就描述数据包的数据结构而言，它现在由链接列表中的几个单独的链接组成，每个链接都有一个单独的pktuLinkDataLength值。</p>
 <p>让我们说得更具体些。请考虑下面的示例，它将伴随我们完成本文：</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630192657.png" alt="image-20200630192655708"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630192657.png" title="image-20200630192655708" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630192657.png" alt="image-20200630192655708"></a></p>
 <p>(我们将 checksum 字段设置为0，因为这将导致跳过UDP校验和验证。)。<br>当网络堆栈处理外部片段时，它使用字段将它们链接起来。<br>如前所述，tsUserPacket结构中的pktuLinkNextPtr。当函数tfIpIncomingPacket处理内部IP包(由于协议=4)时，它正在处理传入的分片数据(内部IP包由两个链接在一起的tsPacket结构表示)，但仍会调用易受攻击的流，从而解决了我们的挑战。<br>此外，内部IP分组通过IP报头健全性检查，因为只考虑tsUserPacket的pktuChainDataLength字段(而不是pktuLinkDataLength)。在我们的示例中，内部IP数据包(32)的总长度较小。<br>超过链数据长度(1000+8+20=1028)，因此Treck堆栈将通过将字段pktuLinkDataLength和pktuChainDataLength设置为相同的值-总IP长度(在我们的示例中为32)，来尝试不正确地修剪数据包。这导致内部IP分组由链接在一起的两个tsPacket结构表示，但是它们的总CUSIZE大于pktuChainDataLength字段(pktuChainDataLength字段在修整后等于32，而不是1028字节)。</p>
-<p><img src="https://lh3.googleusercontent.com/1AvUvDvuhRYsbIROhXpYD1sVtZA7VL1PV5I11ZHdDiIBT2-K2PpJfq4ousnjqaHhyr7DeSL-dhpQnA1b1SvBsYCjkeTTuCAhT-b5k65-71DlHm-RxGUSaoeeMnZXQdkbnk3mrU8" alt="img"></p>
+<p><a href="https://lh3.googleusercontent.com/1AvUvDvuhRYsbIROhXpYD1sVtZA7VL1PV5I11ZHdDiIBT2-K2PpJfq4ousnjqaHhyr7DeSL-dhpQnA1b1SvBsYCjkeTTuCAhT-b5k65-71DlHm-RxGUSaoeeMnZXQdkbnk3mrU8" title="img" class="gallery-item"><img src="https://lh3.googleusercontent.com/1AvUvDvuhRYsbIROhXpYD1sVtZA7VL1PV5I11ZHdDiIBT2-K2PpJfq4ousnjqaHhyr7DeSL-dhpQnA1b1SvBsYCjkeTTuCAhT-b5k65-71DlHm-RxGUSaoeeMnZXQdkbnk3mrU8" alt="img"></a></p>
 <h4 id="利用UDP实现堆溢出"><a href="#利用UDP实现堆溢出" class="headerlink" title="利用UDP实现堆溢出"></a>利用UDP实现堆溢出</h4><p>既然我们已经达到了不一致的状态，我们就面临着另一个问题–我们如何利用这种不一致来获得内存损坏原语？<br>原来，至少有一条代码路径将碎片数据复制到单个连续缓冲区中。这是处理UDP数据报的代码的一部分。该流的内部逻辑由正在分配的新分组(使用tfGetSharedBuffer)组成，其大小基于pktuChainDataLength字段，随后是分组的不同片段的副本逐个进入新分配的分组。<br>负责执行复制的函数是tfCopyPacket，它按顺序接受源包和目的包。以下是片段复制代码的摘录：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line"><span class="built_in">memcpy</span>(dst-&gt;pktuLinkDataPtr + i,src-&gt;pktuLinkDataPtr,src-&gt;pktuLinkDataLength); i = i + src-&gt;pktuLinkDataLength;</span><br><span class="line">src = (tsPacket *)src-&gt;pktuLinkNextPtr;</span><br><span class="line">&#125; <span class="keyword">while</span> (src != <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
 
@@ -243,7 +241,7 @@
 <p>正如我们所看到的，通过确保UDP长度字段等于pktuChainDataLength字段减去内部IP报头的大小，我们可以避免这种类型的修剪(不要与易受攻击的流混淆)。<br>总而言之：如果我们的设备上有UDP端口在监听，我们可以快速发送数据包，这样套接字接收队列就不会为空。同时，我们将发送会触发该漏洞的零碎UDP数据包，并勾选几个复选框。我们预期的结果是使用tfGetSharedBuffer在堆上分配一个小缓冲区，然后tfCopyPacket会使其溢出。</p>
 <h2 id="CVE-2020-11898"><a href="#CVE-2020-11898" class="headerlink" title="CVE-2020-11898"></a>CVE-2020-11898</h2><p>前面提到了，Treck TCP/IP不能正确处理IP-in-IP隧道上传入的IPv4片段。这还可能允许未经验证的攻击者从 heap 中泄漏内存。</p>
 <p>如果 tfIcmpErrPacket 将越界数据复制到错误数据包中，则可作为信息泄漏漏洞来被利用。</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630213503.png" alt="image-20200630213501855"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630213503.png" title="image-20200630213501855" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630213503.png" alt="image-20200630213501855"></a></p>
 <p>参考如上实例：</p>
 <p>当网络堆栈接收到这两个片段时，它会使用tfIpReAssemblePacket重新组装它们。此函数使用tsUserPacket结构中的字段pktuLinkNextPtr链接两个片段。如果启用了隧道，则IP层接下来将在函数tfIpIncomingPacket中处理内部IP数据包。</p>
 <p>内部IP分组通过IP报头健全性检查，因为只考虑tsUserPacket的pktuChainDataLength字段(而不是pktuLinkDataLength)。此外，由于在标准IP报头(20字节)之后有4个空字节，并且空字节表示选项列表的末尾(见<a href="https://tools.ietf.org/html/rfc791)%EF%BC%8C%E5%9B%A0%E6%AD%A4IP%E9%80%89%E9%A1%B9%E8%A7%A3%E6%9E%90%E9%80%9A%E8%BF%87%E3%80%82">https://tools.ietf.org/html/rfc791)，因此IP选项解析通过。</a></p>
@@ -258,18 +256,23 @@
 <p>此漏洞可用于在启用漏洞缓解(如ASLR)时，以及在没有调试器的情况下，利用CVE2020-11896和其他RCE漏洞进行攻击。</p>
 <p>2020-7-2 更新</p>
 <p>试了下文章写的 poc 发现并没有任何返回，但是机器直接打崩了。等个可以调试的设备。</p>
-<h2 id="关于-treck-协议栈扫描"><a href="#关于-treck-协议栈扫描" class="headerlink" title="关于 treck 协议栈扫描"></a>关于 treck 协议栈扫描</h2><p>看到 启明星辰 ADLAB 的公众号提到了 Treck协议栈自定义了类型为165(0xa5)的ICMP包，并一旦收到165的ICMP包会回复类型为166的ICMP包响应。<img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630215750.webp" alt="img"></p>
+<h2 id="关于-treck-协议栈扫描"><a href="#关于-treck-协议栈扫描" class="headerlink" title="关于 treck 协议栈扫描"></a>关于 treck 协议栈扫描</h2><p>看到 启明星辰 ADLAB 的公众号提到了 Treck协议栈自定义了类型为165(0xa5)的ICMP包，并一旦收到165的ICMP包会回复类型为166的ICMP包响应。<a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630215750.webp" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200630215750.webp" alt="img"></a></p>
 <p>由于手头没有相应的设备，以及查下公司的打印机相关设备，似乎都没有在官方公告的影响范围内，所以用这个方法跑了下，就到目前写这篇文章为止了，大概跑了1000多个 IP ，没有任何返回，目前猜测，公网 scan 的 话可能会被网关给 drop 掉。</p>
 <p>2020-7-2 更新：</p>
 <p>昨天发现上海公司有一台设备，测试的时候发现 scapy 写的扫描是有问题的，scapy 本身似乎对包进行了判断，导致拿不到回包，所以 github 上公开的扫描应该是不行，另外一点 ttl 如果太小似乎也会被drop掉(在多层路由的情况下)</p>
 <p>这里贴一下我用 socket 写的脚本</p>
 <p>设置 ICMP_ECHO_REQUEST 为0xa5 ，然后再收包判断 type</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702112743.png"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702112743.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702112743.png"></a></p>
 <p>例：</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702214200.png" alt="image-20200702113751286"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702214200.png" title="image-20200702113751286" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200702214200.png" alt="image-20200702113751286"></a></p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.jsof-tech.com/wp-content/uploads/2020/06/JSOF_Ripple20_Technical_Whitepaper_June20.pdf">https://www.jsof-tech.com/wp-content/uploads/2020/06/JSOF_Ripple20_Technical_Whitepaper_June20.pdf</a></p>
 <p><a href="https://mp.weixin.qq.com/s/2F1-35HIk126crowAh9LLw">https://mp.weixin.qq.com/s/2F1-35HIk126crowAh9LLw</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

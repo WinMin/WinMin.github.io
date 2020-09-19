@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="前言这几天一直在看 CVE-2020-0022 的东西，不清楚的同学可以参考： https:&#x2F;&#x2F;insinuator.net&#x2F;2020&#x2F;02&#x2F;critical-bluetooth-vulnerability-in-android-cve-2020-0022&#x2F; 代码不长，具体逻辑我就不在这里分析了，总而言之问题就是 12345678910111213diff --git a&#x2F;hci&#x2F;src&#x2F;pack">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="Android 8.1 上 memcpy 一点有趣的东西">
 <meta property="og:url" content="https://bestwing.me/Android-8.1-memcpy-func.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="前言这几天一直在看 CVE-2020-0022 的东西，不清楚的同学可以参考： https:&#x2F;&#x2F;insinuator.net&#x2F;2020&#x2F;02&#x2F;critical-bluetooth-vulnerability-in-android-cve-2020-0022&#x2F; 代码不长，具体逻辑我就不在这里分析了，总而言之问题就是 12345678910111213diff --git a&#x2F;hci&#x2F;src&#x2F;pack">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://user-images.githubusercontent.com/18380453/74593171-84e7f580-5063-11ea-8f65-b8d314131260.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200216022738.png">
@@ -124,7 +122,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-8-1-memcpy-%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8Fbug"><span class="toc-number">2.</span> <span class="toc-text">Android 8.1 memcpy 引起的一个小bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E8%B5%B7-BUG-%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.1.</span> <span class="toc-text">引起 BUG 的原因</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-8-1-memcpy-%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8Fbug"><span class="toc-number">1.</span> <span class="toc-text">Android 8.1 memcpy 引起的一个小bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E8%B5%B7-BUG-%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.1.</span> <span class="toc-text">引起 BUG 的原因</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -173,29 +171,29 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这几天一直在看 CVE-2020-0022 的东西，不清楚的同学可以参考：</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这几天一直在看 CVE-2020-0022 的东西，不清楚的同学可以参考：</p>
 <p><a href="https://insinuator.net/2020/02/critical-bluetooth-vulnerability-in-android-cve-2020-0022/">https://insinuator.net/2020/02/critical-bluetooth-vulnerability-in-android-cve-2020-0022/</a></p>
 <p>代码不长，具体逻辑我就不在这里分析了，总而言之问题就是</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">diff --git a/hci/src/packet_fragmenter.cc b/hci/src/packet_fragmenter.cc</span><br><span class="line">index 5036ed5..143fc23 100644</span><br><span class="line"><span class="comment">--- a/hci/src/packet_fragmenter.cc</span></span><br><span class="line"><span class="comment">+++ b/hci/src/packet_fragmenter.cc</span></span><br><span class="line"><span class="meta">@@ -221,7 +221,8 @@</span></span><br><span class="line">                  &quot;%s got packet which would exceed expected length of %d. &quot;</span><br><span class="line">                  &quot;Truncating.&quot;,</span><br><span class="line">                  __func__, partial_packet-&gt;len);</span><br><span class="line"><span class="deletion">-        packet-&gt;len = partial_packet-&gt;len - partial_packet-&gt;offset;</span></span><br><span class="line"><span class="addition">+        packet-&gt;len =</span></span><br><span class="line"><span class="addition">+            (partial_packet-&gt;len - partial_packet-&gt;offset) + packet-&gt;offset;</span></span><br><span class="line">         projected_offset = partial_packet-&gt;len;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
 
 <p>当计算 packet-&gt;len = partial_packet-&gt;len - partial_packet-&gt;offset; 值的时候，可能计算出一个小的数，或者干脆是负数，导致在</p>
-<p><img src="https://user-images.githubusercontent.com/18380453/74593171-84e7f580-5063-11ea-8f65-b8d314131260.png" alt="image"></p>
+<p><a href="https://user-images.githubusercontent.com/18380453/74593171-84e7f580-5063-11ea-8f65-b8d314131260.png" title="image" class="gallery-item"><img src="https://user-images.githubusercontent.com/18380453/74593171-84e7f580-5063-11ea-8f65-b8d314131260.png" alt="image"></a></p>
 <p>后面拷贝的时候， 拷贝一个 负数长度的值，由于 memcpy 参数是无符号的，则导致拷贝一个大数</p>
 <h2 id="Android-8-1-memcpy-引起的一个小bug"><a href="#Android-8-1-memcpy-引起的一个小bug" class="headerlink" title="Android 8.1 memcpy 引起的一个小bug"></a>Android 8.1 memcpy 引起的一个小bug</h2><p>在我和 @<a href="https://github.com/leommxj">leommxj</a> 测试的过程中，遇到一个坑，大致如图：</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200216022738.png"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200216022738.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200216022738.png"></a></p>
 <p>X0 是 dest ，X1是 src， X2是 size ，此时的size 明明是个负数，而且下溢后至少是一个很大的数，但是程序并没有崩溃。</p>
 <h3 id="引起-BUG-的原因"><a href="#引起-BUG-的原因" class="headerlink" title="引起 BUG 的原因"></a>引起 BUG 的原因</h3><p>真的各种猜测不如看代码，所以我们把 libc.so 拿出来看了一下</p>
-<img src="https://user-images.githubusercontent.com/18380453/74593437-49025f80-5066-11ea-89f0-ae9d78ba123f.png" alt="image" style="zoom:150%;" />
+<a href="https://user-images.githubusercontent.com/18380453/74593437-49025f80-5066-11ea-89f0-ae9d78ba123f.png" title="image" class="gallery-item"><img src="https://user-images.githubusercontent.com/18380453/74593437-49025f80-5066-11ea-89f0-ae9d78ba123f.png" alt="image" style="zoom:150%;" /></a>
 
 <p>重点在于：</p>
-<p><img src="https://user-images.githubusercontent.com/18380453/74593316-e5c3fd80-5064-11ea-9566-ab65710283b0.png" alt="image"></p>
+<p><a href="https://user-images.githubusercontent.com/18380453/74593316-e5c3fd80-5064-11ea-9566-ab65710283b0.png" title="image" class="gallery-item"><img src="https://user-images.githubusercontent.com/18380453/74593316-e5c3fd80-5064-11ea-9566-ab65710283b0.png" alt="image"></a></p>
 <p>此时 X0 是dest，Dest 取低位赋值给X9，然后 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD X2, X2 ,X9</span><br></pre></td></tr></table></figure>
 
 <p>而此时的 X2 是 len，导致他整型上溢出，变成一个小的数字，例如 0xa</p>
-<p><img src="https://user-images.githubusercontent.com/18380453/74593356-405d5980-5065-11ea-9ba9-f3b43e68bf9c.png" alt="image"></p>
+<p><a href="https://user-images.githubusercontent.com/18380453/74593356-405d5980-5065-11ea-9ba9-f3b43e68bf9c.png" title="image" class="gallery-item"><img src="https://user-images.githubusercontent.com/18380453/74593356-405d5980-5065-11ea-9ba9-f3b43e68bf9c.png" alt="image"></a></p>
 <p>当进入下图逻辑时</p>
-<img src="https://user-images.githubusercontent.com/18380453/74593369-6682f980-5065-11ea-9271-c425599f69f4.png" alt="image" style="zoom:50%;" />
+<a href="https://user-images.githubusercontent.com/18380453/74593369-6682f980-5065-11ea-9271-c425599f69f4.png" title="image" class="gallery-item"><img src="https://user-images.githubusercontent.com/18380453/74593369-6682f980-5065-11ea-9271-c425599f69f4.png" alt="image" style="zoom:50%;" /></a>
 
 <p>此时 X2 为 0xA，进行下面的指令的时候</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUBS            X2, X2, #0x90</span><br><span class="line">B.LS            loc_1C8A8</span><br></pre></td></tr></table></figure>
@@ -205,7 +203,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">loc_1C8A8</span><br><span class="line">LDP             X1, X2, [X4,#-0x40]</span><br><span class="line">STP             X6, X7, [X3,#0x10]</span><br><span class="line">LDP             X6, X7, [X4,#-0x30]</span><br><span class="line">STP             X8, X9, [X3,#0x20]</span><br><span class="line">LDP             X8, X9, [X4,#-0x20]</span><br><span class="line">STP             X10, X11, [X3,#0x30]</span><br><span class="line">LDP             X10, X11, [X4,#-0x10]</span><br><span class="line">STP             X12, X13, [X3,#0x40]</span><br><span class="line">STP             X1, X2, [X5,#-0x40]</span><br><span class="line">STP             X6, X7, [X5,#-0x30]</span><br><span class="line">STP             X8, X9, [X5,#-0x20]</span><br><span class="line">STP             X10, X11, [X5,#-0x10]</span><br><span class="line">RET</span><br><span class="line">; &#125; &#x2F;&#x2F; starts at 1C770</span><br></pre></td></tr></table></figure>
 
 <p>之后的代码逻辑直接就是 RET ，导致 并没有拷贝过长的内存，导致 crash。</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -242,7 +245,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-8-1-memcpy-%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8Fbug"><span class="toc-number">2.</span> <span class="toc-text">Android 8.1 memcpy 引起的一个小bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E8%B5%B7-BUG-%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.1.</span> <span class="toc-text">引起 BUG 的原因</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-8-1-memcpy-%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8Fbug"><span class="toc-number">1.</span> <span class="toc-text">Android 8.1 memcpy 引起的一个小bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E8%B5%B7-BUG-%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.1.</span> <span class="toc-text">引起 BUG 的原因</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

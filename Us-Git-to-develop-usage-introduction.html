@@ -118,7 +118,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">开发具体命令以及方法</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">开发具体命令以及方法</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -167,11 +167,11 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Git是目前世界上最先进的分布式版本控制系统，由Linux创始人Linus在2005年开发，用于对抗商业版的版本控制工具BitKeeper，历史比较有意思，感兴趣的师傅们可以搜索了解一下。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Git是目前世界上最先进的分布式版本控制系统，由Linux创始人Linus在2005年开发，用于对抗商业版的版本控制工具BitKeeper，历史比较有意思，感兴趣的师傅们可以搜索了解一下。</p>
 <ul>
 <li>分布式<br>首先要说明的是Git是一个分布式版本控制系统，重点在于分布式。也就是说我们从github上每clone下来一个项目，都是clone下一个完整的仓库，里面包含了远程仓库的所有信息。我们在clone的目录下会发现一个.git目录，这个目录就是本地仓库所在的位置，注意不要去修改这个目录，如果删除了这个目录，本地仓库及其相关信息都会消失。</li>
 <li>工作区和版本库<br>这里的工作区指的是不包括.git目录的所有文件，你可以对工作区进行任意的修改，都不会影响到本地的仓库。<br>.git目录是本地仓库，也叫作版本库。版本库可以粗略的分为两个部分——暂存区和分支区，这两个区域是相互独立的。<br>我们使用“git add”命令把工作区的文件修改添加到暂存区，使用“git commit”命令把暂存区的文件修改提交到当前分支。如下面两幅图，暂存区译为stage。</li>
-<li><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/working-for-git-01.png"></li>
+<li><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/working-for-git-01.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/working-for-git-01.png"></a></li>
 <li>暂存区是Git非常重要的特性，需要仔细理解。</li>
 <li>分支<br>每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。当只有一个分支时，这个分支叫主分支，即master分支。<br>一开始的时候，master分支是一条线，Git让master指向最新的提交，再用HEAD指向master，就能确定当前分支，以及当前分支的提交点。每次提交，master分支都会向前移动一步，这样，随着你不断提交，master分支的线也越来越长</li>
 </ul>
@@ -204,7 +204,12 @@ git checkout的-b参数表示新建分支，无参数表示切换到现有分支
 <li>常用查询命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch                          # 查看自己所在分支 以及自己所拥有的分支</span><br><span class="line">$ git log --graph                      # 查看自己的提交记录</span><br><span class="line">$ git reflog                                            # 查看自己的操作历史</span><br><span class="line">$ git status                                        # 查看本地仓库当前的文件状态</span><br><span class="line">$ git blame [FILE_PATH]                  # 查看文件的每一部分最后由谁改动</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -241,7 +246,7 @@ git checkout的-b参数表示新建分支，无参数表示切换到现有分支
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">开发具体命令以及方法</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E5%85%B7%E4%BD%93%E5%91%BD%E4%BB%A4%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">开发具体命令以及方法</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

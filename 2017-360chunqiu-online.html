@@ -119,7 +119,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#smallest"><span class="toc-number">1.</span> <span class="toc-text">smallest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E8%A7%A3%E6%B3%95-mprotect"><span class="toc-number">1.1.</span> <span class="toc-text">第一种解法 mprotect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E8%A7%A3%E6%B3%95-infoleak"><span class="toc-number">1.2.</span> <span class="toc-text">第二种解法 infoleak</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hiddenlove"><span class="toc-number">2.</span> <span class="toc-text">hiddenlove</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E8%A7%A3%E6%B3%95-mprotect"><span class="toc-number">1.</span> <span class="toc-text">第一种解法 mprotect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E8%A7%A3%E6%B3%95-infoleak"><span class="toc-number">2.</span> <span class="toc-text">第二种解法 infoleak</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hiddenlove"><span class="toc-number"></span> <span class="toc-text">hiddenlove</span></a>
     </div>
   </span>
 </div>
@@ -168,9 +168,9 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="smallest"><a href="#smallest" class="headerlink" title="smallest"></a>smallest</h2><p>这个题Joker湿傅和说有三种解法，我分别学习了其中两种解法。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="smallest"><a href="#smallest" class="headerlink" title="smallest"></a>smallest</h2><p>这个题Joker湿傅和说有三种解法，我分别学习了其中两种解法。</p>
 <p>题目开了NX，</p>
-<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-360ichunqiu-oline.jpg"></p>
+<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-360ichunqiu-oline.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-360ichunqiu-oline.jpg"></a></p>
 <p>这个题，代码量很少，我们从汇编中就能看懂逻辑。</p>
 <p>xor rax ，rax 将rax的值设置为0，之后的将 rax的值作为调用号，即read的调用号为0，读入数据。所以，我们的初步设想就是通过控制rax，修改调用号，调用不同的函数，起初想能不能控制rdx，传入/bin/sh直接起shell，但是，在gadget中，发现了一个致命的问题。</p>
 <p>因为代码少得可怜，能找到gadget也少得可怜，大概也只有</p>
@@ -192,7 +192,12 @@
 
 <h2 id="hiddenlove"><a href="#hiddenlove" class="headerlink" title="hiddenlove"></a>hiddenlove</h2><p>这是 Hitcon 2016 babyheab题改的。</p>
 <p><a href="https://github.com/ctfs/write-ups-2016/tree/master/hitcon-ctf-2016/pwn/baby-heap-300">https://github.com/ctfs/write-ups-2016/tree/master/hitcon-ctf-2016/pwn/baby-heap-300</a></p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -229,7 +234,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#smallest"><span class="toc-number">1.</span> <span class="toc-text">smallest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E8%A7%A3%E6%B3%95-mprotect"><span class="toc-number">1.1.</span> <span class="toc-text">第一种解法 mprotect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E8%A7%A3%E6%B3%95-infoleak"><span class="toc-number">1.2.</span> <span class="toc-text">第二种解法 infoleak</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hiddenlove"><span class="toc-number">2.</span> <span class="toc-text">hiddenlove</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E8%A7%A3%E6%B3%95-mprotect"><span class="toc-number">1.</span> <span class="toc-text">第一种解法 mprotect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E8%A7%A3%E6%B3%95-infoleak"><span class="toc-number">2.</span> <span class="toc-text">第二种解法 infoleak</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hiddenlove"><span class="toc-number"></span> <span class="toc-text">hiddenlove</span></a>
     </div>
 
     <div id="share-footer" style="display: none">

@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="前言前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。 这里可以提一下，我这里用的是这个项目insert_dylib，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。 使用方式如下：insert @executable_path src dst 最后能类似这样的一个效果：  红色框的，是我注入的">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="编译属性 &quot;__attribute__&quot; 的一些简单认识">
 <meta property="og:url" content="https://bestwing.me/Compile_attribute_properties.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="前言前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。 这里可以提一下，我这里用的是这个项目insert_dylib，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。 使用方式如下：insert @executable_path src dst 最后能类似这样的一个效果：  红色框的，是我注入的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png">
@@ -119,7 +117,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">2.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">1.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -168,11 +166,11 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。</p>
 <p>这里可以提一下，我这里用的是这个项目<a href="https://github.com/Tyilo/insert_dylib">insert_dylib</a>，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。</p>
 <p>使用方式如下：insert @executable_path src dst</p>
 <p>最后能类似这样的一个效果：</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png"></a></p>
 <p>红色框的，是我注入的dylib 程序，那么另外一个问题来了，如何让在程序启动前或者后，执行外面的代码呢？这里就是这个文章想提的一个东西。</p>
 <blockquote>
 <p>什么是 @executable_path ？</p>
@@ -196,9 +194,14 @@
 
 
 <p>我们这里可以选择Xcode 进行编译，选择编译成dylib，或者直接 gcc test.c -shared 编译也可。</p>
-<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png"></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png"></a></p>
 <p>最后改成相应的名字，放到被注入的程序的对应目录里即可。</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
@@ -235,7 +238,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">2.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">1.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">

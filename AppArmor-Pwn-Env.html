@@ -6,12 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录 AppArmor安装sudo apt-get install apparmor-profiles apparmor-utils 创建配置文件在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先 sudo ln -s &#x2F;home&#x2F;binfile &#x2F;u">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="在CTF Pwn下使用AppArmor做权限隔离">
 <meta property="og:url" content="https://bestwing.me/AppArmor-Pwn-Env.html">
 <meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:description" content="最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录 AppArmor安装sudo apt-get install apparmor-profiles apparmor-utils 创建配置文件在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先 sudo ln -s &#x2F;home&#x2F;binfile &#x2F;u">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-08-21T16:00:00.000Z">
 <meta property="article:modified_time" content="2019-10-28T13:30:24.000Z">
@@ -165,7 +163,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录</p>
 <h2 id="AppArmor"><a href="#AppArmor" class="headerlink" title="AppArmor"></a>AppArmor</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><code>sudo apt-get install apparmor-profiles apparmor-utils</code></p>
 <h3 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h3><p>在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先</p>
 <p><code>sudo ln -s /home/binfile /usr/local/bin/binfile</code></p>
@@ -211,7 +209,12 @@
 
 <p>最后 service xinetd start 启动即可。 </p>
 <p>冲！XD</p>
-
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
   </div>
 </article>
 
