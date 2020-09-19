@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前段时间和muhe买了surge，但是并没有仔细研究它的配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac-Surge-2 部分配置">
+<meta property="og:url" content="https://bestwing.me/Mac-Surge-2.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="前段时间和muhe买了surge，但是并没有仔细研究它的配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-09-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:04:21.129Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="Surge">
+<meta property="article:tag" content="科学上网">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Mac-Surge-2 部分配置</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-backdoor-CTF-Pwn.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-XCTF-Final.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Mac-Surge-2.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Mac-Surge-2.html&text=Mac-Surge-2 部分配置"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Mac-Surge-2.html&is_video=false&description=Mac-Surge-2 部分配置"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac-Surge-2 部分配置&body=Check out this article: https://bestwing.me/Mac-Surge-2.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Mac-Surge-2.html&name=Mac-Surge-2 部分配置&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Mac-Surge-2.html&t=Mac-Surge-2 部分配置"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ss%E4%BB%A3%E7%90%86%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">ss代理设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF%E4%BB%A3%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">终端代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Surge-%E4%B8%8Ev2ray-%E6%9B%B4%E6%96%B0%E4%BA%8E2019-06-21"><span class="toc-number">3.</span> <span class="toc-text">Surge 与v2ray(更新于2019-06-21)</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Mac-Surge-2 部分配置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-09-19T16:00:00.000Z" itemprop="datePublished">2017-09-20</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Surge/" rel="tag">Surge</a>, <a class="tag-link-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="ss代理设置"><a href="#ss代理设置" class="headerlink" title="ss代理设置"></a>ss代理设置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Proxy]</span><br><span class="line">🇭🇰 HK = custom,abclite.cn,10000,rc4-md5,abclite.cn,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</span><br><span class="line">🇸🇬 SG = custom,abclite.cn,10000,rc4-md5,abclite.cn,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</span><br><span class="line">🇯🇵 JP = custom,abclite.cn,10000,rc4-md5,abclite.cn,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</span><br><span class="line">🇺🇸 US = custom,abclite.cn,10000,rc4-md5,abclite.cn,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</span><br><span class="line">🇰🇷 KR = custom,abclite.cn,10000,rc4-md5,abclite.cn,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</span><br></pre></td></tr></table></figure>
+
+<p>[Proxy]是具体的代理配置，它下面就是5个ss服务器节点, 这里只是5个国家例子，根据你拥有的ss账号数来决定，拥有几个账号就留下其中几个对应国旗配置就好。表面上看就是5个键值对(键可以自定义)，键中加上国旗可以很直观的区分不同国家的ss节点，值中的变量分别表示：</p>
+<ul>
+<li>ss-server host: ss主机，ip或域名</li>
+<li>ss-server port: ss主机端口</li>
+<li>ss encrypt type: 加密方式</li>
+<li>ss-password: ss密码<br>custom不能改，是一个约定类型(ss协议)，最末一项是ss模块下载地址，也不需要改,当选择了当前配置所在的配置文件，Surge会去下载ss模块，有弹窗提示。<br>[Proxy Group]是一个组策略配置，它的某一项配置可以引用[Proxy]中的配置，也可以引用其他的组策略配置。这里有select, url-test, ssid三种策略可以用，具体请阅读example-chinese.conf中的注释。<br>简单讲：</li>
+<li>select：在菜单上手动选择ss节点</li>
+<li>url-test：定时轮询向指定的地址发起请求，哪个节点响应时间最短，则切换到哪个ss节点</li>
+<li>ssid： 根据wifi名字进行切换ss节点</li>
+</ul>
+<p>更多详尽的配置可以看<a href="https://github.com/WinMin/Surge/blob/master/surge.conf">github</a></p>
+<h2 id="终端代理"><a href="#终端代理" class="headerlink" title="终端代理"></a>终端代理</h2><p>mac下我用的是oh-my-zsh<br><code>vim vim ~/.zshrc </code><br>在底下加上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">proxy=http://127.0.0.1:8888</span><br><span class="line"><span class="built_in">export</span> http_proxy=<span class="variable">$proxy</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=<span class="variable">$proxy</span></span><br><span class="line"><span class="built_in">export</span> ftp_proxy=<span class="variable">$proxy</span></span><br></pre></td></tr></table></figure>
+<p>在我的Surge配置文件中是8888端口，所以这里也相应是如此</p>
+<h2 id="Surge-与v2ray-更新于2019-06-21"><a href="#Surge-与v2ray-更新于2019-06-21" class="headerlink" title="Surge 与v2ray(更新于2019-06-21)"></a>Surge 与v2ray(更新于2019-06-21)</h2><p>最近从 shadowsocks 转到了v2ray 于是就还想要使用surge 做v2ray代理。</p>
+<ol>
+<li>首先，下載 <a href="https://github.com/v2ray/v2ray-core/releases">v2ray-core</a> 的最新版本，注意下載的是 v2ray-macos.zip。</li>
+<li>然后配置 config.json。</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;inbounds&quot;</span>: [&#123;</span><br><span class="line">    <span class="attr">&quot;port&quot;</span>: <span class="number">8886</span>,  <span class="comment">// SOCKS 代理端口，在浏览器中需配置代理并指向这个端口</span></span><br><span class="line">    <span class="attr">&quot;listen&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;protocol&quot;</span>: <span class="string">&quot;socks&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;settings&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;udp&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;],</span><br><span class="line">  <span class="attr">&quot;outbounds&quot;</span>: [&#123;</span><br><span class="line">    <span class="attr">&quot;protocol&quot;</span>: <span class="string">&quot;vmess&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;settings&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;vnext&quot;</span>: [&#123;</span><br><span class="line">        <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;xx.xx.xx.xx&quot;</span>, <span class="comment">// 服务器地址，请修改为你自己的服务器 ip 或域名</span></span><br><span class="line">        <span class="attr">&quot;port&quot;</span>: <span class="number">46704</span>,  <span class="comment">// 服务器端口</span></span><br><span class="line">        <span class="attr">&quot;users&quot;</span>: [&#123; <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;xxx-xxx-xxx&quot;</span> &#125;]</span><br><span class="line">      &#125;]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,&#123;</span><br><span class="line">    <span class="attr">&quot;protocol&quot;</span>: <span class="string">&quot;freedom&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;tag&quot;</span>: <span class="string">&quot;direct&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;settings&quot;</span>: &#123;&#125;</span><br><span class="line">  &#125;],</span><br><span class="line">  <span class="attr">&quot;routing&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;domainStrategy&quot;</span>: <span class="string">&quot;IPOnDemand&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;rules&quot;</span>: [&#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;field&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ip&quot;</span>: [<span class="string">&quot;geoip:private&quot;</span>],</span><br><span class="line">      <span class="attr">&quot;outboundTag&quot;</span>: <span class="string">&quot;direct&quot;</span></span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类似于上面这样。</p>
+<ol start="3">
+<li><p>然后在终端 使用 <code>/path/to/v2ray -config=/path/to/json</code> 來啟動 v2ray。或者写个脚本做配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">nohup ./v2ray --config=./config.json &gt; /dev/null &amp;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>紧接着就要配置 surge 部分。</p>
+<ol>
+<li><p>.conf 配置文件文件，在 <code>Proxy</code> 部分添加 <code>v2ray = socks5,127.0.0.1,8886</code></p>
+<p>类似于这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Proxy]</span><br><span class="line">🌍 DIRECT &#x3D; direct</span><br><span class="line">v2ray &#x3D; socks5,127.0.0.1,8886</span><br><span class="line"></span><br><span class="line">[Proxy Group]</span><br><span class="line">☁️ PROXY &#x3D; select, 🏃 AUTO, 🌍 DIRECT, PROXY</span><br><span class="line">PROXY &#x3D; select, 🇭🇰 HK,🇺🇸 us, 🇭🇰 hk ,v2ray</span><br><span class="line">🏃 AUTO &#x3D; url-test, 🇭🇰 HK,🇺🇸 us, 🇭🇰 hk,v2ray,url &#x3D; http:&#x2F;&#x2F;www.gstatic.com&#x2F;generate_204, interval &#x3D; 1200</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ss%E4%BB%A3%E7%90%86%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">ss代理设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF%E4%BB%A3%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">终端代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Surge-%E4%B8%8Ev2ray-%E6%9B%B4%E6%96%B0%E4%BA%8E2019-06-21"><span class="toc-number">3.</span> <span class="toc-text">Surge 与v2ray(更新于2019-06-21)</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Mac-Surge-2.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Mac-Surge-2.html&text=Mac-Surge-2 部分配置"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Mac-Surge-2.html&is_video=false&description=Mac-Surge-2 部分配置"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac-Surge-2 部分配置&body=Check out this article: https://bestwing.me/Mac-Surge-2.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Mac-Surge-2.html&title=Mac-Surge-2 部分配置"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Mac-Surge-2.html&name=Mac-Surge-2 部分配置&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Mac-Surge-2.html&t=Mac-Surge-2 部分配置"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

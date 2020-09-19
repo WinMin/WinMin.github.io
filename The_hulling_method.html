@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="我爱学习 学习使我快乐">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向学习——脱壳方法">
+<meta property="og:url" content="https://bestwing.me/The_hulling_method.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="我爱学习 学习使我快乐">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-24T08:05:05.000Z">
+<meta property="article:modified_time" content="2019-09-24T14:05:18.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="reverse">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>逆向学习——脱壳方法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016-NUCA-pwn-Writeup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/tell_myself.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/The_hulling_method.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/The_hulling_method.html&text=逆向学习——脱壳方法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/The_hulling_method.html&is_video=false&description=逆向学习——脱壳方法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=逆向学习——脱壳方法&body=Check out this article: https://bestwing.me/The_hulling_method.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/The_hulling_method.html&name=逆向学习——脱壳方法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/The_hulling_method.html&t=逆向学习——脱壳方法"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B3"><span class="toc-number">1.</span> <span class="toc-text">什么是壳</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B3%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">壳的作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%B1%E5%A3%B3%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">3.</span> <span class="toc-text">脱壳的基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%A3%B3%E6%98%AF%E6%80%8E%E4%B9%88%E8%A3%85%E8%BD%BD%E7%9A%84%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">1壳是怎么装载的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B3%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">壳的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OEP-%EF%BC%88%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3%E7%82%B9%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">OEP （程序入口点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%B1%E5%A3%B3%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.4.</span> <span class="toc-text">脱壳的基本步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E8%84%B1%E5%A3%B3%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">常用脱壳方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%AD%A5%E8%B7%9F%E8%B8%AA%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">单步跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESP%E5%AE%9A%E5%BE%8B%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">ESP定律法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%95%9C%E5%83%8F%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">内存镜像法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AD%A5%E5%88%B0%E8%BE%BEOEP"><span class="toc-number">4.4.</span> <span class="toc-text">一步到达OEP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E5%BC%82%E5%B8%B8%E6%B3%95"><span class="toc-number">4.5.</span> <span class="toc-text">最后一次异常法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E8%B7%9F%E8%B8%AA%E6%B3%95"><span class="toc-number">4.6.</span> <span class="toc-text">模拟跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SFX%E6%B3%95"><span class="toc-number">4.7.</span> <span class="toc-text">SFX法</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        逆向学习——脱壳方法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-09-24T08:05:05.000Z" itemprop="datePublished">2016-09-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/reverse/" rel="tag">reverse</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="什么是壳"><a href="#什么是壳" class="headerlink" title="什么是壳"></a>什么是壳</h1><p>大家应该先明白“壳”的概念。在自然界中，我想大家对”壳”这东西应该都不会陌生了，植物用它来保护种子，动物用它来保护身体等等。同样，在一些计算机软件里也有一段专门负责保护软件不被非法修改或反编译的程序。它们一般都是先于程序运行，拿到控制权，然后完成它们保护软件的任务。就像动植物的壳一般都是在身体外面一样理所当然（当然后来也出现了所谓的“壳中带籽”的壳）。由于这段程序和自然界的壳在功能上有很多相同的地方，基于命名的规则，大家就把这样的程序称为“壳”了。就像计算机病毒和自然界的病毒一样，其实都是命名上的方法罢了。</p>
+<h1 id="壳的作用"><a href="#壳的作用" class="headerlink" title="壳的作用"></a>壳的作用</h1><p>1 写好一个程序后，不想让别人随便更改其中的版权信息，我们可以加壳对其进行保护防止被修改。<br>2 可以利用压缩壳减少程序容量，方便程序传播。<br>3 帮助木马病毒进行免杀，我们可以直接加壳免杀，也可以脱壳对其代码进行修改从而躲过杀毒软件的查杀。</p>
+<h1 id="脱壳的基础知识"><a href="#脱壳的基础知识" class="headerlink" title="脱壳的基础知识"></a>脱壳的基础知识</h1><h2 id="1壳是怎么装载的？"><a href="#1壳是怎么装载的？" class="headerlink" title="1壳是怎么装载的？"></a>1壳是怎么装载的？</h2><p>   壳自从加到程序上以后就连在一起了，即对程序进行保护，防止被修改，也就是壳把程序给包裹起来了，而且原程序的数据也被压缩了。<br>    装载的时候通常是先执行壳后再跳到真正的原程序OEP（程序入口点），这时开始运行原先没加壳的程序。<br>运行顺序：执行带壳文件——执行壳——执行到程序入口点——运行未加壳的程序。</p>
+<h2 id="壳的分类"><a href="#壳的分类" class="headerlink" title="壳的分类"></a>壳的分类</h2><p>壳出于程序作者想对程序资源压缩、注册保护的目的，壳一般分为压缩壳和加密壳两类。<br>压缩壳：一般只对文件进行压缩处理，既压缩区段和一些资源压缩，以减少文件体积为目的<br>如：ASPack、UPX、PECompact等<br>加密壳：跟压缩壳正好相反，一般是牺牲减少体积为代价，对文件进行加密处理，用上各种反跟踪技术保护程序不被调试、脱壳，<br>如：ASProtect、Armadillo、EXECryptor等<br>但随着加壳技术的发展，这两类壳之间的界限越来越模糊，很多加壳软件既有压缩功能也有保护性能，而且现在很多加密壳达到壳中带肉，肉中带壳的地步了。</p>
+<h2 id="OEP-（程序入口点）"><a href="#OEP-（程序入口点）" class="headerlink" title="OEP （程序入口点）"></a>OEP （程序入口点）</h2><p>   OEP：Original Entry Point ，程序加壳前真正的入口点。</p>
+<h2 id="脱壳的基本步骤"><a href="#脱壳的基本步骤" class="headerlink" title="脱壳的基本步骤"></a>脱壳的基本步骤</h2><p>查壳(PEID、FI、PE-SCAN)—&gt;寻找OEP(OD)—&gt;脱壳/Dump(LordPE、PeDumper、OD自带的脱壳插件、PETools)—&gt;修复(Import REConstructor)</p>
+<h1 id="常用脱壳方法"><a href="#常用脱壳方法" class="headerlink" title="常用脱壳方法"></a>常用脱壳方法</h1><h2 id="单步跟踪法"><a href="#单步跟踪法" class="headerlink" title="单步跟踪法"></a>单步跟踪法</h2><p>（1）用OD载入，点“不分析代码”<br>（2）.单步向下跟踪F8，实现向下的跳。也就是说向上的跳不让其实现（通过F4）<br>（3）遇到程序往回跳的（包括循环），我们在下一句代码处按F4（或者右健单击代码，选                     择断点——&gt;运行到所选）<br>（4）绿色线条表示跳转没实现，不用理会，红色线条表示跳转已经实现<br>（5）如果刚载入程序，在附近就有一个CALL的，我们就F7跟进去，不然程序很容易跑  飞，这样很快就能到程序的OEP<br>（6）在跟踪的时候，如果运行到某个CALL程序就运行的，就在这个CALL中F7进入<br>（7）一般有很大的跳转（大跨段），比如 jmp XXXXXX 或者 JE XXXXXX 或者有RETN  的一般很快就会到程序的OEP<br>注：在有些壳无法向下跟踪的时候，我们可以在附近找到没有实现的大跳转，右键–&gt;“跟随”,然后F2下断，Shift+F9运行停在“跟随”的位置，再取消断点，继续F8单步跟踪。一般情况下可以轻松到达OEP</p>
+<h2 id="ESP定律法"><a href="#ESP定律法" class="headerlink" title="ESP定律法"></a>ESP定律法</h2><p>   ESP定理脱壳（ESP在OD的寄存器中，我们只要在命令行下ESP的硬件访问断点，就会一下来到程序的OEP了！）<br>（1）开始就点F8，注意观察OD右上角的寄存器中ESP有没突现（变成红色）（这只是一  般情况下，更确切的说我们选择的ESP值是关键句之后的第一个ESP值）<br>（2）在命令行下：dd XXXXXXXX(指在当前代码中的ESP地址，或者是hr XXXXXXXX)，  按回车<br>（3）选中下断的地址，断点—&gt;硬件访—&gt;WORD断点<br>（4）按一下F9运行程序，直接来到了跳转处，按下F8，到达程序OEP</p>
+<h2 id="内存镜像法"><a href="#内存镜像法" class="headerlink" title="内存镜像法"></a>内存镜像法</h2><p>（1）用OD打开软件<br>（2）点击选项——调试选项——异常，把里面的忽略全部√上。CTRL+F2重载下程序<br>（3）按ALT+M,打开内存镜象，找到程序的第一个.rsrc.按F2下断点，然后按SHIFT+F9运  行到断点，接着再按ALT+M,打开内存镜象，找到程序的第一个.rsrc.上面的.CODE（也  就是00401000处），按F2下断点。然后按SHIFT+F9（或者是在没异常情况下按F9），  直接到达程序OEP</p>
+<h2 id="一步到达OEP"><a href="#一步到达OEP" class="headerlink" title="一步到达OEP"></a>一步到达OEP</h2><p>（1）开始按Ctrl+F,输入：popad（只适合少数壳，包括UPX，ASPACK壳），然后按下F2，  F9运行到此处<br>（2）来到大跳转处，点下F8，到达OEP</p>
+<h2 id="最后一次异常法"><a href="#最后一次异常法" class="headerlink" title="最后一次异常法"></a>最后一次异常法</h2><p>（1）用OD打开软件<br>（2）点击选项——调试选项——异常，把里面的√全部去掉！CTRL+F2重载下程序<br>（3）一开始程序就是一个跳转，在这里我们按SHIFT+F9，直到程序运行，记下从开始按SHIFT+F9到程序运行的次数m<br>（4）CTRL+F2重载程序，按SHIFT+F9（这次按的次数为程序运行的次数m-1次）<br>（5）在OD的右下角我们看见有一个”SE 句柄”，这时我们按CTRL+G，输入SE 句柄前的地址<br>（6）按F2下断点，然后按SHIFT+F9来到断点处<br>（7）去掉断点，按F8慢慢向下走<br>（8）到达程序的OEP</p>
+<h2 id="模拟跟踪法"><a href="#模拟跟踪法" class="headerlink" title="模拟跟踪法"></a>模拟跟踪法</h2><p>（1）先试运行，跟踪一下程序，看有没有SEH暗桩之类<br>（2）ALT+M打开内存镜像，找到（包含那一列中出现SFX,imports,relocations或者SFX,输  入表，重定位）<br>（3）若地址为00xxxxxx在命令行下输入tc eip&lt;00xxxxxx，回车，提示正在跟踪</p>
+<h2 id="SFX法"><a href="#SFX法" class="headerlink" title="SFX法"></a>SFX法</h2><p>（1）设置OD，忽略所有异常，也就是说异常选项卡里面都打上勾<br>（2）切换到SFX选项卡，选择“字节模式跟踪实际入口（速度非常慢）”，确定<br>（3）重载程序（如果跳出是否“压缩代码？”选择“否”，OD直接到达OEP）</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B3"><span class="toc-number">1.</span> <span class="toc-text">什么是壳</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B3%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">壳的作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%B1%E5%A3%B3%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">3.</span> <span class="toc-text">脱壳的基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%A3%B3%E6%98%AF%E6%80%8E%E4%B9%88%E8%A3%85%E8%BD%BD%E7%9A%84%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">1壳是怎么装载的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B3%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">壳的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OEP-%EF%BC%88%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3%E7%82%B9%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">OEP （程序入口点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%B1%E5%A3%B3%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.4.</span> <span class="toc-text">脱壳的基本步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E8%84%B1%E5%A3%B3%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">常用脱壳方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%AD%A5%E8%B7%9F%E8%B8%AA%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">单步跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESP%E5%AE%9A%E5%BE%8B%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">ESP定律法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%95%9C%E5%83%8F%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">内存镜像法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AD%A5%E5%88%B0%E8%BE%BEOEP"><span class="toc-number">4.4.</span> <span class="toc-text">一步到达OEP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E5%BC%82%E5%B8%B8%E6%B3%95"><span class="toc-number">4.5.</span> <span class="toc-text">最后一次异常法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E8%B7%9F%E8%B8%AA%E6%B3%95"><span class="toc-number">4.6.</span> <span class="toc-text">模拟跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SFX%E6%B3%95"><span class="toc-number">4.7.</span> <span class="toc-text">SFX法</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/The_hulling_method.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/The_hulling_method.html&text=逆向学习——脱壳方法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/The_hulling_method.html&is_video=false&description=逆向学习——脱壳方法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=逆向学习——脱壳方法&body=Check out this article: https://bestwing.me/The_hulling_method.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/The_hulling_method.html&title=逆向学习——脱壳方法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/The_hulling_method.html&name=逆向学习——脱壳方法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/The_hulling_method.html&t=逆向学习——脱壳方法"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

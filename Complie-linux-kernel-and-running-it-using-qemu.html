@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="有几个linux kernel的坑没搞了，mueh师傅都搞完了，muhe师傅的飞机真稳">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-kernel expoit  study（1） ---编译并用qemu运行内核">
+<meta property="og:url" content="https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="有几个linux kernel的坑没搞了，mueh师傅都搞完了，muhe师傅的飞机真稳">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://i2.muimg.com/567571/6500043e055b4e05.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/67130a87d6f0cc69.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/d34539954f6c015b.png">
+<meta property="article:published_time" content="2017-04-03T16:16:14.000Z">
+<meta property="article:modified_time" content="2020-06-22T17:59:52.690Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="Linux-kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://i2.muimg.com/567571/6500043e055b4e05.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>linux-kernel expoit  study（1） ---编译并用qemu运行内核</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/add-a-system-call.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/a-programmer-prepares-about-elf.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&text=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&is_video=false&description=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=linux-kernel expoit  study（1） ---编译并用qemu运行内核&body=Check out this article: https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&name=linux-kernel expoit  study（1） ---编译并用qemu运行内核&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&t=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91linux-kernel"><span class="toc-number">1.</span> <span class="toc-text">编译linux kernel</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E5%86%85%E6%A0%B8%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">linux内核下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.4.</span> <span class="toc-text">编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99-%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">1.4.1.</span> <span class="toc-text">报错 以及解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">编译出现的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gcc-error-elf-i386-%E6%B2%A1%E6%9C%89%E9%82%A3%E4%B8%AA%E6%96%87%E4%BB%B6%E6%88%96%E7%9B%AE%E5%BD%95"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">gcc: error: elf_i386: 没有那个文件或目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#drivers-net-igbvf-igbvf-h-128-15-error-duplicate-member-%E2%80%98page%E2%80%99"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">drivers&#x2F;net&#x2F;igbvf&#x2F;igbvf.h:128:15: error: duplicate member ‘page’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.</span> <span class="toc-text">创建文件系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8qemu%E8%BF%90%E8%A1%8C%E7%BC%96%E8%AF%91%E5%A5%BD%E7%9A%84%E5%86%85%E6%A0%B8"><span class="toc-number">1.6.</span> <span class="toc-text">使用qemu运行编译好的内核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8qemu%E8%BF%90%E8%A1%8C%E5%86%85%E6%A0%B8-%E4%BD%BF%E7%94%A8qemu%E5%AE%98%E7%BD%91%E6%8F%90%E4%BE%9B%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">使用qemu运行内核(使用qemu官网提供的文件系统)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E8%B0%83%E8%AF%95%E5%86%85%E6%A0%B8"><span class="toc-number">1.8.</span> <span class="toc-text">gdb调试内核</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        linux-kernel expoit  study（1） ---编译并用qemu运行内核
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-03T16:16:14.000Z" itemprop="datePublished">2017-04-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Linux-kernel/" rel="tag">Linux-kernel</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Joker师傅老早前发了两个 linux kernel的pwn demo给我们，我到现在才开始搞</p>
+<h1 id="编译linux-kernel"><a href="#编译linux-kernel" class="headerlink" title="编译linux kernel"></a>编译linux kernel</h1><h2 id="linux内核下载"><a href="#linux内核下载" class="headerlink" title="linux内核下载"></a><a href="https://www.kernel.org/pub/linux/kernel/v2.6/">linux内核下载</a></h2><p>创建目录，放我们要放的linux kernel</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ madir linux-kernel</span><br><span class="line">$ <span class="built_in">cd</span> linux-kernel</span><br><span class="line">$ mkdir linux-2.6.32.1</span><br><span class="line">$ <span class="built_in">cd</span> linux-2.6.32.1/</span><br><span class="line">$ wget https://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.32.1.tar.gz -O linux-2.6.32.1.tar.gz	 </span><br></pre></td></tr></table></figure>
+
+<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xjvf linux-2.6.32.1.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> linux-2.6.32.1/</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install libncurses5-dev</span><br><span class="line">$ sudo apt-get install qemu qemu-system</span><br><span class="line">$ make menuconfig</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br><span class="line">$ make all</span><br><span class="line">$ make modules</span><br></pre></td></tr></table></figure>
+<p>编译这个地方，可能会出现几个错误~</p>
+<h3 id="报错-以及解决办法"><a href="#报错-以及解决办法" class="headerlink" title="报错 以及解决办法"></a>报错 以及解决办法</h3><h4 id="编译出现的问题"><a href="#编译出现的问题" class="headerlink" title="编译出现的问题"></a>编译出现的问题</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">错误：</span><br><span class="line">	rch/x86/kernel/ptrace.c:<span class="number">1472</span>:<span class="number">17</span>: error: conflicting types <span class="keyword">for</span> ‘syscall_trace_enter’</span><br><span class="line"> <span class="function">asmregparm <span class="keyword">long</span> <span class="title">syscall_trace_enter</span><span class="params">(struct pt_regs *regs)</span></span></span><br><span class="line">                 ^</span><br><span class="line">In file included from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/vm86.h:<span class="number">130</span>:<span class="number">0</span>,</span><br><span class="line">                 from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/processor.h:<span class="number">10</span>,</span><br><span class="line">                 from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/thread_info.h:<span class="number">22</span>,</span><br><span class="line">                 from include/linux/thread_info.h:<span class="number">56</span>,</span><br><span class="line">                 from include/linux/preempt.h:<span class="number">9</span>,</span><br><span class="line">                 from include/linux/spinlock.h:<span class="number">50</span>,</span><br><span class="line">                 from include/linux/seqlock.h:<span class="number">29</span>,</span><br><span class="line">                 from include/linux/time.h:<span class="number">8</span>,</span><br><span class="line">                 from include/linux/timex.h:<span class="number">56</span>,</span><br><span class="line">                 from include/linux/sched.h:<span class="number">56</span>,</span><br><span class="line">                 from arch/x86/kernel/ptrace.c:<span class="number">11</span>:</span><br><span class="line">/home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/ptrace.h:<span class="number">145</span>:<span class="number">13</span>: note: previous declaration of ‘syscall_trace_enter’ was here</span><br><span class="line"> <span class="function"><span class="keyword">extern</span> <span class="keyword">long</span> <span class="title">syscall_trace_enter</span><span class="params">(struct pt_regs *)</span></span>;</span><br><span class="line">             ^</span><br><span class="line">arch/x86/kernel/ptrace.c:<span class="number">1517</span>:<span class="number">17</span>: error: conflicting types <span class="keyword">for</span> ‘syscall_trace_leave’</span><br><span class="line"> <span class="function">asmregparm <span class="keyword">void</span> <span class="title">syscall_trace_leave</span><span class="params">(struct pt_regs *regs)</span></span></span><br><span class="line">                 ^</span><br><span class="line">In file included from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/vm86.h:<span class="number">130</span>:<span class="number">0</span>,</span><br><span class="line">                 from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/processor.h:<span class="number">10</span>,</span><br><span class="line">                 from /home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/thread_info.h:<span class="number">22</span>,</span><br><span class="line">                 from include/linux/thread_info.h:<span class="number">56</span>,</span><br><span class="line">                 from include/linux/preempt.h:<span class="number">9</span>,</span><br><span class="line">                 from include/linux/spinlock.h:<span class="number">50</span>,</span><br><span class="line">                 from include/linux/seqlock.h:<span class="number">29</span>,</span><br><span class="line">                 from include/linux/time.h:<span class="number">8</span>,</span><br><span class="line">                 from include/linux/timex.h:<span class="number">56</span>,</span><br><span class="line">                 from include/linux/sched.h:<span class="number">56</span>,</span><br><span class="line">                 from arch/x86/kernel/ptrace.c:<span class="number">11</span>:</span><br><span class="line">/home/joker/linux_kernel/linux<span class="number">-2.6</span><span class="number">.32</span><span class="number">.1</span>/arch/x86/include/<span class="keyword">asm</span>/ptrace.h:<span class="number">146</span>:<span class="number">13</span>: note: previous declaration of ‘syscall_trace_leave’ was here</span><br><span class="line"> <span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">syscall_trace_leave</span><span class="params">(struct pt_regs *)</span></span>;</span><br><span class="line">             ^</span><br><span class="line">make[<span class="number">2</span>]: *** [arch/x86/kernel/ptrace.o] 错误 <span class="number">1</span></span><br><span class="line">make[<span class="number">1</span>]: *** [arch/x86/kernel] 错误 <span class="number">2</span></span><br><span class="line">make: *** [arch/x86] 错误 <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>解决方案：<br><strong>两处修改：</strong><br><code>/linux-kernel/linux-2.6.32.1/arch/x86/include/asm$ vim ptrace.h</code><br><img src="http://i2.muimg.com/567571/6500043e055b4e05.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;linux&#x2F;init.h&gt;</span><br><span class="line">+#include &lt;linux&#x2F;linkage.h&gt;</span><br><span class="line"> </span><br><span class="line"> struct cpuinfo_x86;</span><br><span class="line"> struct task_struct;</span><br><span class="line">@@ -142,8 +143,8 @@ </span><br><span class="line"> 			 int error_code, int si_code);</span><br><span class="line"> void signal_fault(struct pt_regs *regs, void __user *frame, char *where);</span><br><span class="line"> </span><br><span class="line">-extern long syscall_trace_enter(struct pt_regs *);</span><br><span class="line">-extern void syscall_trace_leave(struct pt_regs *);</span><br><span class="line">+extern asmregparm long syscall_trace_enter(struct pt_regs *);</span><br><span class="line">+extern asmregparm void syscall_trace_leave(struct pt_regs *);</span><br></pre></td></tr></table></figure>
+<h4 id="gcc-error-elf-i386-没有那个文件或目录"><a href="#gcc-error-elf-i386-没有那个文件或目录" class="headerlink" title="gcc: error: elf_i386: 没有那个文件或目录"></a>gcc: error: elf_i386: 没有那个文件或目录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误:</span><br><span class="line">	gcc: error: elf_i386: 没有那个文件或目录</span><br><span class="line">gcc: error: unrecognized command line option ‘-m’ </span><br></pre></td></tr></table></figure>
+<p><strong>解决方案：</strong><br><code>beswing@swing:~/linux-kernel/linux-2.6.32.1$ vim arch/x86/vdso/Makefile</code><br><img src="http://i1.piimg.com/567571/67130a87d6f0cc69.png"><br>两处修改</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#VDSO_LDFLAGS_vdso.lds = -m elf_x86_64 -Wl,-soname=linux-vdso.so<span class="number">.1</span> \</span><br><span class="line">                        -Wl,-z,max-page-size=<span class="number">4096</span> -Wl,-z,common-page-size=<span class="number">4096</span></span><br><span class="line">VDSO_LDFLAGS_vdso.lds = -m64 -Wl,-soname=linux-vdso.so<span class="number">.1</span> \</span><br><span class="line">                        -Wl,-z,max-page-size=<span class="number">4096</span> -Wl,-z,common-page-size=<span class="number">4096</span></span><br></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># VDSO_LDFLAGS_vdso32.lds = -m elf_i386 -Wl,-soname=linux-gate.so<span class="number">.1</span></span><br><span class="line">VDSO_LDFLAGS_vdso32.lds = -m32 -Wl,-soname=linux-gate.so<span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<h4 id="drivers-net-igbvf-igbvf-h-128-15-error-duplicate-member-‘page’"><a href="#drivers-net-igbvf-igbvf-h-128-15-error-duplicate-member-‘page’" class="headerlink" title="drivers/net/igbvf/igbvf.h:128:15: error: duplicate member ‘page’"></a>drivers/net/igbvf/igbvf.h:128:15: error: duplicate member ‘page’</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">错误:</span><br><span class="line">drivers&#x2F;net&#x2F;igbvf&#x2F;igbvf.h:128:15: error: duplicate member ‘page’</span><br><span class="line">  struct page *page;</span><br><span class="line">               ^</span><br><span class="line">make[3]: *** [drivers&#x2F;net&#x2F;igbvf&#x2F;ethtool.o] 错误 1</span><br><span class="line">make[2]: *** [drivers&#x2F;net&#x2F;igbvf] 错误 2</span><br><span class="line">make[1]: *** [drivers&#x2F;net] 错误 2</span><br><span class="line">make: *** [drivers] 错误 2 </span><br></pre></td></tr></table></figure>
+<p>修改名字重复即可，路径在<code>beswing@swing:~/linux-kernel/linux-2.6.32.1$ vim ./drivers/net/igbvf/igbvf.h</code><br><img src="http://i1.piimg.com/567571/d34539954f6c015b.png"></p>
+<h2 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/linux-kernel/linux-2.6.32.1/linux-2.6.32.1/arch/i386/boot</span><br><span class="line">$ mkinitramfs -o initrd.img-2.6.23.1</span><br></pre></td></tr></table></figure>
+<h2 id="使用qemu运行编译好的内核"><a href="#使用qemu运行编译好的内核" class="headerlink" title="使用qemu运行编译好的内核"></a>使用qemu运行编译好的内核</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ qemu-system-i386 -kernel arch/i386/boot/bzImage -initrd arch/i386/boot/initrd.img-2.6.32.1  -m 512M</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用qemu运行内核-使用qemu官网提供的文件系统"><a href="#使用qemu运行内核-使用qemu官网提供的文件系统" class="headerlink" title="使用qemu运行内核(使用qemu官网提供的文件系统)"></a>使用qemu运行内核(使用qemu官网提供的文件系统)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://wiki.qemu.org/download/linux-0.2.img.bz2 -O linux-0.2.img.bz2</span><br><span class="line">$ bunzip2 -d linux-0.2.img.bz2</span><br><span class="line">$ qemu-system-i386 -kernel arch/i386/boot/bzImage -hda linux-0.2.img -append <span class="string">&quot;root=/dev/sda&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb调试内核"><a href="#gdb调试内核" class="headerlink" title="gdb调试内核"></a>gdb调试内核</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ qemu-system-i386 -S -kernel arch/i386/boot/bzImage -hda linux-0.2.img -append <span class="string">&quot;root=/dev/sda&quot;</span></span><br><span class="line">$ Ctrl+Alt+2即切换到QEMU工作台下</span><br><span class="line">$ Ctrl+Alt+G切换出QEMU工作台</span><br><span class="line">qemu $ gdbserver tcp::1234</span><br><span class="line">$ gdb vmlinux</span><br><span class="line">gdb $ target remote localhost:1234</span><br><span class="line">$ c</span><br></pre></td></tr></table></figure>
+
+
+<p>​    </p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91linux-kernel"><span class="toc-number">1.</span> <span class="toc-text">编译linux kernel</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E5%86%85%E6%A0%B8%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">linux内核下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.4.</span> <span class="toc-text">编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99-%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">1.4.1.</span> <span class="toc-text">报错 以及解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">编译出现的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gcc-error-elf-i386-%E6%B2%A1%E6%9C%89%E9%82%A3%E4%B8%AA%E6%96%87%E4%BB%B6%E6%88%96%E7%9B%AE%E5%BD%95"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">gcc: error: elf_i386: 没有那个文件或目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#drivers-net-igbvf-igbvf-h-128-15-error-duplicate-member-%E2%80%98page%E2%80%99"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">drivers&#x2F;net&#x2F;igbvf&#x2F;igbvf.h:128:15: error: duplicate member ‘page’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.</span> <span class="toc-text">创建文件系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8qemu%E8%BF%90%E8%A1%8C%E7%BC%96%E8%AF%91%E5%A5%BD%E7%9A%84%E5%86%85%E6%A0%B8"><span class="toc-number">1.6.</span> <span class="toc-text">使用qemu运行编译好的内核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8qemu%E8%BF%90%E8%A1%8C%E5%86%85%E6%A0%B8-%E4%BD%BF%E7%94%A8qemu%E5%AE%98%E7%BD%91%E6%8F%90%E4%BE%9B%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">使用qemu运行内核(使用qemu官网提供的文件系统)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb%E8%B0%83%E8%AF%95%E5%86%85%E6%A0%B8"><span class="toc-number">1.8.</span> <span class="toc-text">gdb调试内核</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&text=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&is_video=false&description=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=linux-kernel expoit  study（1） ---编译并用qemu运行内核&body=Check out this article: https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&title=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&name=linux-kernel expoit  study（1） ---编译并用qemu运行内核&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Complie-linux-kernel-and-running-it-using-qemu.html&t=linux-kernel expoit  study（1） ---编译并用qemu运行内核"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

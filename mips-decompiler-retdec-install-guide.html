@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="最近retdec 把 remote api 给阉割了，导致不能remote 反编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="retdec的安装">
+<meta property="og:url" content="https://bestwing.me/mips-decompiler-retdec-install-guide.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="最近retdec 把 remote api 给阉割了，导致不能remote 反编译">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/retdec-hotkey.jpg">
+<meta property="og:image" content="https://bestwing.me/Users/swing/Desktop/Blog/hexo/source/_posts/20190114000321.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190114002929.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190114003450.png">
+<meta property="article:published_time" content="2018-07-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:04:40.552Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="retdec">
+<meta property="article:tag" content="mips">
+<meta property="article:tag" content="decompiler">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/retdec-hotkey.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>retdec的安装</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Redis-CVE-2016-8339-analysis.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018-t3sec-Northwest-Division.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/mips-decompiler-retdec-install-guide.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&text=retdec的安装"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&is_video=false&description=retdec的安装"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=retdec的安装&body=Check out this article: https://bestwing.me/mips-decompiler-retdec-install-guide.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&name=retdec的安装&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/mips-decompiler-retdec-install-guide.html&t=retdec的安装"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85retdec-ida-plugin"><span class="toc-number">1.</span> <span class="toc-text">安装retdec-ida-plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-retdec-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">安装 retdec 反编译工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E5%BB%BA%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">小建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-01-13-%E6%9B%B4%E6%96%B0"><span class="toc-number">4.</span> <span class="toc-text">2019-01-13 更新</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        retdec的安装
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-25T16:00:00.000Z" itemprop="datePublished">2018-07-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/decompiler/" rel="tag">decompiler</a>, <a class="tag-link-link" href="/tags/mips/" rel="tag">mips</a>, <a class="tag-link-link" href="/tags/retdec/" rel="tag">retdec</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>环境：windows 7</p>
+<p>IDA版本： 7.0</p>
+<p>分两步走：</p>
+<h2 id="安装retdec-ida-plugin"><a href="#安装retdec-ida-plugin" class="headerlink" title="安装retdec-ida-plugin"></a>安装retdec-ida-plugin</h2><p><strong>下载plugin</strong></p>
+<p>从 <a href="https://github.com/avast-tl/retdec-idaplugin">https://github.com/avast-tl/retdec-idaplugin</a> 下载retdec-idaplguin,由于我的ida 版本是7.0 就此，我们选择5.0 的windows版本（如果是ida 6.8 请选择 4.0版本）</p>
+<p><strong>安装</strong></p>
+<p>将下载后的plugin 安装到ida的plguin目录下：</p>
+<h2 id="安装-retdec-反编译工具"><a href="#安装-retdec-反编译工具" class="headerlink" title="安装 retdec 反编译工具"></a>安装 retdec 反编译工具</h2><p><a href="https://github.com/avast-tl/retdec">https://github.com/avast-tl/retdec</a> 官方的github就此做了详细说明，我这里大概简述下：</p>
+<ol>
+<li>下载 retdec ,<a href="https://github.com/avast-tl/retdec/releases%EF%BC%8C%E7%94%B1%E4%BA%8E%E6%88%91%E4%BB%AC%E6%98%AFida">https://github.com/avast-tl/retdec/releases，由于我们是ida</a> 7.0版本，就此选择<strong>v3.1</strong></li>
+</ol>
+<p>（如果是ida 6.8 请选择 v3.0版本）</p>
+<ol start="2">
+<li><p>解压压缩包到某一目录下即可</p>
+</li>
+<li><p>安装 <a href="https://www.microsoft.com/en-us/download/details.aspx?id=48145">Microsoft Visual C++ Redistributable for Visual Studio 2015</a></p>
+</li>
+<li><p>安装 <a href="http://www.msys2.org/">MSYS2</a> 并设置好环境变量（Path下）</p>
+</li>
+<li><p>在 ida 的 菜单栏中，选择 option-&gt;Retdec plguin option</p>
+</li>
+</ol>
+<p>   <img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/retdec-hotkey.jpg"></p>
+<p>就此就可以使用了啦~ 撒花</p>
+<h2 id="小建议"><a href="#小建议" class="headerlink" title="小建议"></a>小建议</h2><p>IDA 6.8 配 v3.0 + retdec-plugin-4.0版本食用效果最佳。比较推荐这个版本的配置。</p>
+<h2 id="2019-01-13-更新"><a href="#2019-01-13-更新" class="headerlink" title="2019-01-13 更新"></a>2019-01-13 更新</h2><p>在先知看到有人引用我了我的博客，所以我做一个更新</p>
+<p><a href="https://github.com/avast-tl/retdec-idaplugin">https://github.com/avast-tl/retdec-idaplugin</a> 中的 retdec-idaplugin 已经更新到了 v7.0</p>
+<p><img src="/Users/swing/Desktop/Blog/hexo/source/_posts/20190114000321.png"></p>
+<p>第一步 ，依然是将 ida plugin 安装到相应目录里</p>
+<p>第二步，下载 retdec</p>
+<p>retdec 更新到 3.2 版本了。</p>
+<p>现在与以前不同的是，现在采用了 Python 脚本，已经不需要以前那些繁琐的工作了，只要设置好Python Path 就行了。</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190114002929.png"></p>
+<p>并且，是得 Py3 ，设置好 decompiler 路径。</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190114003450.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85retdec-ida-plugin"><span class="toc-number">1.</span> <span class="toc-text">安装retdec-ida-plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-retdec-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">安装 retdec 反编译工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E5%BB%BA%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">小建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-01-13-%E6%9B%B4%E6%96%B0"><span class="toc-number">4.</span> <span class="toc-text">2019-01-13 更新</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/mips-decompiler-retdec-install-guide.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&text=retdec的安装"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&is_video=false&description=retdec的安装"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=retdec的安装&body=Check out this article: https://bestwing.me/mips-decompiler-retdec-install-guide.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&title=retdec的安装"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/mips-decompiler-retdec-install-guide.html&name=retdec的安装&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/mips-decompiler-retdec-install-guide.html&t=retdec的安装"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

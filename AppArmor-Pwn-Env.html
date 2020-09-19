@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录 AppArmor安装sudo apt-get install apparmor-profiles apparmor-utils 创建配置文件在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先 sudo ln -s &#x2F;home&#x2F;binfile &#x2F;u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在CTF Pwn下使用AppArmor做权限隔离">
+<meta property="og:url" content="https://bestwing.me/AppArmor-Pwn-Env.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录 AppArmor安装sudo apt-get install apparmor-profiles apparmor-utils 创建配置文件在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先 sudo ln -s &#x2F;home&#x2F;binfile &#x2F;u">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:30:24.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="AppArmor">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>在CTF Pwn下使用AppArmor做权限隔离</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/flare-on-6th-writeup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/easy-way-to-unpacking-theminda2.x.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/AppArmor-Pwn-Env.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/AppArmor-Pwn-Env.html&text=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/AppArmor-Pwn-Env.html&is_video=false&description=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在CTF Pwn下使用AppArmor做权限隔离&body=Check out this article: https://bestwing.me/AppArmor-Pwn-Env.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/AppArmor-Pwn-Env.html&name=在CTF Pwn下使用AppArmor做权限隔离&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/AppArmor-Pwn-Env.html&t=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AppArmor"><span class="toc-number">1.</span> <span class="toc-text">AppArmor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">创建配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E4%B8%BA-Complain-%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">切换为 Complain 模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99"><span class="toc-number">1.4.</span> <span class="toc-text">配置规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8Exinetd-%E5%90%88%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">与xinetd 合用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">配置文件</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        在CTF Pwn下使用AppArmor做权限隔离
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-21T16:00:00.000Z" itemprop="datePublished">2019-08-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Other/">Other</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/AppArmor/" rel="tag">AppArmor</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录</p>
+<h2 id="AppArmor"><a href="#AppArmor" class="headerlink" title="AppArmor"></a>AppArmor</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><code>sudo apt-get install apparmor-profiles apparmor-utils</code></p>
+<h3 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h3><p>在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先</p>
+<p><code>sudo ln -s /home/binfile /usr/local/bin/binfile</code></p>
+<p>然后..</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apparmor.d/</span><br><span class="line">sudo aa-autodep binfile</span><br></pre></td></tr></table></figure>
+
+<p>此刻 /etc/apparmor.d 目录下就会生成一个 home.binfile 的文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Last Modified: Tue Aug  6 18:49:37 2019</span><br><span class="line">#include &lt;tunables&#x2F;global&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;home&#x2F;binfile flags&#x3D;(complain) &#123;</span><br><span class="line">  #include &lt;abstractions&#x2F;base&gt;</span><br><span class="line"></span><br><span class="line">  &#x2F;home&#x2F;binfile mr,</span><br><span class="line">  &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-*.so mr,</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="切换为-Complain-模式"><a href="#切换为-Complain-模式" class="headerlink" title="切换为 Complain 模式"></a>切换为 Complain 模式</h3><p><code>sudo aa-complain home.binaryname</code></p>
+<p>紧接着正常运行程序以及exploit</p>
+<h3 id="配置规则"><a href="#配置规则" class="headerlink" title="配置规则"></a>配置规则</h3><p>用<code>sudo aa-logprof</code> 生成记录运行过程中的正常日志</p>
+<p>生成的规则如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># Last Modified: Tue Aug  6 19:39:38 2019</span><br><span class="line">#include &lt;tunables&#x2F;global&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;home&#x2F;hub flags&#x3D;(complain) &#123;</span><br><span class="line">  #include &lt;abstractions&#x2F;base&gt;</span><br><span class="line"></span><br><span class="line">  &#x2F;bin&#x2F;dash cx -&gt; &#x2F;bin&#x2F;dash,</span><br><span class="line">  &#x2F;bin&#x2F;dash mr,</span><br><span class="line">  &#x2F;home&#x2F;hub mr,</span><br><span class="line">  &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-*.so mr,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  profile &#x2F;bin&#x2F;dash flags&#x3D;(complain) &#123;</span><br><span class="line">    #include &lt;abstractions&#x2F;base&gt;</span><br><span class="line"></span><br><span class="line">    &#x2F;bin&#x2F;cat mrix,</span><br><span class="line">    &#x2F;bin&#x2F;dash mr,</span><br><span class="line">    &#x2F;bin&#x2F;ls mrix,</span><br><span class="line">    &#x2F;home&#x2F; r,</span><br><span class="line">    &#x2F;home&#x2F;* r,</span><br><span class="line">    &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-*.so mr,</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于自动生成配置文件并不是那么完美，因此我们要手动修改。</p>
+<ol>
+<li>由于远程需要，需要加上network inet stream</li>
+<li>我仅仅需要读取 flag，因此需要修改可读文件目录</li>
+</ol>
+<p>最后修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;tunables&#x2F;global&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;home&#x2F;hub &#123;</span><br><span class="line">  #include &lt;abstractions&#x2F;base&gt;</span><br><span class="line"></span><br><span class="line">  network inet stream,</span><br><span class="line">	&#x2F;bin&#x2F;dash mrix,</span><br><span class="line">  &#x2F;bin&#x2F;bash mrix,</span><br><span class="line">  &#x2F;bin&#x2F;cat mrix,</span><br><span class="line">  &#x2F;bin&#x2F;ls mrix,</span><br><span class="line">  &#x2F;usr&#x2F;bin&#x2F;id mrix,</span><br><span class="line">  &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-*.so mr,</span><br><span class="line">  &#x2F;tmp&#x2F;server mr,</span><br><span class="line">  &#x2F;tmp&#x2F; r,</span><br><span class="line">  &#x2F;tmp&#x2F;flag r,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  ^&#x2F;bin&#x2F;bash &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当修改完配置文件，我们需要将它导入内核使用：</p>
+<p><code>apparmor_parser -r /etc/apparmor.d/home.hub</code></p>
+<p>或者</p>
+<p><code>aa-enforce /etc/apparmor.d/home.hub</code></p>
+<p>其实说来这个配置文件就是一个白名单，意味着如果一些内容多写进到白名单里，可能会造成权限配置不当。</p>
+<h2 id="与xinetd-合用"><a href="#与xinetd-合用" class="headerlink" title="与xinetd 合用"></a>与xinetd 合用</h2><h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>由于用来配置 ctf pwn,所以我们还需一个守护进程，这里我选择xinetd，配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">service pwn_server</span><br><span class="line">&#123;</span><br><span class="line">	socket_type &#x3D; stream</span><br><span class="line">	protocol &#x3D; tcp</span><br><span class="line">	user &#x3D; root</span><br><span class="line">	group &#x3D; root</span><br><span class="line">	server &#x3D; &#x2F;home&#x2F;limit.sh</span><br><span class="line">	wait &#x3D; no</span><br><span class="line">	per_source &#x3D; 50</span><br><span class="line">	banner &#x3D; &#x2F;home&#x2F;banner</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>limit.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">! /bin/sh</span></span><br><span class="line">ulimit -u 10000</span><br><span class="line">ulimit -c 0</span><br><span class="line">ulimit -v 7340032</span><br><span class="line">/home/hub</span><br></pre></td></tr></table></figure>
+
+
+
+<p>并在 <strong>/etc/services</strong> 加上相应的服务名称与端口，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwn_server      12435&#x2F;tcp</span><br><span class="line">tcpmux          1&#x2F;tcp                           # TCP port service multiplexer</span><br><span class="line">echo            7&#x2F;tcp</span><br><span class="line">echo            7&#x2F;udp</span><br></pre></td></tr></table></figure>
+
+
+
+<p>最后 service xinetd start 启动即可。 </p>
+<p>冲！XD</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AppArmor"><span class="toc-number">1.</span> <span class="toc-text">AppArmor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">创建配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E4%B8%BA-Complain-%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">切换为 Complain 模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99"><span class="toc-number">1.4.</span> <span class="toc-text">配置规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8Exinetd-%E5%90%88%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">与xinetd 合用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">配置文件</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/AppArmor-Pwn-Env.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/AppArmor-Pwn-Env.html&text=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/AppArmor-Pwn-Env.html&is_video=false&description=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在CTF Pwn下使用AppArmor做权限隔离&body=Check out this article: https://bestwing.me/AppArmor-Pwn-Env.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/AppArmor-Pwn-Env.html&title=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/AppArmor-Pwn-Env.html&name=在CTF Pwn下使用AppArmor做权限隔离&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/AppArmor-Pwn-Env.html&t=在CTF Pwn下使用AppArmor做权限隔离"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

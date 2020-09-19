@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="纠结好久的东西~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎么去patch格式化串漏洞的程序">
+<meta property="og:url" content="https://bestwing.me/How-to-patch-fmt.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="纠结好久的东西~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-04.jpg">
+<meta property="og:image" content="http://oayoilchh.bkt.clouddn.com/17-5-25/54216390.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-05.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-06.png">
+<meta property="article:published_time" content="2017-05-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-24T13:59:25.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="binary">
+<meta property="article:tag" content="patch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>怎么去patch格式化串漏洞的程序</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Nginx-How-to-install-ssl.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-SSCTF-Pwn.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/How-to-patch-fmt.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/How-to-patch-fmt.html&text=怎么去patch格式化串漏洞的程序"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/How-to-patch-fmt.html&is_video=false&description=怎么去patch格式化串漏洞的程序"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=怎么去patch格式化串漏洞的程序&body=Check out this article: https://bestwing.me/How-to-patch-fmt.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/How-to-patch-fmt.html&name=怎么去patch格式化串漏洞的程序&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/How-to-patch-fmt.html&t=怎么去patch格式化串漏洞的程序"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-%E2%80%94%E2%80%93-gt-%E6%9B%BF%E6%8D%A2printf-%E4%B8%BAputs"><span class="toc-number">1.</span> <span class="toc-text">方法 —–&gt; 替换printf 为puts</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x1-%E7%A1%AE%E5%AE%9A%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">0x1 确定计算方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E7%A1%AE%E5%AE%9A%E7%9B%AE%E6%A0%87%E5%9C%B0%E5%9D%80"><span class="toc-number">1.2.</span> <span class="toc-text">0x02 确定目标地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%A1%AE%E5%AE%9A%E5%BD%93%E5%89%8D%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 确定当前地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E8%AE%A1%E7%AE%97"><span class="toc-number">1.4.</span> <span class="toc-text">0x04 计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.</span> <span class="toc-text">0x05 修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-%E4%BF%9D%E5%AD%98"><span class="toc-number">1.6.</span> <span class="toc-text">0x06 保存</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        怎么去patch格式化串漏洞的程序
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-05-24T16:00:00.000Z" itemprop="datePublished">2017-05-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/binary/" rel="tag">binary</a>, <a class="tag-link-link" href="/tags/patch/" rel="tag">patch</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>CTF 中Patch 格式化字符串简便的方法</p>
+<h1 id="方法-—–-gt-替换printf-为puts"><a href="#方法-—–-gt-替换printf-为puts" class="headerlink" title="方法 —–&gt; 替换printf 为puts"></a>方法 —–&gt; 替换printf 为puts</h1><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-01.jpg"></p>
+<h2 id="0x1-确定计算方法"><a href="#0x1-确定计算方法" class="headerlink" title="0x1 确定计算方法"></a>0x1 确定计算方法</h2><p>由于地址是相对的 所以</p>
+<p><code>新地址 = 目标地址（这里即为 puts的plt地址） - 当前修改指令地址的下一指令地址</code></p>
+<h2 id="0x02-确定目标地址"><a href="#0x02-确定目标地址" class="headerlink" title="0x02 确定目标地址"></a>0x02 确定目标地址</h2><p>在plt 段 可以看到 puts_plt 地址为 0x08048410</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-02.jpg"></p>
+<h2 id="0x03-确定当前地址"><a href="#0x03-确定当前地址" class="headerlink" title="0x03 确定当前地址"></a>0x03 确定当前地址</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-03.jpg"></p>
+<p>当前指令 <code>call _printf</code>的地址为 0x08048618  下一指令地址为 0x0804861D</p>
+<h2 id="0x04-计算"><a href="#0x04-计算" class="headerlink" title="0x04 计算"></a>0x04 计算</h2><p>计算结果 如果为负数 记得补码~</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>puts_plt = <span class="number">0x8048410</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>call_net_addr = <span class="number">0x0804861d</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>offset = puts_plt - call_next_addr</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>offset</span><br><span class="line"><span class="number">-525</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(offset)</span><br><span class="line"><span class="string">&#x27;-0x20d&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(<span class="number">0xffffffff</span><span class="number">-0x20d</span>+<span class="number">1</span>)</span><br><span class="line"><span class="string">&#x27;0xfffffdf3L&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x05-修改"><a href="#0x05-修改" class="headerlink" title="0x05 修改"></a>0x05 修改</h2><p>Edit –&gt; Patch Program –&gt; Change Byte </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-04.jpg"></p>
+<p>E8 是操作码  后四位是偏移 即  又因为高字节在后面~ </p>
+<p><img src="http://oayoilchh.bkt.clouddn.com/17-5-25/54216390.jpg"></p>
+<p><code>E8 C3 FD FF FF C7 04 24 72 87 04 08 E8 E7 FD FF</code></p>
+<p>我们需要修改 <code>C3 FD FF FF</code>  —&gt; <code>F3 FD FF FF</code></p>
+<p>修改后 F5 伪代码~ </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-05.jpg"></p>
+<h2 id="0x06-保存"><a href="#0x06-保存" class="headerlink" title="0x06 保存"></a>0x06 保存</h2><p>Edit –&gt; Patch Program –&gt; Apply patches to input file</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/patch-fmt-06.png"></p>
+<p>运行情况~</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-%E2%80%94%E2%80%93-gt-%E6%9B%BF%E6%8D%A2printf-%E4%B8%BAputs"><span class="toc-number">1.</span> <span class="toc-text">方法 —–&gt; 替换printf 为puts</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x1-%E7%A1%AE%E5%AE%9A%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">0x1 确定计算方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E7%A1%AE%E5%AE%9A%E7%9B%AE%E6%A0%87%E5%9C%B0%E5%9D%80"><span class="toc-number">1.2.</span> <span class="toc-text">0x02 确定目标地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%A1%AE%E5%AE%9A%E5%BD%93%E5%89%8D%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 确定当前地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E8%AE%A1%E7%AE%97"><span class="toc-number">1.4.</span> <span class="toc-text">0x04 计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.</span> <span class="toc-text">0x05 修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-%E4%BF%9D%E5%AD%98"><span class="toc-number">1.6.</span> <span class="toc-text">0x06 保存</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/How-to-patch-fmt.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/How-to-patch-fmt.html&text=怎么去patch格式化串漏洞的程序"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/How-to-patch-fmt.html&is_video=false&description=怎么去patch格式化串漏洞的程序"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=怎么去patch格式化串漏洞的程序&body=Check out this article: https://bestwing.me/How-to-patch-fmt.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/How-to-patch-fmt.html&title=怎么去patch格式化串漏洞的程序"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/How-to-patch-fmt.html&name=怎么去patch格式化串漏洞的程序&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/How-to-patch-fmt.html&t=怎么去patch格式化串漏洞的程序"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

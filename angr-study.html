@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="学习了一下angr这个框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angr初探">
+<meta property="og:url" content="https://bestwing.me/angr-study.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="学习了一下angr这个框架">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/angr-study-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/angr-study-02.png">
+<meta property="article:published_time" content="2017-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T17:58:31.123Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="angry">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/angr-study-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>angr初探</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-NJCTF-part-writeup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/ichunqiu-CTF-Pwn-2017-2.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/angr-study.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/angr-study.html&text=angr初探"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/angr-study.html&is_video=false&description=angr初探"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=angr初探&body=Check out this article: https://bestwing.me/angr-study.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/angr-study.html&name=angr初探&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/angr-study.html&t=angr初探"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFangr"><span class="toc-number">2.</span> <span class="toc-text">什么是angr</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">什么是符号执行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E5%AE%89%E8%A3%85-%E4%BB%A5%E5%8F%8A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-number">4.</span> <span class="toc-text">angr安装 以及遇到的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">4.1.</span> <span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85angr%E6%A8%A1%E5%9D%97"><span class="toc-number">4.2.</span> <span class="toc-text">创建虚拟环境以及安装angr模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-number">4.3.</span> <span class="toc-text">遇到的坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">angr简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E8%BD%BD%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">装载二进制文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E8%84%9A%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">angr脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Surveyours"><span class="toc-number">6.1.</span> <span class="toc-text">Surveyours</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Explorer"><span class="toc-number">6.1.1.</span> <span class="toc-text">Explorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Path-group"><span class="toc-number">6.1.2.</span> <span class="toc-text">Path group</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeGateCTF-Angrybird"><span class="toc-number">7.</span> <span class="toc-text">CodeGateCTF - Angrybird</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">7.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-number">7.2.</span> <span class="toc-text">脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3%E4%BB%A5%E5%8F%8A%E9%93%BE%E6%8E%A5"><span class="toc-number">8.</span> <span class="toc-text">参考文档以及链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        angr初探
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-03-07T16:00:00.000Z" itemprop="datePublished">2017-03-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Other/">Other</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/angry/" rel="tag">angry</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>最近muhe师傅，给我发了一个PDF，是湾湾写的二进制自动化分析攻击，他的文档主要写的上angr，于是玩对这个玩意儿也开始有了一点兴趣。刚好假期joekr师傅给我发了一个angr分析的二进制题目。于是2333 就开始了折腾。</p>
+<h1 id="什么是angr"><a href="#什么是angr" class="headerlink" title="什么是angr"></a>什么是angr</h1><p>angr是一个用于分析二进制文件的python框架。它专注于静态和符号分析，使其适用于各种任务。其项目地址是，<a href="https://github.com/angr">https://github.com/angr</a>.</p>
+<h1 id="什么是符号执行"><a href="#什么是符号执行" class="headerlink" title="什么是符号执行"></a>什么是符号执行</h1><p><em>来自维基百科</em><br>符号执行 （Symbolic Execution）是一种程序分析技术。其可以通过分析程序来得到让特定代码区域执行的输入。使用符号执行分析一个程序时，该程序会使用符号值作为输入，而非一般执行程序时使用的具体值。在达到目标代码时，分析器可以得到相应的路径约束，然后通过约束求解器来得到可以触发目标代码的具体值。[1]<br>符号模拟技术（symbolic simulation）则把类似的思想用于硬件分析。符号计算（Symbolic computation）则用于数学表达式分析。</p>
+<h1 id="angr安装-以及遇到的坑"><a href="#angr安装-以及遇到的坑" class="headerlink" title="angr安装 以及遇到的坑"></a>angr安装 以及遇到的坑</h1><p>我这使用的是ubutnu系统：</p>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev libffi-dev build-essential virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>如果你正在尝试angr管理，你会需要安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libqt4-dev graphviz-dev</span><br></pre></td></tr></table></figure>
+<h2 id="创建虚拟环境以及安装angr模块"><a href="#创建虚拟环境以及安装angr模块" class="headerlink" title="创建虚拟环境以及安装angr模块"></a>创建虚拟环境以及安装angr模块</h2><p><code>mkvirtualenv angr &amp;&amp; pip install angr</code>通常应该足够在大多数情况下安装angr，因为angr发布在Python包索引上。<br>Fish（shell）用户可以使用virtualfish或virtualenv包。<br><code>vf new angr &amp;&amp; vf activate angr &amp;&amp; pip install angr</code></p>
+<h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><blockquote>
+<p>由于在导入angr时加载capstone失败导致的ImportError</p>
+</blockquote>
+<p>官方文档仔细介绍了如何几种常见的错误报告，我这里遇到的是上面的这种。解决方法有两种：</p>
+<ol>
+<li>pip install -I –no-use-wheel capston</li>
+<li>移动libcapstone.so到与Python文件相同的目录</li>
+</ol>
+<h1 id="angr简单使用"><a href="#angr简单使用" class="headerlink" title="angr简单使用"></a>angr简单使用</h1><h2 id="装载二进制文件"><a href="#装载二进制文件" class="headerlink" title="装载二进制文件"></a>装载二进制文件</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> angr</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = angr.Project(<span class="string">&quot;/binnary/&quot;</span>)   <span class="comment"># 这里放的是bin的路径</span></span><br></pre></td></tr></table></figure>
+<p>更多详细的东西，我就不当搬运工了，可以转<a href="https://docs.angr.io/docs/loading.html">https://docs.angr.io/docs/loading.html</a></p>
+<h1 id="angr脚本"><a href="#angr脚本" class="headerlink" title="angr脚本"></a>angr脚本</h1><p>如果上一个标题的内容，即angr框架的基本用法，那么我们就可以开始学习一下angr的运用，以及脚本的编写。<br><em>YSC</em> 整理了angr比较常用的方法：</p>
+<ul>
+<li>Surveyours</li>
+<li>Path group</li>
+<li>Symbolic args</li>
+<li>Symbolic input</li>
+<li>Breakpoint</li>
+<li>Hook<h2 id="Surveyours"><a href="#Surveyours" class="headerlink" title="Surveyours"></a>Surveyours</h2>Surveyor是驱动符号执行的引擎：它跟踪哪些路径处于活动状态，标识哪些路径向前转，哪些路径要修剪，并优化资源的分配。<br>但是在官方文档的介绍当中，他是更加推荐的是使用<em>PathGroups</em>的使用。<br>最基本的，我们可以这样使用他<h3 id="Explorer"><a href="#Explorer" class="headerlink" title="Explorer"></a>Explorer</h3><code>angr.surveyor.Explore</code>是<code>Surveyor</code>实现符号执行的一个方法。它将实现起点，目标，过滤等功能，以及确定执行的路径避免陷入无谓的循环当中。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> angr</span><br><span class="line">b =  angr.Project(<span class="string">&quot;./examples/Bin&quot;</span>) <span class="comment"># 第一就是基本的载入二进制文件</span></span><br><span class="line"></span><br><span class="line">e =  b.surveyor.Explore()</span><br><span class="line"><span class="keyword">print</span> e.step() <span class="comment"># 暂停</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> e.run() <span class="comment"># 开始</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;%d paths are still running&quot;</span> % len(e.active)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;%d paths are backgrounded due to lack of resources&quot;</span> % len(e.spilled)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;%d paths are suspended due to user action&quot;</span> % len(e.suspended)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;%d paths had errors&quot;</span> % len(e.errored)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;%d paths deadended&quot;</span> % len(e.deadended)</span><br></pre></td></tr></table></figure>
+上面的脚本并没有做任何简单的限制，因此，想必任务量是极其大的，因此，我们可以做一些条件。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> angr</span><br><span class="line">e = b.surveyors.Explorer(find=(<span class="number">0x4006ed</span>,), avoid=(<span class="number">0x4006aa</span>,<span class="number">0x4006fd</span>))</span><br><span class="line">e.run()</span><br><span class="line"><span class="keyword">if</span> len(e.found) &gt; <span class="number">0</span>:</span><br><span class="line">  <span class="keyword">print</span> <span class="string">&quot;Found backdoor path:&quot;</span>, e.found[<span class="number">0</span>]</span><br><span class="line"> <span class="keyword">print</span> <span class="string">&quot;Avoided %d paths&quot;</span> % len(e.avoided)</span><br><span class="line"></span><br><span class="line"> <span class="keyword">print</span> e.found[ <span class="number">0</span> ].state.se._solver.result.model</span><br></pre></td></tr></table></figure>
+Explorer这个方法可以设定说要找到哪个程式执行的位址，可以用find=(addr1)来找，和使用avoid=(addr2)来避免找到某位址。设定find=(addr1)有点像是在下断点，但注意位址必须是基本区块（basic block）的开头 ，否则angr并不会找到该位址，导致最后该路径会被归类成deadended而不是found。<br>其中se代表求解器solver engine的意思。</li>
+</ul>
+<h3 id="Path-group"><a href="#Path-group" class="headerlink" title="Path group"></a>Path group</h3><p>我查阅了官方文档给的出的CTF 题目解决样例，发现基本都是使用Path group这个方法的。仔细对比了一下，这个方法和surveyors很相像，但是多出了像state等参数。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> angr</span><br><span class="line"></span><br><span class="line">p =  angr.Project(<span class="string">&quot;./examples/Bin&quot;</span>)</span><br><span class="line"></span><br><span class="line">s =  p.factory.blank_state(addr = <span class="number">0x4006ed</span>)</span><br><span class="line">pg = p.factory.Path_group(s,immutable = <span class="literal">False</span>)</span><br><span class="line">path = pg.explore(find  = (<span class="number">0x4006aa</span>,))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> path</span><br><span class="line"><span class="keyword">print</span> pg.found[<span class="number">0</span>].state.se._solver.result.model</span><br></pre></td></tr></table></figure>
+<p>上面的脚本，先是定义了一个变数s，其中一个blank_state代表的是空白的状态，起点的设定是从0x4006ed开始（我们通过这样的设置，让程序从我们指定的位置开始）至于如果要从头开始执行，可以用s = prog.factory.entry_state(args=[“./vul”])来指定在程式进入点时的状态。</p>
+<p>紧接着的就是path_group，刚刚的状态放进去当参数即可，接下来则和surveyors相同。</p>
+<h1 id="CodeGateCTF-Angrybird"><a href="#CodeGateCTF-Angrybird" class="headerlink" title="CodeGateCTF - Angrybird"></a>CodeGateCTF - Angrybird</h1><p>上面的内容，都是基本设计到了angr的使用，这里我们用一个刚结束没多久的比赛CodeGateCTF的一个题目作为demo，我们尝试自己分析并且编写一下脚本。题目连接在文章最后会提供。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/angr-study-01.jpg"></p>
+<p>0 0 当我看到这个东西的时候，我是很想骂人的。我总不能一个一个去patch这些该死的东西吧。<br>我们最终的结果，肯定是要得到flag，得到flag，我们肯定得调用print 或者put这样的函数，那么通过静态分析，我们很可以很容易找到目标地址。</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/angr-study-02.png"></p>
+<p>这里，目标地址就是0000000000404FC1。<br>那么，我们如何避免那些该死的东西呢，我们这里可以设置aovid函数，我们可以设置一个简单的入口。或者，我们干脆一点，把一些无用的东西nop掉。这里，我选择选择设置入口</p>
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> angr</span><br><span class="line"></span><br><span class="line">main = <span class="number">0x4007DA</span></span><br><span class="line">find = <span class="number">0x404FBC</span></span><br><span class="line">avoid = [<span class="number">0x400590</span>]</span><br><span class="line"></span><br><span class="line">p = angr.Project(<span class="string">&#x27;./angrybird2&#x27;</span>)</span><br><span class="line">init = p.factory.blank_state(addr=main)</span><br><span class="line">pg = p.factory.path_group(init, threads=<span class="number">8</span>)</span><br><span class="line">ex = pg.explore(find=find, avoid=avoid)</span><br><span class="line"></span><br><span class="line">final = ex.found[<span class="number">0</span>].state</span><br><span class="line">flag = final.posix.dumps(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Flag: &#123;0&#125;&quot;</span>.format(final.posix.dumps(<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文档以及链接"><a href="#参考文档以及链接" class="headerlink" title="参考文档以及链接"></a>参考文档以及链接</h1><p>angr 官方文档 <a href="https://docs.angr.io/docs">doc</a><br>angr脚本编写参考 <a href="http://ysc21.github.io/">Ysc’blog</a><br>CodeGateCTF - Angrybird <a href="https://github.com/ctfs/write-ups-2017/tree/master/codegate-prequals-2017/re/angrybird-500">Angrybird</a></p>
+<p>#　以及最后<br>虽然angr很好用，但是我们也不能执着用工具，方法还是要学习的，比如，我师傅让我好好学习一下angr的代码。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFangr"><span class="toc-number">2.</span> <span class="toc-text">什么是angr</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">什么是符号执行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E5%AE%89%E8%A3%85-%E4%BB%A5%E5%8F%8A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-number">4.</span> <span class="toc-text">angr安装 以及遇到的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">4.1.</span> <span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85angr%E6%A8%A1%E5%9D%97"><span class="toc-number">4.2.</span> <span class="toc-text">创建虚拟环境以及安装angr模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-number">4.3.</span> <span class="toc-text">遇到的坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">angr简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E8%BD%BD%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">装载二进制文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#angr%E8%84%9A%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">angr脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Surveyours"><span class="toc-number">6.1.</span> <span class="toc-text">Surveyours</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Explorer"><span class="toc-number">6.1.1.</span> <span class="toc-text">Explorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Path-group"><span class="toc-number">6.1.2.</span> <span class="toc-text">Path group</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeGateCTF-Angrybird"><span class="toc-number">7.</span> <span class="toc-text">CodeGateCTF - Angrybird</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">7.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-number">7.2.</span> <span class="toc-text">脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3%E4%BB%A5%E5%8F%8A%E9%93%BE%E6%8E%A5"><span class="toc-number">8.</span> <span class="toc-text">参考文档以及链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/angr-study.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/angr-study.html&text=angr初探"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/angr-study.html&is_video=false&description=angr初探"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=angr初探&body=Check out this article: https://bestwing.me/angr-study.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/angr-study.html&title=angr初探"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/angr-study.html&name=angr初探&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/angr-study.html&t=angr初探"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

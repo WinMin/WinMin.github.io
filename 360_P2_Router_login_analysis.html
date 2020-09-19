@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="360 路由器 P2 登陆验证分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="360 路由器 P2 登陆验证分析">
+<meta property="og:url" content="https://bestwing.me/360_P2_Router_login_analysis.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="360 路由器 P2 登陆验证分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174806.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911175940.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911180642.png">
+<meta property="article:published_time" content="2018-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:08:10.460Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="router">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>360 路由器 P2 登陆验证分析</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018-wd-babyheap-writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/360_P2_Router_login_analysis.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/360_P2_Router_login_analysis.html&text=360 路由器 P2 登陆验证分析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/360_P2_Router_login_analysis.html&is_video=false&description=360 路由器 P2 登陆验证分析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=360 路由器 P2 登陆验证分析&body=Check out this article: https://bestwing.me/360_P2_Router_login_analysis.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/360_P2_Router_login_analysis.html&name=360 路由器 P2 登陆验证分析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/360_P2_Router_login_analysis.html&t=360 路由器 P2 登陆验证分析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">流量分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        360 路由器 P2 登陆验证分析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-09-10T16:00:00.000Z" itemprop="datePublished">2018-09-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/router/" rel="tag">router</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><p>由于某些需求，需要伪造个登陆过程，然后就花了点时间分析了下过程。由于我拿到的是板子而且是开发板，我拥有 telnet 接口。于是我 telnet 上去用 tcpdump 抓取了流量。</p>
+<p><code>tcpdump -i any -w target.cap</code></p>
+<p>为什么我不在本地抓本地 web 登录的流量呢？ 因为我那个时候在做 App 一些功能测试。我需要抓取全部经过路由器的流量。</p>
+<p>然后我需要把 cap 文件拿出来。由于是在板子里面，虽然 DEBUG 版本用于 tftp 可以做简单的文件传输。但是由于需要一个 server 服务器。所以我这里需要在本地搭建一个 tftp server。踩了一个坑..最后用 Python 现有的模块两句话完成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tftpy</span><br><span class="line"></span><br><span class="line">server = tftpy.TftpServer(<span class="string">&#x27;/tftpboot&#x27;</span>)</span><br><span class="line">server.listen(<span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="number">69</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后起 server，紧接着在板子里使用：</p>
+<p><code>tftp -l target.cap -p 192.168.0.4</code> (192.168.0.4 是我本地的 ip ，也就是这个时候的 server)</p>
+<p>拿到流量后用 wireshark 打开分析，我过滤了 HTTP 流呈现的效果如下：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174710.png"></p>
+<p>主要是分析验证登陆过程关键地方在 <strong>web_login.cgi ** 和 **get_rand_key.cgi</strong></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911174806.png"></p>
+<p>首先登陆的时候，先从 <strong>get_rand_key</strong> 获取一个 <strong>rand_key</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">POST /router/get_rand_key.cgi HTTP/1.1</span><br><span class="line">Referer: http://guanli.luyou.360.cn</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 0</span><br><span class="line">Host: guanli.luyou.360.cn</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Accept-Encoding: gzip</span><br><span class="line">User-Agent: okhttp/3.7.0</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Boa/0.94</span><br><span class="line">Date: Sat, 21 Dec 2013 12:00:00 GMT</span><br><span class="line">Connection: close</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Content-Type: text/plain; charset=UTF-8</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;rand_key&quot;</span>:<span class="string">&quot;9332c90abc850ef93f9a600eff5606ba20c9bdd11c07c704a9b8e3faddbfd713&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个 <strong>rand_key</strong> 是直接 post <strong>/router/get_rand_key.cgi</strong> 就可以直接获取到。</p>
+<p>紧接着向 <strong>web_login_cgi</strong> post 数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /router/web_login.cgi HTTP/1.1</span><br><span class="line">Referer: http://guanli.luyou.360.cn</span><br><span class="line">token_id: 6887b2151fdc73069d8ff84c164b7ced</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 268</span><br><span class="line">Host: guanli.luyou.360.cn</span><br><span class="line">Accept-Encoding: gzip</span><br><span class="line">User-Agent: okhttp/3.7.0</span><br><span class="line"></span><br><span class="line">bindLanguage=eyJsYW5ndWFnZSI6IjEifQ%3D%3D&amp;density=420&amp;language=1&amp;language_server=zh&amp;ostype=android&amp;osversion=27&amp;pass=9332c90abc850ef93f9a600eff5606ba5328c9362bc131db6047cfbc481523f9&amp;phonetype=ONEPLUS%20A5010&amp;region=CN&amp;screenx=1080&amp;screeny=2160&amp;user=admin&amp;version=4.2.3HTTP/1.1 200 OK</span><br><span class="line">Set-Cookie: Qihoo_360_login=c0bd8fc56b6bcdb5192cd56d9c437763;path=/</span><br><span class="line">Connection: close</span><br><span class="line">content-type: text/plain; charset=UTF-8</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;success&quot;</span>:<span class="string">&quot;1&quot;</span>,<span class="string">&quot;token_id&quot;</span>:<span class="string">&quot;704420fad014228d75b98f9341d79c2f&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里的字段会用到一个叫 pass 的：</p>
+<p> <code>pass = 9332c90abc850ef93f9a600eff5606ba5328c9362bc131db6047cfbc481523f9</code></p>
+<p>我们会发现 pass 与上面的 rand_key :</p>
+<p>9332c90abc850ef93f9a600eff5606ba20c9bdd11c07c704a9b8e3faddbfd713,前32 位一致，后32位不一样。</p>
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911175940.png"></p>
+<p>简单分析下代码：</p>
+<p>str 是 路由器的管理密码，最后形成的 pass 由 rand_key 的后32位对 str 进行 AES 加密，加密结果再与 rank_key 前32位拼接。</p>
+<p>简单的讲就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rand_key &#x3D; &#39;9332c90abc850ef93f9a600eff5606ba20c9bdd11c07c704a9b8e3faddbfd713&#39;</span><br><span class="line">pass &#x3D; &#39;9332c90abc850ef93f9a600eff5606ba5328c9362bc131db6047cfbc481523f9&#39;</span><br><span class="line"></span><br><span class="line">ran_key[:32] &#x3D;&#x3D; pass[:32]</span><br><span class="line">pass[32:] &#x3D; EnAES(passwd,rand_key[32:])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Python-模拟登陆过程"><a href="#Python-模拟登陆过程" class="headerlink" title="Python 模拟登陆过程"></a>Python 模拟登陆过程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> pkcs7 <span class="keyword">import</span> PKCS7Encoder</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># key = &#x27;\xf7\x44\x50\xb1\x2a\x1e\x6e\x9e\xae\x36\xd4\x01\xfb\x5d\x48\xc2&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># key = &#x27;\x20\xc9\xbd\xd1\x1c\x07\xc7\x04\xa9\xb8\xe3\xfa\xdd\xbf\xd7\x13&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">EnAES</span>(<span class="params">key</span>):</span></span><br><span class="line">    mode = AES.MODE_CBC</span><br><span class="line">    iv = <span class="string">&#x27;\x33\x36\x30\x6c\x75\x79\x6f\x75\x40\x69\x6e\x73\x74\x61\x6c\x6c&#x27;</span> <span class="comment">#&quot;360luyou@install&quot;.decode(&#x27;hex&#x27;)</span></span><br><span class="line">    encryptor = AES.new(key, mode, iv)</span><br><span class="line">    encoder = PKCS7Encoder()</span><br><span class="line">    text = <span class="string">&#x27;******&#x27;</span> <span class="comment"># password</span></span><br><span class="line">    pad_text = encoder.encode(text)</span><br><span class="line">    cipher = encryptor.encrypt(pad_text).encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">    <span class="comment"># enc_cipher = base64.b64encode(cipher)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># print enc_cipher</span></span><br><span class="line">    <span class="comment"># print type(enc_cipher)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>(str(cipher))</span><br><span class="line"></span><br><span class="line">r = requests.post(<span class="string">&#x27;http://192.168.0.1/router/get_rand_key.cgi&#x27;</span>)</span><br><span class="line"></span><br><span class="line">key = r.content</span><br><span class="line">key = eval(key)</span><br><span class="line"></span><br><span class="line">rand_key = key[<span class="string">&#x27;rand_key&#x27;</span>]</span><br><span class="line">aes_key =  key[<span class="string">&#x27;rand_key&#x27;</span>][<span class="number">32</span>:].decode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line"></span><br><span class="line">data = <span class="string">&#x27;bindLanguage=eyJsYW5ndWFnZSI6IjEifQ==&amp;density=420&amp;language=1&amp;language_server=zh&amp;ostype=android&amp;osversion=27&amp;pass=&#123;&#125;&amp;phonetype=ONEPLUS%20A5010&amp;region=CN&amp;screenx=1080&amp;screeny=2160&amp;user=admin&amp;version=4.2.3&#x27;</span>.format(key[<span class="string">&#x27;rand_key&#x27;</span>][:<span class="number">32</span>]+EnAES(aes_key))</span><br><span class="line"></span><br><span class="line">header = <span class="string">&#x27;...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">r = requests.post(&#x27;</span>http://<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>/router/web_login.cgi<span class="string">&#x27;,data =data)</span></span><br><span class="line"><span class="string">print r.text&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/20180911180642.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">流量分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">Python 模拟登陆过程</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/360_P2_Router_login_analysis.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/360_P2_Router_login_analysis.html&text=360 路由器 P2 登陆验证分析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/360_P2_Router_login_analysis.html&is_video=false&description=360 路由器 P2 登陆验证分析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=360 路由器 P2 登陆验证分析&body=Check out this article: https://bestwing.me/360_P2_Router_login_analysis.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/360_P2_Router_login_analysis.html&title=360 路由器 P2 登陆验证分析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/360_P2_Router_login_analysis.html&name=360 路由器 P2 登陆验证分析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/360_P2_Router_login_analysis.html&t=360 路由器 P2 登陆验证分析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这应该是我这几天干的最有意义的事情吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次在服务器上wooyun搜索站的搭建">
+<meta property="og:url" content="https://bestwing.me/build-the-wooyun-drops.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="这应该是我这几天干的最有意义的事情吧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/home_wooyun.png">
+<meta property="article:published_time" content="2016-08-23T02:15:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:14:35.715Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="wooyun">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/home_wooyun.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>记一次在服务器上wooyun搜索站的搭建</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/John-the-Ripper-password-cracker.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/hexo-donate.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/build-the-wooyun-drops.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/build-the-wooyun-drops.html&text=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/build-the-wooyun-drops.html&is_video=false&description=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=记一次在服务器上wooyun搜索站的搭建&body=Check out this article: https://bestwing.me/build-the-wooyun-drops.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/build-the-wooyun-drops.html&name=记一次在服务器上wooyun搜索站的搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/build-the-wooyun-drops.html&t=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wooyun-pulic"><span class="toc-number">1.</span> <span class="toc-text">wooyun_pulic</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E7%BB%84%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">依赖组件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ubuntu%E4%B8%8B%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">ubuntu下安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85python%E3%80%81pip%E3%80%81mongodb"><span class="toc-number">3.1.</span> <span class="toc-text">1、安装python、pip、mongodb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85scrapy"><span class="toc-number">3.2.</span> <span class="toc-text">2、安装scrapy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%AE%89%E8%A3%85pymongo%E5%92%8Cflask%EF%BC%88%E6%88%96tornado%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">3、安装pymongo和flask（或tornado）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BB%8Egithub%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="toc-number">3.4.</span> <span class="toc-text">4、从github下载源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%AC%E8%99%AB"><span class="toc-number">4.</span> <span class="toc-text">爬虫</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-number">5.</span> <span class="toc-text">搜索</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AEElasicsearch%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%88%E7%82%B9%E6%88%91%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">安装和配置Elasicsearch的方法（点我）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85elasticsearch"><span class="toc-number">6.1.</span> <span class="toc-text">安装elasticsearch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85JDK%EF%BC%88%E6%88%96%E8%80%85JRE%EF%BC%89"><span class="toc-number">6.1.1.</span> <span class="toc-text">1、安装JDK（或者JRE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%B8%8B%E8%BD%BDelasticseach"><span class="toc-number">6.1.2.</span> <span class="toc-text">2、下载elasticseach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E8%BF%90%E8%A1%8Celasticsearch"><span class="toc-number">6.1.3.</span> <span class="toc-text">3、运行elasticsearch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E8%BF%90%E8%A1%8C%E5%90%8Eelasticsearch%E4%BC%9A%E5%9C%A89200%E7%AB%AF%E5%8F%A3%E4%B8%8A%E8%BF%9B%E8%A1%8C%E7%9B%91%E5%90%AC"><span class="toc-number">6.1.4.</span> <span class="toc-text">4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEmongodb"><span class="toc-number">6.2.</span> <span class="toc-text">配置mongodb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%BC%96%E8%BE%91-etc-mongodb-conf%EF%BC%8C%E5%A2%9E%E5%8A%A0%EF%BC%9A"><span class="toc-number">6.2.1.</span> <span class="toc-text">1、编辑&#x2F;etc&#x2F;mongodb.conf，增加：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%8C%E8%BF%9B%E5%85%A5mongodb-shell%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96replicSet"><span class="toc-number">6.2.2.</span> <span class="toc-text">2，进入mongodb shell，初始化replicSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%A5%BDreplicSet%E4%B9%8B%E5%90%8E%EF%BC%8C%E9%80%80%E5%87%BAmongo-shell%E9%87%8D%E6%96%B0%E7%99%BB%E5%BD%95%EF%BC%8C%E6%8F%90%E7%A4%BA%E7%AC%A6%E4%BC%9A%E5%8F%98%E6%88%90%EF%BC%9Ars0-PRIMARY-gt-%EF%BC%8C%E5%B0%B1%E5%8F%AF%E4%BB%A5%E9%80%80%E5%87%BAMongodb"><span class="toc-number">6.2.3.</span> <span class="toc-text">3，搭建好replicSet之后，退出mongo shell重新登录，提示符会变成：rs0:PRIMARY&gt;，就可以退出Mongodb</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8F%92%E4%BB%B6elasticsearch-analysis-ik"><span class="toc-number">6.3.</span> <span class="toc-text">安装中文分词插件elasticsearch-analysis-ik</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%BB%8Egithub%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E5%A5%BD%E5%A5%BD%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="toc-number">6.3.1.</span> <span class="toc-text">1、从github下载编译好好的插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%B0%86%E6%8F%92%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0elasticsearch%E7%9A%84plugins%E7%9B%AE%E5%BD%95"><span class="toc-number">6.3.2.</span> <span class="toc-text">2、将插件复制到elasticsearch的plugins目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9elasticsearch-yml%E9%85%8D%E7%BD%AE%EF%BC%8C%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">6.3.3.</span> <span class="toc-text">3、修改elasticsearch.yml配置，定义插件配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E9%80%80%E5%87%BA%E5%B9%B6%E9%87%8D%E5%90%AFelasticsearch"><span class="toc-number">6.3.4.</span> <span class="toc-text">4、退出并重启elasticsearch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85mongo-connector%EF%BC%8C%E5%B0%86%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%88%B0elasticsearch"><span class="toc-number">6.4.</span> <span class="toc-text">安装mongo-connector，将数据同步到elasticsearch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E7%94%A8%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2"><span class="toc-number">6.5.</span> <span class="toc-text">启用全文搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85elasticsearch-py"><span class="toc-number">6.5.1.</span> <span class="toc-text">1、安装elasticsearch-py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%9B%B4%E6%96%B0app-py"><span class="toc-number">6.5.2.</span> <span class="toc-text">2、更新app.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9app-py"><span class="toc-number">6.5.3.</span> <span class="toc-text">3、修改app.py</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BAmongodb%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">7.</span> <span class="toc-text">为mongodb数据库创建索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Push%E5%86%85%E5%AE%B9"><span class="toc-number">8.</span> <span class="toc-text">Push内容</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80"><span class="toc-number">9.</span> <span class="toc-text">虚拟机下载地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">10.</span> <span class="toc-text">其他</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        记一次在服务器上wooyun搜索站的搭建
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-08-23T02:15:00.000Z" itemprop="datePublished">2016-08-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/wooyun/" rel="tag">wooyun</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>首先必须要感谢一下 <code>hancool</code>大哥的帮忙阿<del>~</del> 至少帮我解决了不少麻烦</p>
+<h1 id="wooyun-pulic"><a href="#wooyun-pulic" class="headerlink" title="wooyun_pulic"></a>wooyun_pulic</h1><p><strong>wooyun公开漏洞以及知识库和搜索</strong></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/home_wooyun.png"></p>
+<h1 id="依赖组件"><a href="#依赖组件" class="headerlink" title="依赖组件"></a>依赖组件</h1><blockquote>
+<p>python2.7和pip<br>mongodb<br>scrapy<br>flask 或者tornado( 个人建议用tornado 这个比较稳定 有能力的人可以自己写一下)<br>pymongo<br>Elasticsearch(搜索引擎，可选)</p>
+</blockquote>
+<h1 id="ubuntu下安装"><a href="#ubuntu下安装" class="headerlink" title="ubuntu下安装"></a>ubuntu下安装</h1><h2 id="1、安装python、pip、mongodb"><a href="#1、安装python、pip、mongodb" class="headerlink" title="1、安装python、pip、mongodb"></a>1、安装python、pip、mongodb</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python python-pip mongodb</span><br></pre></td></tr></table></figure>
+<h2 id="2、安装scrapy"><a href="#2、安装scrapy" class="headerlink" title="2、安装scrapy"></a>2、安装scrapy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">安装scrapy如果报错，则先apt-get安装下述依赖包，然后安装pip安装lxml后即可正常安装scrapy</span><br><span class="line">sudo apt-get install libxml2-dev libxslt1-dev python-dev zlib1g-dev libevent-dev python-openssl</span><br><span class="line"></span><br><span class="line">sudo pip install lxml</span><br><span class="line">sudo pip install scrapy</span><br></pre></td></tr></table></figure>
+<h2 id="3、安装pymongo和flask（或tornado）"><a href="#3、安装pymongo和flask（或tornado）" class="headerlink" title="3、安装pymongo和flask（或tornado）"></a>3、安装pymongo和flask（或tornado）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install flask pymongo</span><br><span class="line">(sudo pip install tornado)</span><br></pre></td></tr></table></figure>
+<h2 id="4、从github下载源码"><a href="#4、从github下载源码" class="headerlink" title="4、从github下载源码"></a>4、从github下载源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;hanc00l&#x2F;wooyun_public</span><br></pre></td></tr></table></figure>
+<h1 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h1><p>鉴于wooyun已经关了 其实这里的爬虫已经没有用了~ 所以详细步骤就不写了</p>
+<h1 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h1><blockquote>
+<p>漏洞搜索使用了Flask作为web server，bootstrap作为前端（8.12增加tornador web server，可配合nginx反向代理，支持高并发的应用）<br>启动web server ：在flask目录下运行./app.py，默认端口是5000<br>启动Elassticsearch（如果已配置了Elasticsearch）：在elasticsearch-2.3.4/bin目录下运行./elasticsearch -d (-d表示以后台方式运行）<br>搜索：在浏览器通过<a href="http://localhost:5000进行搜索漏洞，多个关键字可以用空格分开。">http://localhost:5000进行搜索漏洞，多个关键字可以用空格分开。</a><br>默认使用mongodb的数据库搜索，在进行全文搜索时比较慢，推荐安装使用Elasicsearch搜索引擎。</p>
+</blockquote>
+<h1 id="安装和配置Elasicsearch的方法（点我）"><a href="#安装和配置Elasicsearch的方法（点我）" class="headerlink" title="安装和配置Elasicsearch的方法（点我）"></a>安装和配置Elasicsearch的方法（点我）</h1><h2 id="安装elasticsearch"><a href="#安装elasticsearch" class="headerlink" title="安装elasticsearch"></a>安装elasticsearch</h2><h3 id="1、安装JDK（或者JRE）"><a href="#1、安装JDK（或者JRE）" class="headerlink" title="1、安装JDK（或者JRE）"></a>1、安装JDK（或者JRE）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openjdk-7-jdk</span><br></pre></td></tr></table></figure>
+<h3 id="2、下载elasticseach"><a href="#2、下载elasticseach" class="headerlink" title="2、下载elasticseach"></a>2、下载elasticseach</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;download.elastic.co&#x2F;elasticsearch&#x2F;release&#x2F;org&#x2F;elasticsearch&#x2F;distribution&#x2F;tar&#x2F;elasticsearch&#x2F;2.3.4&#x2F;elasticsearch-2.3.4.tar.gz</span><br><span class="line">tar xvf elasticsearch-2.3.4.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="3、运行elasticsearch"><a href="#3、运行elasticsearch" class="headerlink" title="3、运行elasticsearch"></a>3、运行elasticsearch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd elasticsearch-2.3.4&#x2F;bin</span><br><span class="line">.&#x2F;elasticsearch</span><br></pre></td></tr></table></figure>
+<h3 id="4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听"><a href="#4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听" class="headerlink" title="4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听"></a>4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http:&#x2F;&#x2F;localhost:9200</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot; : &quot;Sebastian Shaw&quot;,</span><br><span class="line">  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,</span><br><span class="line">  &quot;version&quot; : &#123;</span><br><span class="line">    &quot;number&quot; : &quot;2.3.4&quot;,</span><br><span class="line">    &quot;build_hash&quot; : &quot;e455fd0c13dceca8dbbdbb1665d068ae55dabe3f&quot;,</span><br><span class="line">    &quot;build_timestamp&quot; : &quot;2016-06-30T11:24:31Z&quot;,</span><br><span class="line">    &quot;build_snapshot&quot; : false,</span><br><span class="line">    &quot;lucene_version&quot; : &quot;5.5.0&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;tagline&quot; : &quot;You Know, for Search&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="配置mongodb"><a href="#配置mongodb" class="headerlink" title="配置mongodb"></a>配置mongodb</h2><h3 id="1、编辑-etc-mongodb-conf，增加："><a href="#1、编辑-etc-mongodb-conf，增加：" class="headerlink" title="1、编辑/etc/mongodb.conf，增加："></a>1、编辑/etc/mongodb.conf，增加：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">replSet&#x3D;rs0 #这里是指定replSet的名字 </span><br><span class="line">oplogSize&#x3D;100 #这里是指定oplog表数据大小（太大了不支持）</span><br></pre></td></tr></table></figure>
+<p><code>重启动mongodb</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mongodb restart</span><br></pre></td></tr></table></figure>
+<h3 id="2，进入mongodb-shell，初始化replicSet"><a href="#2，进入mongodb-shell，初始化replicSet" class="headerlink" title="2，进入mongodb shell，初始化replicSet"></a>2，进入mongodb shell，初始化replicSet</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br><span class="line">rs.initiate( &#123;&quot;_id&quot; : &quot;rs0&quot;, &quot;version&quot; : 1, &quot;members&quot; : [ &#123; &quot;_id&quot; : 0, &quot;host&quot; : &quot;127.0.0.1:27017&quot; &#125; ]&#125;) </span><br></pre></td></tr></table></figure>
+<h3 id="3，搭建好replicSet之后，退出mongo-shell重新登录，提示符会变成：rs0-PRIMARY-gt-，就可以退出Mongodb"><a href="#3，搭建好replicSet之后，退出mongo-shell重新登录，提示符会变成：rs0-PRIMARY-gt-，就可以退出Mongodb" class="headerlink" title="3，搭建好replicSet之后，退出mongo shell重新登录，提示符会变成：rs0:PRIMARY&gt;，就可以退出Mongodb"></a>3，搭建好replicSet之后，退出mongo shell重新登录，提示符会变成：rs0:PRIMARY&gt;，就可以退出Mongodb</h3><h2 id="安装中文分词插件elasticsearch-analysis-ik"><a href="#安装中文分词插件elasticsearch-analysis-ik" class="headerlink" title="安装中文分词插件elasticsearch-analysis-ik"></a>安装中文分词插件elasticsearch-analysis-ik</h2><h3 id="1、从github下载编译好好的插件"><a href="#1、从github下载编译好好的插件" class="headerlink" title="1、从github下载编译好好的插件"></a>1、从github下载编译好好的插件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ~  </span><br><span class="line">sudo apt-get install unzip</span><br><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;medcl&#x2F;elasticsearch-analysis-ik&#x2F;releases&#x2F;download&#x2F;v1.9.4&#x2F;elasticsearch-analysis-ik-1.9.4.zip</span><br><span class="line">unzip elasticsearch-analysis-ik-1.9.4.zip</span><br></pre></td></tr></table></figure>
+<h3 id="2、将插件复制到elasticsearch的plugins目录"><a href="#2、将插件复制到elasticsearch的plugins目录" class="headerlink" title="2、将插件复制到elasticsearch的plugins目录"></a>2、将插件复制到elasticsearch的plugins目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r elasticsearch-analysis-ik elasticsearch-2.3.4&#x2F;plugins</span><br></pre></td></tr></table></figure>
+<h3 id="3、修改elasticsearch-yml配置，定义插件配置"><a href="#3、修改elasticsearch-yml配置，定义插件配置" class="headerlink" title="3、修改elasticsearch.yml配置，定义插件配置"></a>3、修改elasticsearch.yml配置，定义插件配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi elasticsearch-2.3.4&#x2F;config&#x2F;elasticsearch.yml</span><br></pre></td></tr></table></figure>
+<p><strong>在最后增加:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">index.analysis.analyzer.ik.type : &#39;ik&#39;</span><br><span class="line">index.analysis.analyzer.default.type : &#39;ik&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="4、退出并重启elasticsearch"><a href="#4、退出并重启elasticsearch" class="headerlink" title="4、退出并重启elasticsearch"></a>4、退出并重启elasticsearch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">elasticsearch-2.3.4&#x2F;bin&#x2F;elasticsearch -d</span><br><span class="line"> (-d表示以后台方式运行）</span><br></pre></td></tr></table></figure>
+<h2 id="安装mongo-connector，将数据同步到elasticsearch"><a href="#安装mongo-connector，将数据同步到elasticsearch" class="headerlink" title="安装mongo-connector，将数据同步到elasticsearch"></a>安装mongo-connector，将数据同步到elasticsearch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install mongo-connector elastic2_doc_manager</span><br><span class="line">sudo mongo-connector -m localhost:27017 -t localhost:9200 -d elastic2_doc_manager</span><br></pre></td></tr></table></figure>
+<p>显示Logging to mongo-connector.log.后将会把mongodb数据库的信息同步到elasticsearch中，完全同步完成估计需要30分钟左右，同步期间不能中断，否则可能导致elasticsearch与mongodb数据不一致。</p>
+<p>在同步过程中，可能会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OperationFailed: ConnectionTimeout caused by - ReadTimeoutError(HTTPConnectionPool(host&#x3D;u&#39;localhost&#39;, port&#x3D;9200): Read timed out. (read timeout&#x3D;10))</span><br><span class="line">2016-08-04 17:24:53,372 [ERROR] mongo_connector.oplog_manager:633 - OplogThread: Failed during dump collection cannot recover! Collection(Database(MongoClient(u&#39;127.0.0.1&#39;, 27017), u&#39;local&#39;), u&#39;oplog.rs&#39;)</span><br><span class="line">2016-08-04 17:24:54,371 [ERROR] mongo_connector.connector:304 - MongoConnector: OplogThread &lt;OplogThread(Thread-7, started 140485117060864)&gt; unexpectedly stopped! Shutting down</span><br></pre></td></tr></table></figure>
+<p><strong>解决办法:</strong><br>修改timeout值，从默认的10改为200</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vi &#x2F;usr&#x2F;local&#x2F;lib&#x2F;python2.7&#x2F;dist-packages&#x2F;mongo_connector&#x2F;doc_managers&#x2F;elastic2_doc_manager.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将：</span><br><span class="line">self.elastic &#x3D; Elasticsearch(hosts&#x3D;[url],**kwargs.get(&#39;clientOptions&#39;, &#123;&#125;))</span><br><span class="line"></span><br><span class="line">修改为：</span><br><span class="line">self.elastic &#x3D; Elasticsearch(hosts&#x3D;[url],timeout&#x3D;200, **kwargs.get(&#39;clientOptions&#39;, &#123;&#125;))</span><br></pre></td></tr></table></figure>
+<h2 id="启用全文搜索"><a href="#启用全文搜索" class="headerlink" title="启用全文搜索"></a>启用全文搜索</h2><h3 id="1、安装elasticsearch-py"><a href="#1、安装elasticsearch-py" class="headerlink" title="1、安装elasticsearch-py"></a>1、安装elasticsearch-py</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install elasticsearch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2、更新app-py"><a href="#2、更新app-py" class="headerlink" title="2、更新app.py"></a>2、更新app.py</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;wooyun_public</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+<h3 id="3、修改app-py"><a href="#3、修改app-py" class="headerlink" title="3、修改app.py"></a>3、修改app.py</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~&#x2F;wooyun_public&#x2F;flask&#x2F;app.py</span><br><span class="line">修改:</span><br><span class="line">    SEARCH_BY_ES &#x3D; &#39;auto&#39;</span><br></pre></td></tr></table></figure>
+<h1 id="为mongodb数据库创建索引"><a href="#为mongodb数据库创建索引" class="headerlink" title="为mongodb数据库创建索引"></a>为mongodb数据库创建索引</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br><span class="line">use wooyun</span><br><span class="line">db.wooyun_list.ensureIndex(&#123;&quot;datetime&quot;:1&#125;)</span><br><span class="line">db.wooyun_drops.ensureIndex(&#123;&quot;datetime&quot;:1&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Push内容"><a href="#Push内容" class="headerlink" title="Push内容"></a>Push内容</h1><p>一共有两部分内容，一份内容在<code> wooyun_public/flask/static</code><br>就是statci整个文件包含了大部分内容<br>还有一份内容在<code>mongodb</code>数据库里面~ 需要打包下来<br>打包命令是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodump -h 127.0.0.1 -o &#x2F;home&#x2F;wooyun&#x2F;mongodb&#x2F;</span><br></pre></td></tr></table></figure>
+<p>后面的地址是保存路径<br>还原数据库命令是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongorestore   &#x2F;home&#x2F;wooyun&#x2F;mongodb&#x2F;</span><br></pre></td></tr></table></figure>
+<h1 id="虚拟机下载地址"><a href="#虚拟机下载地址" class="headerlink" title="虚拟机下载地址"></a>虚拟机下载地址</h1><p><a href="http://pan.baidu.com/s/1kVtY2rX">http://pan.baidu.com/s/1kVtY2rX </a>   提取密码：5ik7  PS:这个是<code>hancool</code>前辈做的</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>主要内容都是copy了是<code>hancool</code>前辈的的文章~<br>文章地址在github 如果想用虚拟机或者看更详细的内容 可以从去github看看<a href="https://github.com/hanc00l/wooyun_public">https://github.com/hanc00l/wooyun_public</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wooyun-pulic"><span class="toc-number">1.</span> <span class="toc-text">wooyun_pulic</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E7%BB%84%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">依赖组件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ubuntu%E4%B8%8B%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">ubuntu下安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85python%E3%80%81pip%E3%80%81mongodb"><span class="toc-number">3.1.</span> <span class="toc-text">1、安装python、pip、mongodb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85scrapy"><span class="toc-number">3.2.</span> <span class="toc-text">2、安装scrapy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%AE%89%E8%A3%85pymongo%E5%92%8Cflask%EF%BC%88%E6%88%96tornado%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">3、安装pymongo和flask（或tornado）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E4%BB%8Egithub%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="toc-number">3.4.</span> <span class="toc-text">4、从github下载源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%AC%E8%99%AB"><span class="toc-number">4.</span> <span class="toc-text">爬虫</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-number">5.</span> <span class="toc-text">搜索</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AEElasicsearch%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%88%E7%82%B9%E6%88%91%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">安装和配置Elasicsearch的方法（点我）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85elasticsearch"><span class="toc-number">6.1.</span> <span class="toc-text">安装elasticsearch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85JDK%EF%BC%88%E6%88%96%E8%80%85JRE%EF%BC%89"><span class="toc-number">6.1.1.</span> <span class="toc-text">1、安装JDK（或者JRE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%B8%8B%E8%BD%BDelasticseach"><span class="toc-number">6.1.2.</span> <span class="toc-text">2、下载elasticseach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E8%BF%90%E8%A1%8Celasticsearch"><span class="toc-number">6.1.3.</span> <span class="toc-text">3、运行elasticsearch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E8%BF%90%E8%A1%8C%E5%90%8Eelasticsearch%E4%BC%9A%E5%9C%A89200%E7%AB%AF%E5%8F%A3%E4%B8%8A%E8%BF%9B%E8%A1%8C%E7%9B%91%E5%90%AC"><span class="toc-number">6.1.4.</span> <span class="toc-text">4、测试一下，安装完成运行后elasticsearch会在9200端口上进行监听</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEmongodb"><span class="toc-number">6.2.</span> <span class="toc-text">配置mongodb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%BC%96%E8%BE%91-etc-mongodb-conf%EF%BC%8C%E5%A2%9E%E5%8A%A0%EF%BC%9A"><span class="toc-number">6.2.1.</span> <span class="toc-text">1、编辑&#x2F;etc&#x2F;mongodb.conf，增加：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%8C%E8%BF%9B%E5%85%A5mongodb-shell%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96replicSet"><span class="toc-number">6.2.2.</span> <span class="toc-text">2，进入mongodb shell，初始化replicSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%A5%BDreplicSet%E4%B9%8B%E5%90%8E%EF%BC%8C%E9%80%80%E5%87%BAmongo-shell%E9%87%8D%E6%96%B0%E7%99%BB%E5%BD%95%EF%BC%8C%E6%8F%90%E7%A4%BA%E7%AC%A6%E4%BC%9A%E5%8F%98%E6%88%90%EF%BC%9Ars0-PRIMARY-gt-%EF%BC%8C%E5%B0%B1%E5%8F%AF%E4%BB%A5%E9%80%80%E5%87%BAMongodb"><span class="toc-number">6.2.3.</span> <span class="toc-text">3，搭建好replicSet之后，退出mongo shell重新登录，提示符会变成：rs0:PRIMARY&gt;，就可以退出Mongodb</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E6%8F%92%E4%BB%B6elasticsearch-analysis-ik"><span class="toc-number">6.3.</span> <span class="toc-text">安装中文分词插件elasticsearch-analysis-ik</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%BB%8Egithub%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E5%A5%BD%E5%A5%BD%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="toc-number">6.3.1.</span> <span class="toc-text">1、从github下载编译好好的插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%B0%86%E6%8F%92%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0elasticsearch%E7%9A%84plugins%E7%9B%AE%E5%BD%95"><span class="toc-number">6.3.2.</span> <span class="toc-text">2、将插件复制到elasticsearch的plugins目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9elasticsearch-yml%E9%85%8D%E7%BD%AE%EF%BC%8C%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">6.3.3.</span> <span class="toc-text">3、修改elasticsearch.yml配置，定义插件配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E9%80%80%E5%87%BA%E5%B9%B6%E9%87%8D%E5%90%AFelasticsearch"><span class="toc-number">6.3.4.</span> <span class="toc-text">4、退出并重启elasticsearch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85mongo-connector%EF%BC%8C%E5%B0%86%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%88%B0elasticsearch"><span class="toc-number">6.4.</span> <span class="toc-text">安装mongo-connector，将数据同步到elasticsearch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E7%94%A8%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2"><span class="toc-number">6.5.</span> <span class="toc-text">启用全文搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85elasticsearch-py"><span class="toc-number">6.5.1.</span> <span class="toc-text">1、安装elasticsearch-py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%9B%B4%E6%96%B0app-py"><span class="toc-number">6.5.2.</span> <span class="toc-text">2、更新app.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9app-py"><span class="toc-number">6.5.3.</span> <span class="toc-text">3、修改app.py</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BAmongodb%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">7.</span> <span class="toc-text">为mongodb数据库创建索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Push%E5%86%85%E5%AE%B9"><span class="toc-number">8.</span> <span class="toc-text">Push内容</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80"><span class="toc-number">9.</span> <span class="toc-text">虚拟机下载地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">10.</span> <span class="toc-text">其他</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/build-the-wooyun-drops.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/build-the-wooyun-drops.html&text=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/build-the-wooyun-drops.html&is_video=false&description=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=记一次在服务器上wooyun搜索站的搭建&body=Check out this article: https://bestwing.me/build-the-wooyun-drops.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/build-the-wooyun-drops.html&title=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/build-the-wooyun-drops.html&name=记一次在服务器上wooyun搜索站的搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/build-the-wooyun-drops.html&t=记一次在服务器上wooyun搜索站的搭建"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

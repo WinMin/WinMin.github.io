@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="起源cos的一个推动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派3刷LEDE(OpenWRT)打造路由器">
+<meta property="og:url" content="https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="起源cos的一个推动">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-01-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-01-14T13:27:24.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="Raspberry">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>树莓派3刷LEDE(OpenWRT)打造路由器</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018-N1CTF-Misc-part.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/hhkb_with_chrome.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&text=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&is_video=false&description=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=树莓派3刷LEDE(OpenWRT)打造路由器&body=Check out this article: https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&name=树莓派3刷LEDE(OpenWRT)打造路由器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&t=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">4.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">4.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        树莓派3刷LEDE(OpenWRT)打造路由器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-11T16:00:00.000Z" itemprop="datePublished">2018-01-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Raspberry/" rel="tag">Raspberry</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>前往 LEDE 官网下载固件并验证：</p>
+<p><a href="https://downloads.lede-project.org/releases/17.01.4/targets/brcm2708/bcm2710/lede-17.01.4-brcm2708-bcm2710-rpi-3-ext4-sdcard.img.gz">https://downloads.lede-project.org/releases/17.01.4/targets/brcm2708/bcm2710/lede-17.01.4-brcm2708-bcm2710-rpi-3-ext4-sdcard.img.gz</a></p>
+<p>注：bcm2710 是专为树莓派3准备的。<br>刷机软件：</p>
+<p>SD卡烧录工具：Win32DiskImager (windows)</p>
+<h2 id="刷入LEDE系统"><a href="#刷入LEDE系统" class="headerlink" title="刷入LEDE系统"></a>刷入LEDE系统</h2><p>使用 Win32DiskImager 烧录 LEDE 系统镜像到 SD卡</p>
+<p>安装SD卡到树莓派，开机。</p>
+<h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><p>用一根网线连接笔记本和树莓派，设置电脑的IP为自动获取。树莓派的默认IP为192.168.1.1</p>
+<p>SSH 登陆，并修改 root 密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 192.168.1.1 -l root</span><br></pre></td></tr></table></figure>
+<p>修改 /etc/config/network 配置文件，调整 lan IP为和路由器不冲突的其他IP，增加 wan 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">config interface &#39;lan&#39;</span><br><span class="line">        option type &#39;bridge&#39;</span><br><span class="line">        option ifname &#39;eth0&#39;</span><br><span class="line">        option proto &#39;static&#39;</span><br><span class="line">        option ipaddr &#39;192.168.1.11&#39;</span><br><span class="line">        option netmask &#39;255.255.255.0&#39;</span><br><span class="line">        option ip6assign &#39;60&#39;</span><br><span class="line">        option gateway &#39;192.168.1.1&#39;</span><br><span class="line">        option dns &#39;114.114.114.114&#39;</span><br><span class="line"></span><br><span class="line">config interface &#39;wan&#39;</span><br><span class="line">        option proto &#39;dhcp&#39;</span><br><span class="line">        option ifname &#39;eth0&#39;</span><br></pre></td></tr></table></figure>
+<p>修改 /etc/config/wireless 配置文件，开启无线 AP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">config wifi-device &#39;radio0&#39;</span><br><span class="line">        option type &#39;mac80211&#39;</span><br><span class="line">        option channel &#39;11&#39;</span><br><span class="line">        option hwmode &#39;11g&#39;</span><br><span class="line">        option path &#39;platform&#x2F;soc&#x2F;3f300000.mmc&#x2F;mmc_host&#x2F;mmc1&#x2F;mmc1:0001&#x2F;mmc1:0001:1&#39;</span><br><span class="line">        option htmode &#39;HT20&#39;</span><br><span class="line">        option disabled &#39;0&#39;</span><br><span class="line"></span><br><span class="line">config wifi-iface &#39;default_radio0&#39;</span><br><span class="line">        option device &#39;radio0&#39;</span><br><span class="line">        option network &#39;lan&#39;</span><br><span class="line">        option mode &#39;ap&#39;</span><br><span class="line">        option ssid &#39;OpenWrt&#39;</span><br><span class="line">        option encryption &#39;psk2&#39;</span><br><span class="line">        option key &#39;passwd.&#39;</span><br></pre></td></tr></table></figure>
+<p>让连接路由时，也能ssh上树莓派</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#open ssh on wan interface</span><br><span class="line"></span><br><span class="line">config rule</span><br><span class="line">        option src              wan</span><br><span class="line">        option dest_port        22</span><br><span class="line">        option target           ACCEPT</span><br><span class="line">        option proto            tcp</span><br></pre></td></tr></table></figure>
+<p>重启树莓派</p>
+<p>用一根网线连接树莓派和路由器的 LAN 口，WiFi 连接到 LEDE-WiFi 网络，重新连接 SSH</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh root@192.168.1.11</span><br><span class="line">#使用新的IP连接SSH</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新软件包安装LuCI-web界面"><a href="#更新软件包安装LuCI-web界面" class="headerlink" title="更新软件包安装LuCI web界面"></a>更新软件包安装LuCI web界面</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br><span class="line">opkg install luci-ssl</span><br></pre></td></tr></table></figure>
+<p>这里安装的是ssl版本</p>
+<h3 id="安装软件包"><a href="#安装软件包" class="headerlink" title="安装软件包"></a>安装软件包</h3><p>中文</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">opkg install luci-i18n-base-zh-cn</span><br><span class="line">opkg install luci-i18n-firewall-zh-cn</span><br></pre></td></tr></table></figure>
+<p>打开服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;uhttpd enable</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;uhttpd start</span><br></pre></td></tr></table></figure>
+<h3 id="安装ss"><a href="#安装ss" class="headerlink" title="安装ss"></a>安装ss</h3><p><a href="http://openwrt-dist.sourceforge.net/">http://openwrt-dist.sourceforge.net</a><br>直接看上面！</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="http://www.openwrt.pro/post-207.html">http://www.openwrt.pro/post-207.html</a><br><a href="http://www.wzero.net/?p=137">http://www.wzero.net/?p=137</a><br><a href="http://shumeipai.nxez.com/2015/07/28/install-openwrt-will-be-transformed-into-a-versatile-router-raspberry-pi.html">http://shumeipai.nxez.com/2015/07/28/install-openwrt-will-be-transformed-into-a-versatile-router-raspberry-pi.html</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5LEDE%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">刷入LEDE系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%AE%89%E8%A3%85LuCI-web%E7%95%8C%E9%9D%A2"><span class="toc-number">4.</span> <span class="toc-text">更新软件包安装LuCI web界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85ss"><span class="toc-number">4.2.</span> <span class="toc-text">安装ss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&text=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&is_video=false&description=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=树莓派3刷LEDE(OpenWRT)打造路由器&body=Check out this article: https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&title=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&name=树莓派3刷LEDE(OpenWRT)打造路由器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/cranberry-pie-3-brushes-ledeopenwrt-to-create-portable-personal-wireless-internet.html&t=树莓派3刷LEDE(OpenWRT)打造路由器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

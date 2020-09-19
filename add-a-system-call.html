@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="一直在qemu启用busybox的地方踩坑，今天突然就给解决了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-kernel expoit  study (2)---添加系统调用">
+<meta property="og:url" content="https://bestwing.me/add-a-system-call.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="一直在qemu启用busybox的地方踩坑，今天突然就给解决了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://i4.buimg.com/567571/a965e1c9a1970dd3.png">
+<meta property="og:image" content="http://i2.muimg.com/567571/cfd5d8842ce9f0ec.png">
+<meta property="og:image" content="http://i2.muimg.com/567571/dbbba270d0e9d27e.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/2c94ce435cc6c77d.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/6d01c34124e5aaa6.png">
+<meta property="article:published_time" content="2017-04-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T17:58:05.769Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="Linux-kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://i4.buimg.com/567571/a965e1c9a1970dd3.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>linux-kernel expoit  study (2)---添加系统调用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/write-kernel-exploits-1.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Complie-linux-kernel-and-running-it-using-qemu.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/add-a-system-call.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/add-a-system-call.html&text=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/add-a-system-call.html&is_video=false&description=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=linux-kernel expoit  study (2)---添加系统调用&body=Check out this article: https://bestwing.me/add-a-system-call.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/add-a-system-call.html&name=linux-kernel expoit  study (2)---添加系统调用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/add-a-system-call.html&t=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">添加一个新的系统调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">添加一个系统调用的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%A1%A8%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">修改系统调用表添加一个新的系统调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">修改系统调用头文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%BA%93%E6%96%87%E4%BB%B6%E6%96%B9%E4%BE%BF%E6%B5%8B%E8%AF%95%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.</span> <span class="toc-text">添加库文件方便测试新的系统调用接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.5.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91busybox"><span class="toc-number">1.6.</span> <span class="toc-text">编译busybox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#busybox%E5%86%85%E6%A0%B8%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.7.</span> <span class="toc-text">busybox内核下载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.7.1.</span> <span class="toc-text">编译顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEbusybox"><span class="toc-number">1.8.</span> <span class="toc-text">配置busybox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8qemu%E4%B8%AD%E6%B5%8B%E8%AF%95"><span class="toc-number">1.9.</span> <span class="toc-text">在qemu中测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-number">1.10.</span> <span class="toc-text">引用</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        linux-kernel expoit  study (2)---添加系统调用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-05T16:00:00.000Z" itemprop="datePublished">2017-04-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Linux-kernel/" rel="tag">Linux-kernel</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="添加一个新的系统调用"><a href="#添加一个新的系统调用" class="headerlink" title="添加一个新的系统调用"></a>添加一个新的系统调用</h1><h2 id="添加一个系统调用的文件"><a href="#添加一个系统调用的文件" class="headerlink" title="添加一个系统调用的文件"></a>添加一个系统调用的文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/linux_kernel/linux-2.6.32.1/</span><br><span class="line">$  mkdir swing_test</span><br><span class="line">$ <span class="built_in">cd</span> swing_test</span><br><span class="line">$ cat swing_test.c</span><br><span class="line"><span class="comment">#include &lt;linux/kernel.h&gt;</span></span><br><span class="line">asmlinkage long sys_swing_test(int arg0)&#123;</span><br><span class="line">    printk(<span class="string">&quot;I am syscall&quot;</span>);</span><br><span class="line">    printk(<span class="string">&quot;syscall arg %d&quot;</span>,arg0);</span><br><span class="line">    <span class="built_in">return</span> ((long)arg0);</span><br><span class="line">&#125;</span><br><span class="line">asmlinkage long sys_hello(void)&#123;</span><br><span class="line">    printk(<span class="string">&quot;hello my kernel world\n&quot;</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ cat Makefile</span><br><span class="line"><span class="comment">#Makefile start</span></span><br><span class="line">obj-y := joker_test.o</span><br><span class="line"><span class="comment">#Makefile end</span></span><br><span class="line"></span><br><span class="line">修改linux-2.6.32.1根目录下的Makefile</span><br><span class="line"><span class="variable">$vim</span> ~/linux_kernel/linux-2.6.32.1/Makefile</span><br><span class="line">core-y        += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ joker_test/</span><br></pre></td></tr></table></figure>
+<p><img src="http://i4.buimg.com/567571/a965e1c9a1970dd3.png"> 添加测试目录</p>
+<h2 id="修改系统调用表添加一个新的系统调用"><a href="#修改系统调用表添加一个新的系统调用" class="headerlink" title="修改系统调用表添加一个新的系统调用"></a>修改系统调用表添加一个新的系统调用</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vim arch/x86/kernel/syscall_table_32.S</span><br><span class="line">.long sys_swing_test            /* 337 */</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改系统调用头文件"><a href="#修改系统调用头文件" class="headerlink" title="修改系统调用头文件"></a>修改系统调用头文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vim ./arch/x86/include/asm/unistd_32.h</span><br><span class="line"><span class="comment">#define __NR_swing_test         337</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="添加库文件方便测试新的系统调用接口"><a href="#添加库文件方便测试新的系统调用接口" class="headerlink" title="添加库文件方便测试新的系统调用接口"></a>添加库文件方便测试新的系统调用接口</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">在linux kernel源码根目录</span><br><span class="line">$ mkdir swing_test_syscall_lib</span><br><span class="line">$ vim swing_test_syscall_lib.c</span><br><span class="line">$ cat swing_test_syscall_lib.c</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _swing_test_ 337</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n Diving to kernel level\n\n&quot;</span>);</span><br><span class="line">	syscall(_swing_test_,<span class="number">1234</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nRising to user level\n\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">$ gcc swing_test_syscall_lib joker_test_syscall_lib.c -o swing_test_sycall -<span class="built_in">stack</span></span><br></pre></td></tr></table></figure>
+<p>由于编译的内核中，只有下面的busybox文件系统缺少必要的c库等信息，需要把上述的测试文件使用静态编译的方式</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p><code>make</code></p>
+<h2 id="编译busybox"><a href="#编译busybox" class="headerlink" title="编译busybox"></a>编译busybox</h2><h2 id="busybox内核下载"><a href="#busybox内核下载" class="headerlink" title="busybox内核下载"></a><a href="https://busybox.net/downloads/">busybox内核下载</a></h2><p>我这里用的和师傅们都不一样 我用的是busybox-1.22.1 版本</p>
+<h3 id="编译顺序"><a href="#编译顺序" class="headerlink" title="编译顺序"></a>编译顺序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make menuconfig</span><br></pre></td></tr></table></figure>
+<p>由于之前一直遇到几个错误：</p>
+<ul>
+<li>一个是：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">错误</span><br><span class="line">	linux/ext2_fs.h: 没有那个文件或目录</span><br></pre></td></tr></table></figure>
+解决<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Linux System Utilities ---&gt;</span><br><span class="line">	[ ] mkfs_ext2 </span><br><span class="line">	[ ] mkfs_vfat</span><br></pre></td></tr></table></figure></li>
+<li>另一个是之后qemu进系统发生的错误：<br><img src="http://i2.muimg.com/567571/cfd5d8842ce9f0ec.png"><br>解决：<br>Busybox Settings -&gt;Build Options -&gt;Build BusyBox as a static binary (no shared libs)<br><img src="http://i2.muimg.com/567571/dbbba270d0e9d27e.png"><br>$ make<br>$ make install<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误</span><br><span class="line">	loginutils/passwd.c:<span class="number">188</span>:<span class="number">12</span>: error: ‘RLIMIT_FSIZE’ undeclared (first use in <span class="keyword">this</span> function)</span><br><span class="line">  setrlimit(RLIMIT_FSIZE, &amp;rlimit_fsize);</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">解决</span><br><span class="line">$  vim include/libbb.h</span><br><span class="line">$  add a line <span class="comment">#include &lt;sys/resource.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;sys/mman.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;sys/resource.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;sys/socket.h&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h2 id="配置busybox"><a href="#配置busybox" class="headerlink" title="配置busybox"></a>配置busybox</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> _install</span><br><span class="line"></span><br><span class="line">创建对应的目录</span><br><span class="line">$ mkdir -pv &#123;bin,sbin,etc,proc,sys,usr/&#123;bin,sbin&#125;&#125;</span><br><span class="line">$ cat init</span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;INIT SCRIPT&quot;</span></span><br><span class="line">mount -t proc none /proc</span><br><span class="line">mount -t sysfs none /sys</span><br><span class="line">mount -t debugfs none /sys/kernel/debug</span><br><span class="line">mkdir /tmp</span><br><span class="line">mount -t tmpfs none /tmp</span><br><span class="line">mdev -s <span class="comment"># We need this to find /dev/sda later</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\nBoot took <span class="subst">$(cut -d&#x27; &#x27; -f1 /proc/uptime)</span> seconds\n&quot;</span></span><br><span class="line"><span class="built_in">exec</span> /bin/sh</span><br><span class="line">$ chmod +x init</span><br><span class="line">$ find . -print0 \</span><br><span class="line">    | cpio --null -ov --format=newc \</span><br><span class="line">    | gzip -9 &gt; /tmp/initramfs-busybox-x86.cpio.gz</span><br><span class="line">$ qemu-system-i386 -kernel arch/i386/boot/bzImage -initrd /tmp/initramfs-busybox-x86.cpio.gz</span><br></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/567571/2c94ce435cc6c77d.png"></p>
+<h2 id="在qemu中测试"><a href="#在qemu中测试" class="headerlink" title="在qemu中测试"></a>在qemu中测试</h2><p>把编译好的静态文件添加到busybox中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp swing_test_syscall_lib ~&#x2F;linux-kernel&#x2F;busybox-1.22.1&#x2F;_install&#x2F;usr&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>这里要注意，每次拷贝新文件到busybox的文件系统中去，都要生成新的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ find . -print0 \</span><br><span class="line">    | cpio --null -ov --format=newc \</span><br><span class="line">    | gzip -9 &gt; /tmp/initramfs-busybox-x86.cpio.gz</span><br><span class="line">$ qemu-system-i386 -kernel arch/i386/boot/bzImage -initrd /tmp/initramfs-busybox-x86.cpio.gz</span><br></pre></td></tr></table></figure>
+
+<p>在qemu中测试系统调用<br>$ qemu-system-i386 -kernel arch/i386/boot/bzImage -initrd /tmp/initramfs-busybox-x86.cpio.gz</p>
+<p>进入到qemu<br><img src="http://i1.piimg.com/567571/6d01c34124e5aaa6.png"></p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="http://bobao.360.cn/learning/detail/3700.html">【系列分享】Linux 内核漏洞利用教程（一）：环境配置</a><br><a href="http://www.cs.rochester.edu/~sandhya/csc256/">Adding a new system call to the Linux kernel</a><br><a href="http://linuxseekernel.blogspot.ie/2014/07/adding-system-call-in-x86-qemu.html">Adding a system call in X86 QEMU Environment</a><br><a href="http://linuxseekernel.blogspot.com/2014/06/create-simple-file-system.html">Create a simple file system</a><br><a href="https://beyermatthias.de/blog/2016/11/01/setup-for-linux-kernel-dev-using-qemu/">Setup for linux kernel dev using qemu</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">添加一个新的系统调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">添加一个系统调用的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%A1%A8%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">修改系统调用表添加一个新的系统调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">修改系统调用头文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%BA%93%E6%96%87%E4%BB%B6%E6%96%B9%E4%BE%BF%E6%B5%8B%E8%AF%95%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.</span> <span class="toc-text">添加库文件方便测试新的系统调用接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.5.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91busybox"><span class="toc-number">1.6.</span> <span class="toc-text">编译busybox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#busybox%E5%86%85%E6%A0%B8%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.7.</span> <span class="toc-text">busybox内核下载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.7.1.</span> <span class="toc-text">编译顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEbusybox"><span class="toc-number">1.8.</span> <span class="toc-text">配置busybox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8qemu%E4%B8%AD%E6%B5%8B%E8%AF%95"><span class="toc-number">1.9.</span> <span class="toc-text">在qemu中测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-number">1.10.</span> <span class="toc-text">引用</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/add-a-system-call.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/add-a-system-call.html&text=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/add-a-system-call.html&is_video=false&description=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=linux-kernel expoit  study (2)---添加系统调用&body=Check out this article: https://bestwing.me/add-a-system-call.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/add-a-system-call.html&title=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/add-a-system-call.html&name=linux-kernel expoit  study (2)---添加系统调用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/add-a-system-call.html&t=linux-kernel expoit  study (2)---添加系统调用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

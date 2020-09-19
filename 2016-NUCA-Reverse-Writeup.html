@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="八月份是逆向专场 又被各位师傅虐了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全国高校网安联赛--逆向篇">
+<meta property="og:url" content="https://bestwing.me/2016-NUCA-Reverse-Writeup.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="八月份是逆向专场 又被各位师傅虐了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz_2.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz_3.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Transformation_1.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Androidbaby_1.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Androidbaby_2.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Babyfuscator_1.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-brute.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-indirect_1.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-indirect_2.png">
+<meta property="article:published_time" content="2016-08-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:27:30.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="nuca">
+<meta property="article:tag" content="reverse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>全国高校网安联赛--逆向篇</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016-ichunqiu-September.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/John-the-Ripper-password-cracker.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2016-NUCA-Reverse-Writeup.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&text=全国高校网安联赛--逆向篇"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&is_video=false&description=全国高校网安联赛--逆向篇"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=全国高校网安联赛--逆向篇&body=Check out this article: https://bestwing.me/2016-NUCA-Reverse-Writeup.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&name=全国高校网安联赛--逆向篇&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&t=全国高校网安联赛--逆向篇"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">签到题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ezpz"><span class="toc-number">2.</span> <span class="toc-text">ezpz</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Transformation"><span class="toc-number">3.</span> <span class="toc-text">Transformation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Androidbaby"><span class="toc-number">4.</span> <span class="toc-text">Androidbaby</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Babyfuscator"><span class="toc-number">5.</span> <span class="toc-text">Babyfuscator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#indirect"><span class="toc-number">6.</span> <span class="toc-text">indirect</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        全国高校网安联赛--逆向篇
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-08-29T16:00:00.000Z" itemprop="datePublished">2016-08-30</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/nuca/" rel="tag">nuca</a>, <a class="tag-link-link" href="/tags/reverse/" rel="tag">reverse</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>做出来的题目不多呢 后面还是靠着师傅们的帮忙才多做出来了一点  <strong>**</strong> 六星一点活路都不给人留，顺便吐槽一下出题方，以后能不能自己先测试一下再放题阿，两个题有问题。<br><a href="https://yunpan.cn/cM8iTF8Lw7XYg">附上题目以及脚本</a>（提取码：8b00）</p>
+<h1 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h1><p>真签到题 直接给flag好嘛。。。 对得起分数</p>
+<h1 id="ezpz"><a href="#ezpz" class="headerlink" title="ezpz"></a>ezpz</h1><p>64分题是不是要告诉我有 <code>base64</code>阿<br>找到check函数</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz.png"></p>
+<p>就应该base64encode 直接strcmp 查看<code>res</code>的值</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz_2.png"></p>
+<p>解编码就能得到flag</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-ezpz_3.png"></p>
+<h1 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h1><p>这个送分题也没谁了。。比ezpz还不如。。。<br>没记错的话这个好像就是flag</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Transformation_1.png"></p>
+<h1 id="Androidbaby"><a href="#Androidbaby" class="headerlink" title="Androidbaby"></a>Androidbaby</h1><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Androidbaby_1.png"></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Androidbaby_2.png"></p>
+<p>输入字串a先与自己的角标异或，再与{ 13, 9, 6, 9, 93, 1, 14, 84, 9, 14, 6, 91, 10, 5, 89, 6, 28, 23, 69, 65 }分别异或<br>记{ 13, 9, 6, 9, 93, 1, 14, 84, 9, 14, 6, 91, 10, 5, 89, 6, 28, 23, 69, 65 }为b<br>for i in xrange(20):<br> ord(a[i])^i^b[i]<br>得到20个数字，通过(c[2*i]-48)<em>10+(c[2</em>i+1]-48)公式，得到10个数字 </p>
+<p><code>下面两题是汪师傅和Joke师傅做出来的</code></p>
+<h1 id="Babyfuscator"><a href="#Babyfuscator" class="headerlink" title="Babyfuscator"></a>Babyfuscator</h1><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-Babyfuscator_1.png"></p>
+<p>题如其名字 ，真是叫一个乱七八糟阿  每个字节都参与了运算。。。好复杂</p>
+<p>通过动态调试以及其他的方法可以提取指令<br>拿到指令后 爆破一下就拿到flag了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  puts(&quot;The world is in chaos, time to show your real power:&quot;);</span><br><span class="line">  while ( v5 &lt; 32 )</span><br><span class="line">    read(0, &amp;v3[v5++], 1uLL);&#x2F;&#x2F;get_input</span><br><span class="line">  v4 &#x3D; 0;</span><br><span class="line">  game((__int64)v3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void __fastcall __noreturn game(__int64 a1)</span><br><span class="line">if ( v1 + 4239419545LL &lt;&#x3D; 0xFFFFFFFFLL )</span><br><span class="line">    &#123;</span><br><span class="line">      if ( ((unsigned __int8)((((((((((((*(_BYTE *)(a1 + 31) ^ 8) + 7) ^ 0x2C) + 6) ^ 0x3C) + 3) ^ 0x17) + 8) ^ 0x30) + 6) ^ 0x3C)</span><br><span class="line">                            + 6) ^ 0x17) &#x3D;&#x3D; 56 )</span><br><span class="line">      &#123;</span><br><span class="line">        printf(&quot;Congratulations!The flag is %s\n&quot;, a1);</span><br><span class="line">        exit(0);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"> 直接angr符号执行即可得到flag：</span><br><span class="line">find&#x3D;0x4020DF, avoid&#x3D;0x4020FE</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-brute.png"></p>
+<h1 id="indirect"><a href="#indirect" class="headerlink" title="indirect"></a>indirect</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">题目以寄存器形式call</span><br><span class="line">int __cdecl sub_401140(int a1)获取输入</span><br><span class="line">&#123;</span><br><span class="line">  void *v1; &#x2F;&#x2F; ST08_4@1</span><br><span class="line">  int result; &#x2F;&#x2F; eax@1</span><br><span class="line"></span><br><span class="line">  v1 &#x3D; malloc(0xFu);</span><br><span class="line">  (*(void (__cdecl **)(_DWORD))(*(_DWORD *)a1 + 12))(**(_DWORD **)(a1 + 8));</span><br><span class="line">  (*(void (**)(const char *, ...))(*(_DWORD *)a1 + 16))(&quot;%s&quot;, v1);&#x2F;&#x2F;get input</span><br><span class="line">  result &#x3D; *(_DWORD *)(a1 + 4);</span><br><span class="line">  *(_DWORD *)(result + 8) &#x3D; v1;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int __cdecl sub_4011D0(int a1)</span><br><span class="line">&#123;</span><br><span class="line">  int result; &#x2F;&#x2F; eax@1</span><br><span class="line">  int v2; &#x2F;&#x2F; ST04_4@5</span><br><span class="line">  int v3; &#x2F;&#x2F; [sp+4h] [bp-14h]@1</span><br><span class="line">  signed int i; &#x2F;&#x2F; [sp+8h] [bp-10h]@1</span><br><span class="line"></span><br><span class="line">  result &#x3D; *(_DWORD *)(a1 + 4);</span><br><span class="line">  sub_4011D0 函数</span><br><span class="line">v3 &#x3D; *(_DWORD *)(result + 8);</span><br><span class="line">  for ( i &#x3D; 0; i &lt; 15; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    if ( i + (signed __int16)(*(_BYTE *)(*(_DWORD *)(*(_DWORD *)(a1 + 8) + 16) + i) ^ *(_BYTE *)(i + v3) &amp; 0xF) !&#x3D; *(_DWORD *)(**(_DWORD **)(a1 + 4) + 4 * i)</span><br><span class="line">      || (signed __int16)(*(_BYTE *)(*(_DWORD *)(*(_DWORD *)(a1 + 8) + 20) + i) ^ (unsigned __int16)((signed int)*(_BYTE *)(i + v3) &gt;&gt; 4))</span><br><span class="line">       - i !&#x3D; *(_DWORD *)(*(_DWORD *)(*(_DWORD *)(a1 + 4) + 4) + 4 * i) )</span><br><span class="line">    &#123;</span><br><span class="line">      (*(void (__cdecl **)(_DWORD))(*(_DWORD *)a1 + 12))(*(_DWORD *)(*(_DWORD *)(a1 + 8) + 16));</span><br><span class="line">      v2 &#x3D; *(_DWORD *)(*(_DWORD *)(a1 + 8) + 16);</span><br><span class="line">      (*(void (__stdcall **)(_DWORD))(*(_DWORD *)a1 + 12))(0);</span><br><span class="line">      exit(0);</span><br><span class="line">    &#125;</span><br><span class="line">    result &#x3D; (*(int (__cdecl **)(_DWORD))(*(_DWORD *)a1 + 12))(*(_DWORD *)(*(_DWORD *)(a1 + 8) + 20));</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">按上述算法抠出对应的四个table即可，伪代码如下：</span><br><span class="line">flag &#x3D; &quot;&quot;</span><br><span class="line">for i in range(15):</span><br><span class="line">	flag_tmp1 &#x3D; (table1[i] ^ (table2[i]-i)) % 16</span><br><span class="line">	flag_tmp2 &#x3D; (table3[i] ^ (table3[i]+i)) %16</span><br><span class="line">	flag +&#x3D; (flag_tmp1*16 + flag_tmp2)</span><br><span class="line">print flag</span><br></pre></td></tr></table></figure>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-indirect_1.png"></p>
+<p>坑爹的出题人。。 + 号 -号要换个位置才能得出可见字符</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-xnuca-indirect_2.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">签到题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ezpz"><span class="toc-number">2.</span> <span class="toc-text">ezpz</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Transformation"><span class="toc-number">3.</span> <span class="toc-text">Transformation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Androidbaby"><span class="toc-number">4.</span> <span class="toc-text">Androidbaby</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Babyfuscator"><span class="toc-number">5.</span> <span class="toc-text">Babyfuscator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#indirect"><span class="toc-number">6.</span> <span class="toc-text">indirect</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2016-NUCA-Reverse-Writeup.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&text=全国高校网安联赛--逆向篇"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&is_video=false&description=全国高校网安联赛--逆向篇"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=全国高校网安联赛--逆向篇&body=Check out this article: https://bestwing.me/2016-NUCA-Reverse-Writeup.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&title=全国高校网安联赛--逆向篇"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&name=全国高校网安联赛--逆向篇&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2016-NUCA-Reverse-Writeup.html&t=全国高校网安联赛--逆向篇"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

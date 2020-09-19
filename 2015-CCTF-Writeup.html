@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="玩了一圈CCTF 打酱油了打酱油了!师傅们都好厉害~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="酱油之旅--CCTF">
+<meta property="og:url" content="https://bestwing.me/2015-CCTF-Writeup.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="玩了一圈CCTF 打酱油了打酱油了!师傅们都好厉害~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_R2.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/CCTF_RE3.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/Bsst.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_best1.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_true-or-false-bin.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/true-or-false2.png">
+<meta property="article:published_time" content="2016-04-24T16:58:22.000Z">
+<meta property="article:modified_time" content="2020-06-22T18:08:46.766Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="cctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_R2.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>酱油之旅--CCTF</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016-PCTF-Writup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Hexo-Use.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2015-CCTF-Writeup.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2015-CCTF-Writeup.html&text=酱油之旅--CCTF"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2015-CCTF-Writeup.html&is_video=false&description=酱油之旅--CCTF"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=酱油之旅--CCTF&body=Check out this article: https://bestwing.me/2015-CCTF-Writeup.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2015-CCTF-Writeup.html&name=酱油之旅--CCTF&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2015-CCTF-Writeup.html&t=酱油之旅--CCTF"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Base-%E5%AE%89%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">Base 安码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MIsc"><span class="toc-number">1.1.</span> <span class="toc-text">MIsc</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#misc100-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">misc100_1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T1"><span class="toc-number">1.1.2.</span> <span class="toc-text">Reverse_100T1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T2"><span class="toc-number">1.1.3.</span> <span class="toc-text">Reverse_100T2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T3"><span class="toc-number">1.1.4.</span> <span class="toc-text">Reverse_100T3</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc"><span class="toc-number">2.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#True-or-False"><span class="toc-number">2.1.</span> <span class="toc-text">True or False?</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        酱油之旅--CCTF
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-04-24T16:58:22.000Z" itemprop="datePublished">2016-04-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/cctf/" rel="tag">cctf</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Base-安码"><a href="#Base-安码" class="headerlink" title="Base 安码"></a>Base 安码</h2><h3 id="MIsc"><a href="#MIsc" class="headerlink" title="MIsc"></a>MIsc</h3><h4 id="misc100-1"><a href="#misc100-1" class="headerlink" title="misc100_1"></a>misc100_1</h4><p>后面将附上打包好的文件  </p>
+<p>用winhex打开图片发现奇怪的代码</p>
+<p>Y3Rme3dlMWMwbWUgdDAgYW5tYWN0ZiF9 </p>
+<p>Base64解密即得flag<br>###misc100_2</p>
+<p>这是一题流量包分析  还好数据不大可以取巧<br>想到当初在某篇writeup看到神奇的命令 strings  </p>
+<p>解码就得到了flag  </p>
+<p>![](<a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_misc100">https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_misc100</a> 2.jpg)</p>
+<p>##Reverse</p>
+<h4 id="Reverse-100T1"><a href="#Reverse-100T1" class="headerlink" title="Reverse_100T1"></a>Reverse_100T1</h4><p>这个很简单 其实打开就看到了flag，问题脑洞大我以为这是md5加密并没有直接提交  谁知道….  </p>
+<h4 id="Reverse-100T2"><a href="#Reverse-100T2" class="headerlink" title="Reverse_100T2"></a>Reverse_100T2</h4><p>这题让我知道有时候是需要监听的  还有第一次使用IL spy好紧张  </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_R2.png"></p>
+<p>需要监听 本地 31337端口<br>nc -l -p 31337  </p>
+<p>然后你就看到flag  CTF{7eb67b0bb4427e0b43b40b6042670b55}  </p>
+<h4 id="Reverse-100T3"><a href="#Reverse-100T3" class="headerlink" title="Reverse_100T3"></a>Reverse_100T3</h4><p>这题告诉我要静下心来  看看是不是有算法</p>
+<p>然后直接上龙哥的图了 龙哥的注释杠杠的  </p>
+<p>这里需要字符串拼接 拼接结果是 4 2 3 1  </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/CCTF_RE3.png"></p>
+<hr>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>##Best_Easy_Misc</p>
+<p>我不服！！！为什么他们都能直接解压缩而我不行呢<br>不知为什么我解压不出来 但是右键属性看到了加密 于是我去百度了一下伪加密，发现可以用手机解压。。。。我还是不服<del>~</del></p>
+<p>解压出来是一个txt文件<br>打开一串的-.-.-<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/Bsst.jpg"><br>如图  </p>
+<p>这时候怎么办 刚开始觉得有点像莫尔斯密码 然后又和马师傅一起说出了培根…其实都无所谓的…<br>解法1<br>   把”-“ 换成1 把”.”换成0  仔细看了看发现是1024个字符，刚好是32的次方，于是排列成排一个方格，然后就看了flag  </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_best1.jpg"></p>
+<p> 解法2<br>​     用脚本跑吧<br>   这是我从别人那copy过来的..</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf8 -*-</span></span><br><span class="line"><span class="comment">#author:pcat</span></span><br><span class="line"><span class="comment">#必须先安装Image模块</span></span><br><span class="line">import Image</span><br><span class="line"></span><br><span class="line">dct=&#123;</span><br><span class="line">	<span class="string">&#x27;A&#x27;</span>:<span class="string">&#x27;.-&#x27;</span>,<span class="string">&#x27;B&#x27;</span>:<span class="string">&#x27;-...&#x27;</span>,<span class="string">&#x27;C&#x27;</span>:<span class="string">&#x27;-.-.&#x27;</span>,<span class="string">&#x27;D&#x27;</span>:<span class="string">&#x27;-..&#x27;</span>,<span class="string">&#x27;E&#x27;</span>:<span class="string">&#x27;.&#x27;</span>,<span class="string">&#x27;F&#x27;</span>:<span class="string">&#x27;..-.&#x27;</span>,<span class="string">&#x27;G&#x27;</span>:<span class="string">&#x27;--.&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;H&#x27;</span>:<span class="string">&#x27;....&#x27;</span>,<span class="string">&#x27;I&#x27;</span>:<span class="string">&#x27;..&#x27;</span>,<span class="string">&#x27;J&#x27;</span>:<span class="string">&#x27;.---&#x27;</span>,<span class="string">&#x27;K&#x27;</span>:<span class="string">&#x27;-.-&#x27;</span>,<span class="string">&#x27;L&#x27;</span>:<span class="string">&#x27;.-..&#x27;</span>,<span class="string">&#x27;M&#x27;</span>:<span class="string">&#x27;--&#x27;</span>,<span class="string">&#x27;N&#x27;</span>:<span class="string">&#x27;-.&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;O&#x27;</span>:<span class="string">&#x27;---&#x27;</span>,<span class="string">&#x27;P&#x27;</span>:<span class="string">&#x27;.--.&#x27;</span>,<span class="string">&#x27;Q&#x27;</span>:<span class="string">&#x27;--.-&#x27;</span>,<span class="string">&#x27;R&#x27;</span>:<span class="string">&#x27;.-.&#x27;</span>,<span class="string">&#x27;S&#x27;</span>:<span class="string">&#x27;...&#x27;</span>,<span class="string">&#x27;T&#x27;</span>:<span class="string">&#x27;-&#x27;</span>,<span class="string">&#x27;U&#x27;</span>:<span class="string">&#x27;..-&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;V&#x27;</span>:<span class="string">&#x27;...-&#x27;</span>,<span class="string">&#x27;W&#x27;</span>:<span class="string">&#x27;.--&#x27;</span>,<span class="string">&#x27;X&#x27;</span>:<span class="string">&#x27;-..-&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>:<span class="string">&#x27;-.--&#x27;</span>,<span class="string">&#x27;Z&#x27;</span>:<span class="string">&#x27;--..&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;0&#x27;</span>:<span class="string">&#x27;-----&#x27;</span>,<span class="string">&#x27;1&#x27;</span>:<span class="string">&#x27;.----&#x27;</span>,<span class="string">&#x27;2&#x27;</span>:<span class="string">&#x27;..---&#x27;</span>,<span class="string">&#x27;3&#x27;</span>:<span class="string">&#x27;...--&#x27;</span>,<span class="string">&#x27;4&#x27;</span>:<span class="string">&#x27;....-&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;5&#x27;</span>:<span class="string">&#x27;.....&#x27;</span>,<span class="string">&#x27;6&#x27;</span>:<span class="string">&#x27;-....&#x27;</span>,<span class="string">&#x27;7&#x27;</span>:<span class="string">&#x27;--...&#x27;</span>,<span class="string">&#x27;8&#x27;</span>:<span class="string">&#x27;---..&#x27;</span>,<span class="string">&#x27;9&#x27;</span>:<span class="string">&#x27;----.&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;.&#x27;</span>:<span class="string">&#x27;.-.-.-&#x27;</span>,<span class="string">&#x27;:&#x27;</span>:<span class="string">&#x27;---...&#x27;</span>,<span class="string">&#x27;,&#x27;</span>:<span class="string">&#x27;--..--&#x27;</span>,<span class="string">&#x27;;&#x27;</span>:<span class="string">&#x27;-.-.-.&#x27;</span>,<span class="string">&#x27;?&#x27;</span>:<span class="string">&#x27;..--..&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;=&#x27;</span>:<span class="string">&#x27;-...-&#x27;</span>,<span class="string">&quot;&#x27;&quot;</span>:<span class="string">&#x27;.----.&#x27;</span>,<span class="string">&#x27;/&#x27;</span>:<span class="string">&#x27;-..-.&#x27;</span>,<span class="string">&#x27;!&#x27;</span>:<span class="string">&#x27;-.-.--&#x27;</span>,<span class="string">&#x27;-&#x27;</span>:<span class="string">&#x27;-....-&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;_&#x27;</span>:<span class="string">&#x27;..--.-&#x27;</span>,<span class="string">&#x27;&quot;&#x27;</span>:<span class="string">&#x27;.-..-.&#x27;</span>,<span class="string">&#x27;(&#x27;</span>:<span class="string">&#x27;-.--.&#x27;</span>,<span class="string">&#x27;)&#x27;</span>:<span class="string">&#x27;-.--.-&#x27;</span>,<span class="string">&#x27;$&#x27;</span>:<span class="string">&#x27;...-..-&#x27;</span>,</span><br><span class="line">	 <span class="string">&#x27;&amp;&#x27;</span>:<span class="string">&#x27;.-...&#x27;</span>,<span class="string">&#x27;@&#x27;</span>:<span class="string">&#x27;.--.-.&#x27;</span>,<span class="string">&#x27;+&#x27;</span>:<span class="string">&#x27;.-.-.&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def readRe():</span><br><span class="line">	f=open(<span class="string">&#x27;reverse&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>).<span class="built_in">read</span>().strip()</span><br><span class="line">	lst=f.split(<span class="string">&#x27;  &#x27;</span>)</span><br><span class="line">	<span class="comment">#键值交换</span></span><br><span class="line">	dct2=&#123;v:k <span class="keyword">for</span> k,v <span class="keyword">in</span> dct.items()&#125;</span><br><span class="line">	<span class="comment">#摩斯密码解密</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(lst)):</span><br><span class="line">		lst[i]=dct2[lst[i]]</span><br><span class="line">	<span class="built_in">return</span> <span class="string">&quot;&quot;</span>.join(lst)</span><br><span class="line"></span><br><span class="line">def foo():</span><br><span class="line">	<span class="comment">#读取reverse文件</span></span><br><span class="line">	s=readRe()</span><br><span class="line">	<span class="comment">#绘制图</span></span><br><span class="line">	n=32</span><br><span class="line">	width,height=n,n</span><br><span class="line">	bgcolor=(255,255,255)</span><br><span class="line">	im= Image.new(<span class="string">&#x27;RGB&#x27;</span>,(width,height),bgcolor)</span><br><span class="line">	pix=im.load()</span><br><span class="line">	i=0</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> xrange(0,height):</span><br><span class="line">		<span class="keyword">for</span> y <span class="keyword">in</span> xrange(0,width):</span><br><span class="line">			<span class="keyword">if</span> s[i]==<span class="string">&#x27;9&#x27;</span>:</span><br><span class="line">				pix[x,y]=(0,0,0)</span><br><span class="line">			i+=1</span><br><span class="line">	<span class="comment">#图像旋转180度</span></span><br><span class="line">	out=im.rotate(180)</span><br><span class="line">	out.show()</span><br><span class="line">	pass</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	foo()</span><br><span class="line">	<span class="built_in">print</span> <span class="string">&#x27;ok&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>接着据生成了我要的falg </p>
+<h3 id="True-or-False"><a href="#True-or-False" class="headerlink" title="True or False?"></a>True or False?</h3><p>  这题马师傅吓死我了 居然过来问我有没有思路 受宠若惊 受宠若惊   </p>
+<p>hint说了他是一个压缩文件 然而尝试了各种压缩果断放弃…<br>  之后又放出hint Bz2 果断百度豁然开朗<del>~</del><br>  然后又傻逼了一回，没有加文件头难怪死活解压不出来<br>  用winhex打开  </p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/cctf_true-or-false-bin.jpg"></p>
+<p> 百度一下BZ2压缩文件的文件头加上  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar   -jxvf    aaaa.tar.bz2</span><br></pre></td></tr></table></figure>
+<p> 命令解压缩…<br> 得到两个Bin文件   </p>
+<p> 稍微逆向看一下<br> 因为IDA不是很熟悉  在这里我学习到了IDA不仅仅有F5这个功能还有R键….这里上龙师傅的图</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/true-or-false2.png"></p>
+<p> OK 按顺序拼接就得到falg了</p>
+<hr>
+<p>然后酱油就打到这里了~</p>
+<p>酱油党要睡觉了…</p>
+<p>明天看完WP有想法再来更新….</p>
+<p><a href="http://7xt21h.com2.z0.glb.clouddn.com/CCTF.zip">文件</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Base-%E5%AE%89%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">Base 安码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MIsc"><span class="toc-number">1.1.</span> <span class="toc-text">MIsc</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#misc100-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">misc100_1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T1"><span class="toc-number">1.1.2.</span> <span class="toc-text">Reverse_100T1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T2"><span class="toc-number">1.1.3.</span> <span class="toc-text">Reverse_100T2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-100T3"><span class="toc-number">1.1.4.</span> <span class="toc-text">Reverse_100T3</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc"><span class="toc-number">2.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#True-or-False"><span class="toc-number">2.1.</span> <span class="toc-text">True or False?</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2015-CCTF-Writeup.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2015-CCTF-Writeup.html&text=酱油之旅--CCTF"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2015-CCTF-Writeup.html&is_video=false&description=酱油之旅--CCTF"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=酱油之旅--CCTF&body=Check out this article: https://bestwing.me/2015-CCTF-Writeup.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2015-CCTF-Writeup.html&title=酱油之旅--CCTF"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2015-CCTF-Writeup.html&name=酱油之旅--CCTF&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2015-CCTF-Writeup.html&t=酱油之旅--CCTF"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

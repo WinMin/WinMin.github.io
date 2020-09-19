@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。 断点设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种  软断点 硬件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="断点的那些事">
+<meta property="og:url" content="https://bestwing.me/Those-of-the-Breakpoint.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。 断点设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种  软断点 硬件">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-02-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-16T16:57:23.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="Bin">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>断点的那些事</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/WiFi_Attack.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Us-Git-to-develop-usage-introduction.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Those-of-the-Breakpoint.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Those-of-the-Breakpoint.html&text=断点的那些事"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Those-of-the-Breakpoint.html&is_video=false&description=断点的那些事"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=断点的那些事&body=Check out this article: https://bestwing.me/Those-of-the-Breakpoint.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Those-of-the-Breakpoint.html&name=断点的那些事&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Those-of-the-Breakpoint.html&t=断点的那些事"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%AD%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">断点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E6%96%AD%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">软断点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E6%96%AD%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">硬件断点</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        断点的那些事
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-02-01T16:00:00.000Z" itemprop="datePublished">2017-02-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Bin/" rel="tag">Bin</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>学习二进制的过程中我们总是会遇到断点，毕竟设置断点能使我们更好的调试程序。接触二进制以来，第一次比较清楚系统的了解了一下断点以及与断点有关的软件安全的东西。</p>
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><p>设置断点我们可以使一个进程的执行暂停在一个符合某种特定的条件的位置上，此时我们可以对程序的变量，栈上参数以及分配情况进行查看，并且在改变前我可以了解他们的面貌。因此，断点是我们调试程序几乎必不可少的功能，通常断点我们有三种</p>
+<ul>
+<li>软断点</li>
+<li>硬件断点</li>
+<li>内存断点<br>在后面的内容中，我可能会设计到针对软件调试，我们开发人员会用到的防御措施的关键代码。</li>
+</ul>
+<h1 id="软断点"><a href="#软断点" class="headerlink" title="软断点"></a>软断点</h1><p>软断点的设置能够使得目标进程在执行到一个位置指令的时候暂停执行，软断点是目前调试程序最长用到的断点类型。我们常用调试器的F2功能便是常见的软断点。它的实质就是一个单字节的指令，我们都知道 0xcc，即INT3指令的操作码，这个指令是告诉CPU暂停执行当前的进程，这也就是软断点的核心。<br>如下汇编:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov eax,ebx</span><br></pre></td></tr></table></figure>
+<p>这个汇编仅是简单的将寄存器中EBX的值存入EAX中。<br>而在X86环境下，其机器码为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8BC3</span><br></pre></td></tr></table></figure>
+<p>这才是CPU才可识别的机器语言， 机器码 分为成两部分，即操作码以及操作数。<br>设置软断点前:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x66554433;          8BC3                  mov eax,ebx</span><br></pre></td></tr></table></figure>
+<p>设置软断点后:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x66554433;          CCC3                  mov eax,ebx</span><br></pre></td></tr></table></figure>
+<p>我们可以看到前后的变化，双字节的操作码8BC3中被替换了一个字节，替换的的字节是INT3的中断指令，单字节值为0xcc。当CP执行到这里，并触碰到这个字节的时候，就引发了一个INT3的中断事件。而调试器是如何实现这个过程的呢？当调试器需要在一个内存地址上设置断点的时候，调试器首先读取内存上的第一个操作码字节，并存储在断点列表中，接着调试器将字节CC写入被读取的内存地址将至替换掉。接着就是CPU发生INT3事件，被调试器所捕获，接着调试器会查EIP是否指向我们设置断点的内存地址，如果是，调试器会将之前的数据写回内存地址中，当进程恢复执行，写回正确的字节数据。</p>
+<p>而针对软断点，我们的开发者常用的保护措施就是CRC校验，即循环冗余校验，可以检测程序内容是否被改动，因为软断点改变了字节，肯定也改变了程序内存的CRC校验值。在XP，没有ASLR机制的时候，我们可以用如下代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DWORD <span class="title">CRC32</span><span class="params">(BYTE* ptr,DWORD Size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   </span><br><span class="line">  DWORD crcTable[<span class="number">256</span>],crcTmp1;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//动态生成CRC-32表</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">256</span>; i++)</span><br><span class="line">   &#123;</span><br><span class="line">    crcTmp1 = i;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">8</span>; j&gt;<span class="number">0</span>; j--)</span><br><span class="line">     &#123;</span><br><span class="line">      <span class="keyword">if</span> (crcTmp1&amp;<span class="number">1</span>) crcTmp1 = (crcTmp1 &gt;&gt; <span class="number">1</span>) ^ <span class="number">0xEDB88320</span>L;</span><br><span class="line">       <span class="keyword">else</span> crcTmp1 &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     crcTable[i] = crcTmp1;</span><br><span class="line">   &#125;</span><br><span class="line">  <span class="comment">//计算CRC32值</span></span><br><span class="line">  DWORD crcTmp2= <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">  <span class="keyword">while</span>(Size--)</span><br><span class="line">  &#123;</span><br><span class="line">    crcTmp2 = ((crcTmp2&gt;&gt;<span class="number">8</span>) &amp; <span class="number">0x00FFFFFF</span>) ^ crcTable[ (crcTmp2^(*ptr)) &amp; <span class="number">0xFF</span> ];</span><br><span class="line">    ptr++;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> (crcTmp2^<span class="number">0xFFFFFFFF</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其次是具体的代码实现，具体有两个部分，一个是需要被保护的代码的和需要创建一个线程来计算校验值<br>假设要被保护的代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">ProtectStart:   <span class="comment">//要保护的代码的起始地址</span></span><br><span class="line">  __asm</span><br><span class="line">  &#123;</span><br><span class="line">         inc eax   <span class="comment">//花指令</span></span><br><span class="line">       dec eax</span><br><span class="line">       push eax</span><br><span class="line">       pop eax</span><br><span class="line">  &#125;</span><br><span class="line">start:</span><br><span class="line">     HMODULE hMod = GetModuleHandle(<span class="literal">NULL</span>);<span class="comment">//同样是花指令</span></span><br><span class="line">     HMODULE hUser32 = LoadLibrary(<span class="string">&quot;user32.dll&quot;</span>);</span><br><span class="line">ProtectEnd:               <span class="comment">//要保护代码的终结地址</span></span><br><span class="line">     DWORD dwThreadId = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">     STBINGLEPARAM stParam = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">       stParam.hEvent = CreateEvent(<span class="literal">NULL</span>,FALSE,FALSE,<span class="string">&quot;bingle&quot;</span>);</span><br><span class="line">     </span><br><span class="line">     DWORD dwAddr = <span class="number">0</span>;  <span class="comment">//一个缓存空间</span></span><br><span class="line">     __asm mov eax,offset ProtectStart  <span class="comment">//计算代码的起始地址</span></span><br><span class="line">     __asm mov dwAddr,eax</span><br><span class="line">     stParam.dwStart = dwAddr; <span class="comment">//保存在我们自己定义的结构体里</span></span><br><span class="line"></span><br><span class="line">       __asm mov eax,offset ProtectEnd <span class="comment">//计算保护代码的结束地址，同样保存在自己定义的                   结构体里。</span></span><br><span class="line">     __asm mov dwAddr,eax</span><br><span class="line">     stParam.dwEnd = dwAddr;</span><br><span class="line">     </span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;开始了\n&quot;</span>);</span><br><span class="line">       CreateThread(<span class="literal">NULL</span>,<span class="number">0</span>,(LPTHREAD_START_ROUTINE)bingleProc,(LPVOID)&amp;stParam,<span class="number">0</span>,&amp;dwThreadId);</span><br></pre></td></tr></table></figure>
+<p>创建线程,用来计算校验值<br>并且将线程的创建放在循环中，这样保证在程序运行的过程中，会不断的监视内存的数据是否改变。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">CreateThread(<span class="literal">NULL</span>,<span class="number">0</span>,(LPTHREAD_START_ROUTINE)bingleProc,(LPVOID)&amp;stParam,<span class="number">0</span>,&amp;dwThreadId);</span><br><span class="line"></span><br><span class="line">     DWORD dwRet = <span class="number">0</span>;</span><br><span class="line">     dwRet = WaitForSingleObject(stParam.hEvent,INFINITE);</span><br><span class="line">     <span class="keyword">while</span>(dwRet == WAIT_OBJECT_0)</span><br><span class="line">     &#123;</span><br><span class="line">         Sleep(<span class="number">5000</span>);</span><br><span class="line">           CreateThread(<span class="literal">NULL</span>,<span class="number">0</span>,(LPTHREAD_START_ROUTINE)bingleProc,(LPVOID)&amp;stParam,<span class="number">0</span>,&amp;dwThreadId);</span><br><span class="line">       dwRet = WaitForSingleObject(stParam.hEvent,INFINITE);</span><br><span class="line">     &#125;</span><br><span class="line"><span class="comment">//上边的代码是创建线程的，根据创建线程的返回值来作为循环条件。其中stParam是我自定义结构体生成的一个对象。这个对象保存在堆栈中。该结构体的定义如下：</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(1)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> __<span class="title">STBINGLEPARAM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  HANDLE hEvent;  <span class="comment">//用于同步的一个信号量</span></span><br><span class="line">  DWORD dwStart;  <span class="comment">//要校验的代码的起始地址</span></span><br><span class="line">  DWORD dwEnd;   <span class="comment">//要校验的代码的终结地址</span></span><br><span class="line">&#125;STBINGLEPARAM,*PBINGLEPARAM;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//接下来是是线程函数了。</span></span><br><span class="line">STBINGLEPARAM *stParam = (STBINGLEPARAM *)lpParameter;</span><br><span class="line">   </span><br><span class="line">  DWORD dwCodeSize = stParam-&gt;dwEnd - stParam-&gt;dwStart;</span><br><span class="line">  BYTE *pbyteBuf = <span class="literal">NULL</span>;</span><br><span class="line">  pbyteBuf = (BYTE *)stParam-&gt;dwStart;</span><br><span class="line">  </span><br><span class="line">  DWORD dwOldProtect = <span class="number">0</span>;</span><br><span class="line">  VirtualProtect((LPVOID)stParam-&gt;dwStart,<span class="number">4</span>*<span class="number">1024</span>,PAGE_EXECUTE_READWRITE,&amp;dwOldProtect);</span><br><span class="line">  <span class="keyword">if</span>(CRC32(pbyteBuf,dwCodeSize) != <span class="number">0xa0eb5866</span>)</span><br><span class="line">  &#123;</span><br><span class="line">     MessageBox(<span class="literal">NULL</span>,<span class="string">&quot;bingle&quot;</span>,<span class="string">&quot;代码被修改了&quot;</span>,<span class="literal">NULL</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;代码被修改了\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">     SetEvent(stParam-&gt;hEvent);</span><br><span class="line">     ExitProcess(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>当然除了校验的方法，我们也可以通过设定一个clock，因为我们调试是需要的时间的，因此当我们设置一个clock来计算程序暂停的时间，当超过一个阈值，我们就可以断定我们的的程序正在被调试，可以直接exit()退出，或做一些事情保护我们的程序。</p>
+<h1 id="硬件断点"><a href="#硬件断点" class="headerlink" title="硬件断点"></a>硬件断点</h1><p>硬件断点是有自身的适用场合的:<br>则是当少量的断点即可满足调试任务，或者当我们的调试目标实现了CRC校验的反调试机制。这种类型断点的设置是通过一组CPU上的特殊的寄存器实现的。一个典型的CPU应当有8个的寄存器，这8个寄存器就是我们所说的特殊寄存器，一般称之为调试寄存器。<br>接着下面的内容我们可以稍微详细的介绍一下这8个寄存器<br>DR0到DR3，用于存储所设硬件断点内存地址，也正是因为如此，我们才能只能最多使用8个硬件断点。<br>DR4和DR5会被保留。<br>DR6，这个寄存器上记录了上一次断点触发所产生的调试事件类型信息。因此DR6寄存器又称之为调试状态寄存器。<br>DR7，存储各个断点的触发条件信息，通过设置DR7寄存器上的特定标记位，我们可以断点设定一下的触发条件:</p>
+<ul>
+<li>特定内存地址上的指令被执行触发断点</li>
+<li>当数据被写入一个特定内存弟子时触发断点</li>
+<li>当数据被读出或写入，这是不包括执行，一个特定非可执行内存地址触发断点<br>因此DR7实质上是硬件断点的激活开关。</li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%AD%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">断点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E6%96%AD%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">软断点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E6%96%AD%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">硬件断点</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Those-of-the-Breakpoint.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Those-of-the-Breakpoint.html&text=断点的那些事"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Those-of-the-Breakpoint.html&is_video=false&description=断点的那些事"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=断点的那些事&body=Check out this article: https://bestwing.me/Those-of-the-Breakpoint.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Those-of-the-Breakpoint.html&title=断点的那些事"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Those-of-the-Breakpoint.html&name=断点的那些事&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Those-of-the-Breakpoint.html&t=断点的那些事"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

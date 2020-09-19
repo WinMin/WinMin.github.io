@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。 编译安装qemu为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。 首先从github上下载qemu。 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建嵌入式qemu">
+<meta property="og:url" content="https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。 编译安装qemu为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。 首先从github上下载qemu。 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-17T03:27:15.000Z">
+<meta property="article:modified_time" content="2020-06-22T17:56:18.424Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="嵌入式环境">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>构建嵌入式qemu</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/dragon-ctf-2018-Fast-Storage-writeup.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/360_P2_Router_login_analysis.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&text=构建嵌入式qemu"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&is_video=false&description=构建嵌入式qemu"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=构建嵌入式qemu&body=Check out this article: https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&name=构建嵌入式qemu&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&t=构建嵌入式qemu"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85qemu"><span class="toc-number">1.</span> <span class="toc-text">编译安装qemu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">安装系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%89%E8%A3%85%E5%A5%BD%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">启动安装好的系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        构建嵌入式qemu
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-09-17T03:27:15.000Z" itemprop="datePublished">2018-09-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%8E%AF%E5%A2%83/" rel="tag">嵌入式环境</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>整体的思路是先编译安装好qemu，从网上下载kernel和initrd用于安装系统，将系统安装在我们创建的硬盘镜像中，由于没有grub我们需要从img中提取出initrd用于系统的boot。提取出后通过kernel、initrd和安装好的filesystem运行程序。</p>
+<h2 id="编译安装qemu"><a href="#编译安装qemu" class="headerlink" title="编译安装qemu"></a>编译安装qemu</h2><p>为了避免一些依赖兼容性的问题，我用一个新建的ubuntu18.04做容器。</p>
+<p>首先从github上下载qemu。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/qemu/qemu.git</span><br></pre></td></tr></table></figure>
+
+<p>在安装前需要装一些依赖：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential zlib1g-dev pkg-config libglib2.0-dev binutils-dev libboost-all-dev autoconf libtool libssl-dev libpixman-1-dev libpython-dev python-pip python-capstone virtualenv bison flex</span><br></pre></td></tr></table></figure>
+
+<p>编译时的配置信息如下（选了一大堆架构列表，把qemu装在/opt/qemu中）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --target-list=arm-softmmu,mips-softmmu,mips64-softmmu,mips64el-softmmu,mipsel-softmmu,aarch64-softmmu,arm-linux-user,aarch64-linux-user,mips64el-linux-user,mipsel-linux-user,mips-linux-user,mips64-linux-user --prefix=/opt/qemu --python=/usr/bin/python2.7</span><br></pre></td></tr></table></figure>
+
+<p>然后<code>make &amp;&amp; sudo make install </code>一把梭。</p>
+<h2 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h2><p>首先我们需要从网上下载kernel和initrd。去镜像站就可以下载到，比如（我这里用的ubuntu的来安装）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/debian/dists/buster/main/installer-armhf/current/images/netboot/</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -r -nH -nd -np -R <span class="string">&quot;index.html*&quot;</span> --quiet http://ports.ubuntu.com/ubuntu-ports/dists/xenial/main/installer-armhf/current/images/generic-lpae/netboot/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我这里用的是第二个。</p>
+<p>创建一个空的filesystem：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img create -f qcow2 ubuntu.img 16G</span><br></pre></td></tr></table></figure>
+
+<p>现在我们拿到了kernel、initrd和新的硬盘镜像了，然后需要在qemu里面安装系统了，我的安装方法如下，记得append时要把filesystem的地址改成ram，原因是要把驱动安装程序放在内存中运行，kernel和initrd指定之前下载好的就好（注意内存设置的不要比虚拟机大否则会崩掉）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo &#x2F;opt&#x2F;qemu&#x2F;bin&#x2F;qemu-system-arm -m 1024 -M virt -cpu cortex-a15 -smp cpus&#x3D;4,maxcpus&#x3D;4 -kernel .&#x2F;vmlinuz -initrd .&#x2F;initrd.gz -append &quot;root&#x3D;&#x2F;dev&#x2F;ram&quot; -drive file&#x3D;..&#x2F;ubuntu.img,if&#x3D;none,format&#x3D;qcow2,id&#x3D;hd0 -device virtio-blk-device,drive&#x3D;hd0 -netdev type&#x3D;tap,id&#x3D;net0 -device virtio-net-device,netdev&#x3D;net0,mac&#x3D;52:54:00:fa:ee:10 -nographic</span><br></pre></td></tr></table></figure>
+
+<p>在安装时，会遇到需要网络的情况（安装一半会卡住），我们需要手动配置一下网络，这里我们看到我们的网卡名字是enp0s25（这个改成自己的），qemu运行后开启的网卡名字叫tap0，我们配置一下tap0的iptables，并设置好ip。这里注意一下需要先启动qemu，我们修改qemu创建的接口（tap0），如果我们自己创建一个tap0的话qemu运行时不会直接使用这个tap0，会重新创建一个tap1：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sudo sysctl -w net.ipv4.ip_forward=1</span><br><span class="line"></span><br><span class="line">sudo iptables -F</span><br><span class="line">sudo iptables -X</span><br><span class="line">sudo iptables -t nat -F</span><br><span class="line">sudo iptables -t nat -X</span><br><span class="line">sudo iptables -t mangle -F</span><br><span class="line">sudo iptables -t mangle -X</span><br><span class="line">sudo iptables -P INPUT ACCEPT</span><br><span class="line">sudo iptables -P FORWARD ACCEPT</span><br><span class="line">sudo iptables -P OUTPUT ACCEPT</span><br><span class="line"></span><br><span class="line">sudo iptables -t nat -A POSTROUTING -o enp0s25 -j MASQUERADE</span><br><span class="line">sudo iptables -I FORWARD 1 -i tap0 -j ACCEPT</span><br><span class="line">sudo iptables -I FORWARD 1 -o tap0 -m state --state RELATED,ESTABLISHED -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment"># inet_ip = 192.168.100.2</span></span><br><span class="line">sudo ifconfig tap0 192.168.100.254 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<p>运行这些命令后qemu里面才能上网</p>
+<p>然后在qemu的安装界面，我们配置一下固定的IP，就是脚本里面改的IP(任意一个C段网都行，不要和宿主机的网段一样就好，这里配成了192.168.100.2)。网关填写tap0的地址，DNS设置自己的DNS，如果不知道就设置成8.8.8.8或114.114.114.114。</p>
+<p>安装要过很久，建议晚上睡前安，第二天收割img。</p>
+<p>安装好了后会有提示系统没法boot，这是正常的，毕竟我们没有grub，直接退出安装就好了。</p>
+<h2 id="启动安装好的系统"><a href="#启动安装好的系统" class="headerlink" title="启动安装好的系统"></a>启动安装好的系统</h2><p>由于我们没有grub帮助我们boot，所以我门需要把initrd从qcow2中提取出来，单独指定给qemu。这是我们需要一个工具<code>libguestfs-tools</code>。apt一把梭。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libguestfs-tools -yf</span><br></pre></td></tr></table></figure>
+
+<p>用virt-ls看一下initrd的文件名（别问我问啥要加这两个环境变量，log提示我加的）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIBGUESTFS_DEBUG&#x3D;1 LIBGUESTFS_TRACE&#x3D;1 sudo virt-ls ubuntu.img &#x2F;boot&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>然后把initrd copy出来</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIBGUESTFS_DEBUG=1 LIBGUESTFS_TRACE=1 sudo virt-copy-out -a ubuntu.img /boot/initrd.img-4.4.0-135-generic-lpae ./</span><br></pre></td></tr></table></figure>
+
+<p>后面我们就用拷贝出来的initrd，安装好的filesystem——ubunut.img，以及kernel将ubuntu运行起来。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /opt/qemu/bin/qemu-system-arm -m 1024 -M virt -cpu cortex-a15 -smp cpus=4,maxcpus=4 -kernel ./vmlinuz -initrd ./initrd.img-4.4.0-135-generic-lpae -append <span class="string">&quot;root=/dev/vda2&quot;</span> -drive file=./ubuntu.img,<span class="keyword">if</span>=none,format=qcow2,id=hd0 -device virtio-blk-device,drive=hd0 -netdev <span class="built_in">type</span>=tap,id=net0 -device virtio-net-device,netdev=net0,mac=52:54:00:fa:ee:10 -nographic</span><br></pre></td></tr></table></figure>
+
+<p>这里把root改成/dev/vda2，从硬盘中得到filesystem。运行后我们还是需要修改一下tap0的iptables和网络配置(nat映射神马的，这样外网可以访问)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">sudo sysctl -w net.ipv4.ip_forward=1</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Stopping firewall and allowing everyone...&quot;</span></span><br><span class="line">sudo iptables -F</span><br><span class="line">sudo iptables -X</span><br><span class="line">sudo iptables -t nat -F</span><br><span class="line">sudo iptables -t nat -X</span><br><span class="line">sudo iptables -t mangle -F</span><br><span class="line">sudo iptables -t mangle -X</span><br><span class="line">sudo iptables -P INPUT ACCEPT</span><br><span class="line">sudo iptables -P FORWARD ACCEPT</span><br><span class="line">sudo iptables -P OUTPUT ACCEPT</span><br><span class="line"></span><br><span class="line">sudo iptables -t nat -A POSTROUTING -o enp0s25 -j MASQUERADE</span><br><span class="line">sudo iptables -I FORWARD 1 -i tap0 -j ACCEPT</span><br><span class="line">sudo iptables -I FORWARD 1 -o tap0 -m state --state RELATED,ESTABLISHED -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment">#inet_ip=192.168.100.2</span></span><br><span class="line"></span><br><span class="line">sudo iptables -t nat -A PREROUTING -i enp0s25 -p tcp --dport 1022 -j DNAT --to-destination <span class="variable">$inet_ip</span>:22</span><br><span class="line">sudo iptables -t nat -A PREROUTING -i enp0s25 -p tcp --dport 1080 -j DNAT --to-destination <span class="variable">$inet_ip</span>:80</span><br><span class="line">sudo iptables -t nat -A PREROUTING -i enp0s25 -p tcp --dport 10443 -j DNAT --to-destination <span class="variable">$inet_ip</span>:443</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Booting VM, eta 10 seconds&quot;</span></span><br><span class="line">sleep 10</span><br><span class="line">sudo ifconfig tap0 192.168.100.254 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+
+
+<p>到这里我们的嵌入式虚拟环境就搭建好了。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://gist.github.com/takeshixx/686a4b5e057deff7892913bf69bcb85a">ubuntu-xenial-armfh-qemu.md</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85qemu"><span class="toc-number">1.</span> <span class="toc-text">编译安装qemu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">安装系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%89%E8%A3%85%E5%A5%BD%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">启动安装好的系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&text=构建嵌入式qemu"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&is_video=false&description=构建嵌入式qemu"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=构建嵌入式qemu&body=Check out this article: https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&title=构建嵌入式qemu"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&name=构建嵌入式qemu&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html&t=构建嵌入式qemu"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

