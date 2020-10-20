@@ -29,6 +29,35 @@
     
     
     <entry>
+      <title>DrayTek Vigor 2960 从未授权到rce</title>
+      <link href="drayteck-vigor-vulnerability-disclosure.html"/>
+      <url>drayteck-vigor-vulnerability-disclosure.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>4月多的时候出差去了南京，加上三月初的时候 360 netlab 公开两个 DrayTek 的漏洞，我也简单分析了一下以及复现了下 exploit ，这里就不细讲了。所以晚上无聊的时候在找这个设备的是否存在其他漏洞，刚好巧合的是  @C0ss4ck（之前在我司实习过） 他也在看，所以一起挖掘了以下 11个漏洞</p><p>这里公开的 PPT 由@C0ss4ck 和我完成，由于时间安排所以我没去 DEFCON GROUP 25</p><div class="row"><iframe src="https://drive.google.com/file/d/1z4QZctHU3XYB-X9jXiWrTGhMLJqP27ub/preview" style="width:100%; height:550px"></iframe></div><p>可能有的人就问了，11 个漏洞，为啥只有 2个 cve 号呢？ 很简单，由于某些原因大家都知道 CVE 似乎不怎么理个人申请了，所以我们拜托的厂商帮我们申请的，厂商把漏洞分成 命令注入和缓冲区溢出 一起分批申请的，然后 CVE 只给了两个编号 （orz）</p><h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><ul><li>2020.05.29 report these vulnerabilities</li><li>2020.06.01 vendor reply</li><li>2020.06.04 vendor fix these vulnerabilities</li><li>2020.06.17 vendor released new firmware</li><li>2020.06.19 CVE-2020-14472, CVE-2020-14473</li></ul><h2 id="官方致谢"><a href="#官方致谢" class="headerlink" title="官方致谢"></a>官方致谢</h2><p><a href="https://www.draytek.com/about/security-advisory/vigor3900-/-vigor2960-/-vigor300b-remote-code-injection/execution-vulnerability-(cve-2020-14472)/">https://www.draytek.com/about/security-advisory/vigor3900-/-vigor2960-/-vigor300b-remote-code-injection/execution-vulnerability-(cve-2020-14472)/</a></p><p><a href="https://www.draytek.com/about/security-advisory/vigor3900-/-vigor2960-/-vigor300b-stack-based-buffer-overflow-vulnerability-(cve-2020-14473)/">https://www.draytek.com/about/security-advisory/vigor3900-/-vigor2960-/-vigor300b-stack-based-buffer-overflow-vulnerability-(cve-2020-14473)/</a></p><h2 id="漏洞详情"><a href="#漏洞详情" class="headerlink" title="漏洞详情"></a>漏洞详情</h2><p><a href="https://gist.github.com/WinMin/46165779215f1d47ec257210428c0240">https://gist.github.com/WinMin/46165779215f1d47ec257210428c0240</a><br><a href="https://github.com/Cossack9989/Vulns/blob/master/IoT/CVE-2020-14473.md">https://github.com/Cossack9989/Vulns/blob/master/IoT/CVE-2020-14473.md</a></p></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
+      
+      
+      <categories>
+          
+          <category> Writeup </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> DrayTek </tag>
+            
+            <tag> CVE-2020-14472 </tag>
+            
+            <tag> CVE-2020-14473 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CodeQL 的学习以及尝试漏洞挖掘</title>
       <link href="codeql.html"/>
       <url>codeql.html</url>
