@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=zh>
+<html lang=EN>
 <head>
     <!-- so meta -->
     <meta charset="utf-8">
@@ -9,8 +9,8 @@
     <meta property="og:type" content="article">
 <meta property="og:title" content="BackdoorCTF 2017 Pwn Writeup">
 <meta property="og:url" content="https://bestwing.me/2017-backdoor-CTF-Pwn.html">
-<meta property="og:site_name" content="Swing&#39;Blog 有恨无人省">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
+<meta property="og:locale">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoodr-just-do-it-01.jpg">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-02.jpg">
 <meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-backdoor-ctf-just-do-it-03.jpg">
@@ -56,7 +56,7 @@
     <!-- rss -->
     
     
-      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 有恨无人省" type="application/atom+xml" />
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 浮生若梦" type="application/atom+xml" />
     
 <meta name="generator" content="Hexo 5.2.0"></head>
 
@@ -80,9 +80,9 @@
          
           <li><a href="/search/">Search</a></li>
          
-          <li><a href="/atom.xml">rss</a></li>
+          <li><a href="/atom.xml">Rss</a></li>
          
-          <li><a href="/categories/">categories</a></li>
+          <li><a href="/categories/">Categories</a></li>
         
       </ul>
     </span>
@@ -98,10 +98,10 @@
         <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
       </ul>
-      <span id="i-prev" class="info" style="display:none;">上一篇</span>
-      <span id="i-next" class="info" style="display:none;">下一篇</span>
-      <span id="i-top" class="info" style="display:none;">返回顶部</span>
-      <span id="i-share" class="info" style="display:none;">分享文章</span>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
     </span>
     <br/>
     <div id="share" style="display: none">
@@ -140,7 +140,7 @@
 
     <div class="meta">
       <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Swing'Blog 有恨无人省</span>
+        <span itemprop="name">Swing'Blog 浮生若梦</span>
       </span>
       
     <div class="postdate">
@@ -208,7 +208,7 @@
 
     <div class="blog-post-comments">
         <div id="disqus_thread">
-            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+            <noscript>Please enable JavaScript to view the comments.</noscript>
         </div>
     </div>
 
@@ -231,9 +231,9 @@
          
           <li><a href="/search/">Search</a></li>
          
-          <li><a href="/atom.xml">rss</a></li>
+          <li><a href="/atom.xml">Rss</a></li>
          
-          <li><a href="/categories/">categories</a></li>
+          <li><a href="/categories/">Categories</a></li>
         
       </ul>
     </div>
@@ -260,10 +260,10 @@
     </div>
 
     <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
-        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
     </div>
 
   </div>
@@ -292,9 +292,9 @@
          
           <li><a href="/search/">Search</a></li>
          
-          <li><a href="/atom.xml">rss</a></li>
+          <li><a href="/atom.xml">Rss</a></li>
          
-          <li><a href="/categories/">categories</a></li>
+          <li><a href="/categories/">Categories</a></li>
         
       </ul>
     </nav>
@@ -325,7 +325,7 @@
   <script type="text/javascript">
   $(function() {
     // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
     btn += '<i class="far fa-clone"></i>';
     btn += '</span>'; 
     // mount it!
@@ -336,7 +336,7 @@
       }
     });
     clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.trigger.setAttribute('aria-label', "Copied!");
       e.clearSelection();
     })
   })
