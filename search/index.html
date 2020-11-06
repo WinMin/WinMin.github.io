@@ -11,27 +11,27 @@
 <meta property="og:url" content="https://bestwing.me/search/index.html">
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-11-06T04:02:25.381Z">
+<meta property="article:published_time" content="2020-11-06T04:20:03.235Z">
 <meta property="article:modified_time" content="2020-10-11T16:15:36.000Z">
 <meta property="article:author" content="Swing">
 <meta name="twitter:card" content="summary">
     
     
+      
         
-          
-              <link rel="shortcut icon" href="/images/favicon.ico">
-          
+          <link rel="shortcut icon" href="/images/favicon.ico">
         
+      
+      
         
-          
-            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-          
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
         
+      
+      
         
-          
-            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-          
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
         
+      
     
     <!-- title -->
     <title>Search</title>
@@ -73,7 +73,7 @@
         <a href="#"><i class="fas fa-bars fa-2x"></i></a>
       </li>
        
-        <li><a href="https://bestwing.me">Home</a></li>
+        <li><a href="/">Home</a></li>
        
         <li><a href="/about/">About</a></li>
        
@@ -115,14 +115,14 @@
     Copyright &copy;
     
     
-    2020
+    2016-2020
     Swing
   </div>
   <div class="footer-right">
     <nav>
       <ul>
          
-          <li><a href="https://bestwing.me">Home</a></li>
+          <li><a href="/">Home</a></li>
          
           <li><a href="/about/">About</a></li>
          
@@ -178,7 +178,7 @@
       if (search_path.length == 0) {
         search_path = "search.xml";
       }
-      var path = "/" + search_path;
+      var path = "../" + search_path;
       searchFunc(path, 'search-input', 'search-result');
     });
 
@@ -205,26 +205,27 @@
 
 <!-- Google Analytics -->
 
-    <script type="text/javascript">
-        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-133464311-1', 'auto');
-        ga('send', 'pageview');
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133464311-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-133464311-1');
     </script>
 
 <!-- Baidu Analytics -->
 
-    <script type="text/javascript">
+  <script type="text/javascript">
         var _hmt = _hmt || [];
         (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
         })();
-    </script>
+        </script>
+
+<!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
 
