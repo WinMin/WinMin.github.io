@@ -81,7 +81,7 @@
        
         <li><a href="/link">Links</a></li>
        
-        <li><a href="/search/">Search</a></li>
+        <li><a href="/search">Search</a></li>
        
         <li><a href="/atom.xml">Rss</a></li>
        
@@ -130,7 +130,7 @@
          
           <li><a href="/link">Links</a></li>
          
-          <li><a href="/search/">Search</a></li>
+          <li><a href="/search">Search</a></li>
          
           <li><a href="/atom.xml">Rss</a></li>
          
@@ -178,7 +178,7 @@
       if (search_path.length == 0) {
         search_path = "search.xml";
       }
-      var path = "../" + search_path;
+      var path = "/" + search_path;
       searchFunc(path, 'search-input', 'search-result');
     });
 
