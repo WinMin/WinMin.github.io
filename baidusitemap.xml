@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/codeql.html</loc>
+    <lastmod>2021-02-06</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/CVE-2021-3156-analysis..html</loc>
     <lastmod>2021-02-03</lastmod>
   </url>
@@ -35,10 +39,6 @@
   <url>
     <loc>https://bestwing.me/ropemporium-all-writeup.html</loc>
     <lastmod>2020-10-11</lastmod>
-  </url>
-  <url>
-    <loc>https://bestwing.me/codeql.html</loc>
-    <lastmod>2020-09-19</lastmod>
   </url>
   <url>
     <loc>https://bestwing.me/Ripple20-overview.html</loc>
