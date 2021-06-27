@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/CVE-2020-15257-anaylysis.html</loc>
+    <lastmod>2021-06-27</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/DEFCON-29-CTF-Qualifier-coooinbase-and-coooinbase-kernel-Write-up.html</loc>
     <lastmod>2021-05-03</lastmod>
   </url>
@@ -10,10 +14,6 @@
   </url>
   <url>
     <loc>https://bestwing.me/CVE-2021-3156-analysis..html</loc>
-    <lastmod>2021-02-03</lastmod>
-  </url>
-  <url>
-    <loc>https://bestwing.me/CVE-2020-15257-anaylysis.html</loc>
     <lastmod>2021-02-03</lastmod>
   </url>
   <url>
