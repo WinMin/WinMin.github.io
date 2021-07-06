@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/2021-TCTF-RV-Writeup.html</loc>
+    <lastmod>2021-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://bestwing.me/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95.html</loc>
+    <lastmod>2021-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/CVE-2020-15257-anaylysis.html</loc>
     <lastmod>2021-06-27</lastmod>
   </url>
@@ -342,10 +350,6 @@
   </url>
   <url>
     <loc>https://bestwing.me/AppArmor-Pwn-Env.html</loc>
-    <lastmod>2019-10-28</lastmod>
-  </url>
-  <url>
-    <loc>https://bestwing.me/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95.html</loc>
     <lastmod>2019-10-28</lastmod>
   </url>
   <url>
