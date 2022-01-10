@@ -45,10 +45,6 @@
     <lastmod>2020-11-12</lastmod>
   </url>
   <url>
-    <loc>https://bestwing.me/Educational_Heap_Exploitation.html</loc>
-    <lastmod>2020-11-10</lastmod>
-  </url>
-  <url>
     <loc>https://bestwing.me/CVE-2020-15898-analysis.html</loc>
     <lastmod>2020-10-21</lastmod>
   </url>
@@ -482,6 +478,10 @@
   </url>
   <url>
     <loc>https://bestwing.me/GeekPwn%E5%8F%82%E8%B5%9B%E8%AE%B0.html</loc>
+    <lastmod>2019-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://bestwing.me/Educational_Heap_Exploitation.html</loc>
     <lastmod>2019-09-24</lastmod>
   </url>
   <url>
