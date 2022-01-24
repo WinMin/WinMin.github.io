@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://github.com/ForgeRock/optee-os/raw/master/documentation/images/secure_storage/block_data_encryption.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/202112311553854.png">
 <meta property="article:published_time" content="2022-01-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-24T03:01:42.213Z">
+<meta property="article:modified_time" content="2022-01-24T03:02:46.082Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
@@ -172,11 +172,11 @@
 <blockquote>
 <p>Trust or Not</p>
 <p>Score: <em>357</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Reverse&#96;, &#96;difficulty:normal</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;Reverse&#96;, &#96;difficulty:normal</span><br></pre></td></tr></table></figure>
 
 <p>We have lost some of our files and cannot retrieve the plaintext data originally stored.</p>
 <p>Hint: flag file is stored in <code>/data/tee/2</code> securely.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc 47.242.114.24 7788</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;nc 47.242.114.24 7788</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://realworldctf-attachment.oss-accelerate.aliyuncs.com/Trust_or_not_fa542592446c43678f685913495da668.tar.gz">attachment</a></p>
 </blockquote>
@@ -200,7 +200,7 @@
 
 <p><strong>File Encryption Key （FEK）</strong> </p>
 <p>当一个新的TEE文件被创建时，密钥管理器将通过 PRNG（pesudo随机数生成器）为TEE文件生成一个新的 FEK，并将加密的 FEK 存储在 meta 文件中。FEK 用于对存储在 meta 文件中的TEE文件信息或块文件中的数据进行加密/解密。</p>
-<h4 id="Ideas"><a href="#Ideas" class="headerlink" title="Ideas"></a>Ideas</h4><p>通过逆向和比对OP-Tee的源代码，希望选手能发现 <code>HUK</code>没有被设置。然后被加密了且存储在 <code>/data/tee/2</code> 文件里</p>
+<h4 id="Ideas"><a href="#Ideas" class="headerlink" title="Ideas"></a>Ideas</h4><p>通过逆向和比对OP-Tee的源代码，希望选手能发现 <code>HUK</code>没有被设置。然后flag被加密了且存储在 <code>/data/tee/2</code> 文件里</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TEE_Result __fastcall <span class="title">tee_otp_get_hw_unique_key</span><span class="params">(tee_hw_unique_key *hwkey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">memset</span>(hwkey, <span class="number">0</span>, <span class="keyword">sizeof</span>(tee_hw_unique_key));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
