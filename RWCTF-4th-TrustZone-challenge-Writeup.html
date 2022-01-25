@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/202201241428539.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/202112311553854.png">
 <meta property="article:published_time" content="2022-01-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-24T09:01:52.772Z">
+<meta property="article:modified_time" content="2022-01-25T05:25:15.845Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
@@ -181,7 +181,7 @@
 
 <p><a href="https://realworldctf-attachment.oss-accelerate.aliyuncs.com/Trust_or_not_fa542592446c43678f685913495da668.tar.gz">attachment</a></p>
 </blockquote>
-<h4 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h4><p>要解决这个难题，首先要了解什么是安全存储。 数据要么以某种加密/授权的方式存储在linux文件系统<code>/data/tee</code>中，要么存储在Emmc RPMB（Replay Protected Memory Block）分区中。这次的相关题目主要使用了 <code>OP-TEE</code>的开源项目，其更详细的信息可以在<a href="https://github.com/ForgeRock/optee-os/blob/master/documentation/secure_storage.md">OP-TEE文档</a> 中找到。</p>
+<h4 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h4><p>要解决这个题目，首先要了解什么是安全存储。 数据要么以某种加密/授权的方式存储在linux文件系统<code>/data/tee</code>中，要么存储在Emmc RPMB（Replay Protected Memory Block）分区中。这次的相关题目主要使用了 <code>OP-TEE</code>的开源项目，其更详细的信息可以在<a href="https://github.com/ForgeRock/optee-os/blob/master/documentation/secure_storage.md">OP-TEE文档</a> 中找到。</p>
 <p> **Hardware Unique Key （HUK） ** </p>
 <p>大多数设备都有某种硬件唯一密钥（HUK），主要用于派生其他密钥。例如，当派生密钥用于安全存储等时，可以使用 HUK 派生。HUK 的重要之处在于它需要得到很好的保护，并且在最好的情况下，HUK 永远不应该直接从软件读取，甚至不应该从安全方面读取。有不同的解决方案，加密加速器可能支持它，或者，它可能涉及另一个安全的协处理器。</p>
 <p> <strong>Secure Storage Key （SSK）</strong> </p>
