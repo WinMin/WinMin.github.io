@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/PSV-2020-0437-Buffer-Overflow-on-Some-Netgear-outers.html</loc>
+    <lastmod>2022-06-30</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/Capture-The-Ether-writeup.html</loc>
     <lastmod>2022-05-07</lastmod>
   </url>
