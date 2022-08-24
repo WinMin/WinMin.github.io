@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2022-08-24-f031b9b71259e5040353eed64e8f6df6-590036.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2022-08-24-a0a15870467ab71c048b7d9825c5ba29-6b8164.png">
 <meta property="article:published_time" content="2022-08-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-24T08:32:56.833Z">
+<meta property="article:modified_time" content="2022-08-24T08:35:25.585Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="CVE-2022-23613">
@@ -209,7 +209,7 @@
 <li>调用 <code>self-&gt;trans_recv</code> 执行任意命令</li>
 </ol>
 <h2 id="totox-3"><a href="#totox-3" class="headerlink" title="totox/3"></a>totox/3</h2><p><strong>题目描述：</strong>生死竞速，本题分为三题，需要选手从三个不同路径（不同路径指从三个不同实际产生命令注入、破坏堆栈结构等内容）实现对TOTOLINK的攻击。</p>
-<p>这其实是一个路由器题目， 主办方要求我们通过三个不同的路径攻破该路由器， 即需要使用到三个不同的漏洞。</p>
+<p>这其实是一个路由器题目， 主办方要求我们通过三个不同的路径攻破该路由器， 即需要使用到三个不同的漏洞。 固件版本为： X5000R_固件_V9.1.0u.6118_B20201102</p>
 <p>通过网上查阅资料， 我们发现该款路由器拥有许多的 CVE 编号， 并且题目的这个版本是受到影响的。这里简单分析下我们用到的三个漏洞</p>
 <h3 id="totox-1-CVE-2021-27710"><a href="#totox-1-CVE-2021-27710" class="headerlink" title="totox/1 CVE-2021-27710"></a>totox/1 CVE-2021-27710</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.data:0044A520 aSettraceroutec:.ascii &quot;setTracerouteCfg&quot;&lt;0&gt;</span><br><span class="line">.data:0044A531                 .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">.data:0044A531                 .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">.data:0044A531                 .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">.data:0044A560                 .word sub_41F6A0</span><br></pre></td></tr></table></figure>
 
