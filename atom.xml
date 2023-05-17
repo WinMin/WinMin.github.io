@@ -6,7 +6,7 @@
   <link href="https://bestwing.me/atom.xml" rel="self"/>
   
   <link href="https://bestwing.me/"/>
-  <updated>2023-04-29T10:01:47.457Z</updated>
+  <updated>2023-05-17T16:38:31.546Z</updated>
   <id>https://bestwing.me/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Real World CTF 5th writeup</title>
+    <link href="https://bestwing.me/RWCTF-5th-Writeup.html"/>
+    <id>https://bestwing.me/RWCTF-5th-Writeup.html</id>
+    <published>2023-05-16T16:00:00.000Z</published>
+    <updated>2023-05-17T16:38:31.546Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>这次 RWCTF 比赛我一共出了两个题: 「Printer2」 和 「Hardened Redis」。至于为什么今天才在博客更新这个Writeup一个原因就是 Pritner2 相关的漏洞今天终于发布了正式补丁。</p><h2 id="Printer2"><a href="#Printer2" class="headerlink" title="Printer2"></a>Printer2</h2><p>这个是漏洞存在于是 OpenPrinting 项目里的一个 <code>cups-filters</code> 下的  <code>Backend Error Handler</code> （beh）。这里是关于 <a href="https://wiki.linuxfoundation.org/openprinting/database/backenderrorhandler">beh)</a> 的介绍</p><p>漏洞点位与 <a href="https://github.com/OpenPrinting/cups-filters/blob/5c9498a57d3b331d9b1aa59df206b26a9510f335/backend/beh.c#L288">cups-filters/beh.c at 5c9498a57d3b331d9b1aa59df206b26a9510f335 · OpenPrinting/cups-filters (github.com)</a></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// (context: argv = beh &lt;job-id&gt; &lt;user&gt; &lt;title&gt; &lt;copies&gt; &lt;options&gt; [file])</span></span><br><span class="line">  <span class="built_in">snprintf</span>(cmdline, <span class="keyword">sizeof</span>(cmdline),</span><br><span class="line">  <span class="string">&quot;%s/backend/%s &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; %s&quot;</span>,</span><br><span class="line">  cups_serverbin, scheme, argv[<span class="number">1</span>], argv[<span class="number">2</span>], argv[<span class="number">3</span>],</span><br><span class="line">        ...</span><br><span class="line">  (argc == <span class="number">6</span> ? <span class="string">&quot;1&quot;</span> : argv[<span class="number">4</span>]),</span><br><span class="line">  argv[<span class="number">5</span>], filename);</span><br><span class="line">        ...</span><br><span class="line">retval = system(cmdline) &gt;&gt; <span class="number">8</span>;</span><br></pre></td></tr></table></figure><p>可以看到这里有一个明显的命令注入， 当用户控制 user 或者 title 字段的时候可以造成任意命令执行。更详细的细节可以看官方公告：</p><p><a href="https://github.com/OpenPrinting/cups-filters/security/advisories/GHSA-gpxc-v2m8-fr3x">report a command inject Vulnerabilities in cups-filters </a></p><h2 id="Hardened-Redis"><a href="#Hardened-Redis" class="headerlink" title="Hardened Redis"></a>Hardened Redis</h2><p>这是题目考点是在较高版本的情况下在有访问 <code>Redis</code> 的情况下如何获取  <code>Redis</code> 所在系统 shell 权限。 在高版本的 Redis 已经不能使用主从复制来获取 shell了（印象中），另外我也禁用了一些 <code>Redis</code> 的方法。 但是由于对 Redis 的熟知程度不够， 其次也是去年参加 CTF 少了， 被 <a href="https://hackmd.io/@Xion/goq_22s_authors_writeup">2022 Spring GoN Open Qual CTF</a> 的一个 <code>Redis</code> 题的解法非预期了。</p><p>下次有机会可以和大家详细分享下这个解法。</p><p>这里接着讲我的预期解法，讲到 <code>Redis</code> ， 如果大家有印象，应该会想到 <code>CVE-2022-0543</code> 。 当时这个漏洞影响了 Debian 系列的 Linux 发行版系统的包管理器所安装的 <code>Redis</code> 。因为 Debian 系列由于打包问题，Redis在Lua解析器初始化后，package变量没有被正确清除，导致攻击者可以利用它来进行Lua沙箱逃逸，从而执行任意系统命令。</p><p>这个时候我们注意到了这 Debian 系列用的 <code>Redis</code> 所使用的 lua 解析器是 lua 5.1 ， 而且是存在一个 2015 年漏洞的 lua 解析器，虽然这个漏洞在 2015 年就被 <a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a"><code>Redis</code>官方修复了</a>， 但是 lua 5.1 解析器并没有修复。</p><p>2015 年这个漏洞是 <code>CVE-2015-4335</code>， 另外 HN 评论区当时也提到了这个问题， </p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png"></a></p><p><a href="https://news.ycombinator.com/item?id=30617641">I think this is still ‘broken’ because Redis have applied custom patches to the )</a></p><p>虽然当时我也给  ubuntu 和 Debian 发了邮件提醒了这件事，但是他们的回复看起来是不是很想单独修复。</p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png" title="image-20230518002900794" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png" alt="image-20230518002900794"></a></p><p>进一步的漏洞利用与分析可以参考我 chu 师父 的博客， <a href="https://mp.weixin.qq.com/s/JxZC5pqi92xEOUT3BKdyWg">Redis CVE-2015-4335分析 </a>， 我就不赘述了。 没想到隔了这么久还是依然能受到 chu 师父的照顾。</p><h2 id="Reference-link"><a href="#Reference-link" class="headerlink" title="Reference link"></a>Reference link</h2><p><a href="https://github.com/OpenPrinting/cups-filters/blob/5c9498a57d3b331d9b1aa59df206b26a9510f335/backend/beh.c#L288">cups-filters/backed/beh.c#L288</a></p><p><a href="https://github.com/OpenPrinting/cups-filters/security/advisories/GHSA-gpxc-v2m8-fr3x">report a command inject Vulnerabilities in cups-filters</a></p><p><a href="https://hackmd.io/@Xion/goq_22s_authors_writeup">2022 Spring GoN Open Qual CTF</a></p><p><a href="https://news.ycombinator.com/item?id=30617641">I think this is still ‘broken’ because Redis have applied custom patches to the … | Hacker News (ycombinator.com)</a></p><p><a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a">disable loading lua bytecode</a></p><p><a href="https://mp.weixin.qq.com/s/JxZC5pqi92xEOUT3BKdyWg">Redis CVE-2015-4335分析 </a></p></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css&quot; /&gt;&lt;div class=&quot;.article</summary>
+      
+    
+    
+    
+    <category term="Writeup" scheme="https://bestwing.me/categories/Writeup/"/>
+    
+    
+    <category term="pwn" scheme="https://bestwing.me/tags/pwn/"/>
+    
+    <category term="CVE-2023-24805" scheme="https://bestwing.me/tags/CVE-2023-24805/"/>
+    
+  </entry>
   
   <entry>
     <title>CVE-2022-32548 DrayTeck 栈溢出漏洞分析</title>
@@ -499,30 +525,6 @@
     <category term="pwn" scheme="https://bestwing.me/tags/pwn/"/>
     
     <category term="CVE-2019-14271" scheme="https://bestwing.me/tags/CVE-2019-14271/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CVE-2020-0796 SMBv3 漏洞分析</title>
-    <link href="https://bestwing.me/CVE-2020-0796-analysis.html"/>
-    <id>https://bestwing.me/CVE-2020-0796-analysis.html</id>
-    <published>2020-03-12T16:00:00.000Z</published>
-    <updated>2020-12-05T18:52:20.000Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="CVE-2020-0796-SMBv3-漏洞分析"><a href="#CVE-2020-0796-SMBv3-漏洞分析" class="headerlink" title="CVE-2020-0796 SMBv3 漏洞分析"></a>CVE-2020-0796 SMBv3 漏洞分析</h1><p>3月13日 凌晨左右 ，微软放了这个漏洞的补丁…所以稍微分析一下他的补丁</p><h2 id="Bindiff"><a href="#Bindiff" class="headerlink" title="Bindiff"></a>Bindiff</h2><p>通过 bindiff 比较发现一个函数，且名字也蛮可疑的..</p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032004.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032004.png" style="zoom: 50%;" /></a><p>这个函数名叫 <code>Srv2DecompressData</code> 实际上和漏洞描述其实也差不多..</p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032123.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032123.png" style="zoom: 50%;" /></a><p>似乎是加了检查..我们 打开IDA来比对一下 两者的差别..</p><h2 id="补丁"><a href="#补丁" class="headerlink" title="补丁"></a>补丁</h2><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032244.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032244.png"></a></p><p>左边是有漏洞的版本，右边是 Patch 后的版本 .. 比对了一下发现似乎增加了一个检查..尤其是增加的一个叫</p><p><code>RtlULongAdd</code> 的函数..</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RtlULongAdd(ULONG ulAugend, ULONG ulAddend, ULONG *pulResult)</span><br></pre></td></tr></table></figure><p>该函数的参数是 两个似乎 recve 的数据 以及一个变量..</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSTATUS __stdcall <span class="title">RtlULongAdd</span><span class="params">(ULONG ulAugend, ULONG ulAddend, ULONG *pulResult)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ULONG v3; <span class="comment">// eax</span></span><br><span class="line">  ULONG v4; <span class="comment">// edx</span></span><br><span class="line">  NTSTATUS result; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  v3 = ulAugend + ulAddend;</span><br><span class="line">  v4 = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">if</span> ( v3 &gt;= ulAugend )</span><br><span class="line">    v4 = v3;</span><br><span class="line">  result = v3 &lt; ulAugend ? <span class="number">0xC0000095</span> : <span class="number">0</span>;</span><br><span class="line">  *pulResult = v4;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>看了一下这个  判断了  ulAugend + ulAddend 相加后的和是否小于其中一个 加数..如果是则将其中一个赋值给返回值..从这里大概能初步判断是个什么漏洞了..基本能猜测是个  整型溢出..</p><h2 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h2><p>我们来看一下未打补丁的版本…</p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032734.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313032734.png"></a></p><p>看了一下..这里是将原本个值直接相加，并没有进行checkl… 然后分配内存..如果有问题 …应该是这里分配的内存太小..导致后续的缓冲区溢出吧？</p><p>由于我对这两个值不是很熟悉..所以这个时候开始查资料..</p><p>这个时候发现已经有人发文了…参考链接最后贴后面..</p><p>可以知道的是..这里的值一个是 OriginalCompressedSegmentSize  一个是 Offset/Length，他们 描述如下:</p><blockquote><ol><li>OriginalCompressedSegmentSize (4 bytes) The size, in bytes, of the uncompressed data segment.</li><li>Offset/Length (4 bytes) If SMB2_COMPRESSION_FLAG_CHAINED is set in Flags field, this field MUST be interpreted as Length. The length, in bytes, of the compressed payload. Otherwise, this field MUST be interpreted as Offset. The offset, in bytes, from the end of this structure to the start of compressed data segment.</li></ol></blockquote><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033313.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033313.png"></a></p><p>然后做了什么事情呢？</p><p>看代码，将分配的内存 用 SmbCompressionDecompress 这个函数进行处理</p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033424.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033424.png"></a></p><p>我在 srvnet 里找到了 SmbCompressionDecompress 这个函数</p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033623.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200313033623.png"></a></p><p>然后又调用了 <code>RtlDecompressBufferEx2</code> 这个函数..最后调的是 <code>RtlDecompressBufferXpressLz</code> 这个函数…</p><p>这个函数在<code>ntoskrnl. exe</code> 里</p><p>这个函数做的是事情就是..</p><p><code>memcpy(ptr,src,len)</code></p><p>ptr 是由 <code>SrvNetAllocateBuffer</code>分配的<code>UncompressBuffer</code>，<code>len</code> 是从smb 包解析的解压数据的大小，这个值是攻击者可控的， 由于前面没有检查..所以我们传入一个很大的值，使其触发整型溢出.分配一个较小的内存…此时 len又是一个大的值..所以导致了缓冲区溢出</p><p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200314024525.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/20200314024525.png"></a></p><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/1d435f21-9a21-4f4c-828e-624a176cf2a0">https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/1d435f21-9a21-4f4c-828e-624a176cf2a0</a></p><p><a href="http://blogs.360.cn/post/CVE-2020-0796.html">http://blogs.360.cn/post/CVE-2020-0796.html</a></p></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css&quot; /&gt;&lt;div class=&quot;.article</summary>
-      
-    
-    
-    
-    <category term="漏洞分析" scheme="https://bestwing.me/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"/>
-    
-    
-    <category term="CVE-2020-0796" scheme="https://bestwing.me/tags/CVE-2020-0796/"/>
     
   </entry>
   
