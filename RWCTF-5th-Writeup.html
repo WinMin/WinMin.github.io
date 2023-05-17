@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png">
 <meta property="article:published_time" content="2023-05-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-17T16:38:31.546Z">
+<meta property="article:modified_time" content="2023-05-17T16:41:37.485Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="CVE-2023-24805">
@@ -166,7 +166,7 @@
 
   <div class="content" itemprop="articleBody">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>这次 RWCTF 比赛我一共出了两个题: 「Printer2」 和 「Hardened Redis」。至于为什么今天才在博客更新这个Writeup一个原因就是 Pritner2 相关的漏洞今天终于发布了正式补丁。</p>
-<h2 id="Printer2"><a href="#Printer2" class="headerlink" title="Printer2"></a>Printer2</h2><p>这个是漏洞存在于是 OpenPrinting 项目里的一个 <code>cups-filters</code> 下的  <code>Backend Error Handler</code> （beh）。这里是关于 <a href="https://wiki.linuxfoundation.org/openprinting/database/backenderrorhandler">beh)</a> 的介绍</p>
+<h2 id="Printer2"><a href="#Printer2" class="headerlink" title="Printer2"></a>Printer2</h2><p>这个是漏洞存在于是 OpenPrinting 项目里的一个 <code>cups-filters</code> 下的  <code>Backend Error Handler</code> （beh）。这里是关于 <a href="https://wiki.linuxfoundation.org/openprinting/database/backenderrorhandler">beh</a> 的介绍</p>
 <p>漏洞点位与 <a href="https://github.com/OpenPrinting/cups-filters/blob/5c9498a57d3b331d9b1aa59df206b26a9510f335/backend/beh.c#L288">cups-filters/beh.c at 5c9498a57d3b331d9b1aa59df206b26a9510f335 · OpenPrinting/cups-filters (github.com)</a></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// (context: argv = beh &lt;job-id&gt; &lt;user&gt; &lt;title&gt; &lt;copies&gt; &lt;options&gt; [file])</span></span><br><span class="line">  <span class="built_in">snprintf</span>(cmdline, <span class="keyword">sizeof</span>(cmdline),</span><br><span class="line">  <span class="string">&quot;%s/backend/%s &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; %s&quot;</span>,</span><br><span class="line">  cups_serverbin, scheme, argv[<span class="number">1</span>], argv[<span class="number">2</span>], argv[<span class="number">3</span>],</span><br><span class="line">        ...</span><br><span class="line">  (argc == <span class="number">6</span> ? <span class="string">&quot;1&quot;</span> : argv[<span class="number">4</span>]),</span><br><span class="line">  argv[<span class="number">5</span>], filename);</span><br><span class="line">        ...</span><br><span class="line">retval = system(cmdline) &gt;&gt; <span class="number">8</span>;</span><br></pre></td></tr></table></figure>
 
