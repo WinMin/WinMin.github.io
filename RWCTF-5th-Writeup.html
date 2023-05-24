@@ -11,15 +11,16 @@
 <meta property="og:url" content="https://bestwing.me/RWCTF-5th-Writeup.html">
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 <meta property="og:locale">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png">
 <meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png">
 <meta property="article:published_time" content="2023-05-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-17T16:42:21.505Z">
+<meta property="article:modified_time" content="2023-05-24T08:01:58.766Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="CVE-2023-24805">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png">
     
     
       
@@ -177,7 +178,9 @@
 <h2 id="Hardened-Redis"><a href="#Hardened-Redis" class="headerlink" title="Hardened Redis"></a>Hardened Redis</h2><p>这是题目考点是在较高版本的情况下在有访问 <code>Redis</code> 的情况下如何获取  <code>Redis</code> 所在系统 shell 权限。 在高版本的 Redis 已经不能使用主从复制来获取 shell了（印象中），另外我也禁用了一些 <code>Redis</code> 的方法。 但是由于对 Redis 的熟知程度不够， 其次也是去年参加 CTF 少了， 被 <a href="https://hackmd.io/@Xion/goq_22s_authors_writeup">2022 Spring GoN Open Qual CTF</a> 的一个 <code>Redis</code> 题的解法非预期了。</p>
 <p>下次有机会可以和大家详细分享下这个解法。</p>
 <p>这里接着讲我的预期解法，讲到 <code>Redis</code> ， 如果大家有印象，应该会想到 <code>CVE-2022-0543</code> 。 当时这个漏洞影响了 Debian 系列的 Linux 发行版系统的包管理器所安装的 <code>Redis</code> 。因为 Debian 系列由于打包问题，Redis在Lua解析器初始化后，package变量没有被正确清除，导致攻击者可以利用它来进行Lua沙箱逃逸，从而执行任意系统命令。</p>
-<p>这个时候我们注意到了这 Debian 系列用的 <code>Redis</code> 所使用的 lua 解析器是 lua 5.1 ， 而且是存在一个 2015 年漏洞的 lua 解析器，虽然这个漏洞在 2015 年就被 <a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a"><code>Redis</code>官方修复了</a>， 但是 lua 5.1 解析器并没有修复。</p>
+<p>这个时候我们注意到了这 Debian 系列用的 <code>Redis</code> （即使用 apt 安装 ) 所使用的 lua 解析器是 lua 5.1 ， 而且是存在一个 2015 年漏洞的 lua 解析器，虽然这个漏洞在 2015 年就被 <a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a"><code>Redis</code>官方修复了</a>， 但是 lua 5.1 解析器并没有修复。</p>
+<p><code>apt</code> 命令安装的redis使用的是单独的 liblua5.1.so.0</p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png" title="image-20230524155200264" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png" alt="image-20230524155200264"></a></p>
 <p>2015 年这个漏洞是 <code>CVE-2015-4335</code>， 另外 HN 评论区当时也提到了这个问题， </p>
 <p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png"></a></p>
 <p><a href="https://news.ycombinator.com/item?id=30617641">I think this is still ‘broken’ because Redis have applied custom patches to the )</a></p>
