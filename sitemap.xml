@@ -9,13 +9,6 @@
   </url>
   
   <url>
-    <loc>https://bestwing.me/test.html</loc>
-    
-    <lastmod>2023-06-20</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bestwing.me/about/index.html</loc>
     
     <lastmod>2023-06-12</lastmod>
@@ -1229,6 +1222,13 @@
   </url>
   
   <url>
+    <loc>https://bestwing.me/tags/DCTF/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/tags/XCTF/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
@@ -1244,13 +1244,6 @@
   
   <url>
     <loc>https://bestwing.me/tags/BackdoorCTF/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/tags/DCTF/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1432,7 +1425,21 @@
   </url>
   
   <url>
+    <loc>https://bestwing.me/tags/zio/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/tags/logic-bugs/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/web/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1447,20 +1454,6 @@
   
   <url>
     <loc>https://bestwing.me/tags/Crypto/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/tags/zio/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/tags/web/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1558,6 +1551,13 @@
   </url>
   
   <url>
+    <loc>https://bestwing.me/tags/linux/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/tags/Ethereum/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
@@ -1566,13 +1566,6 @@
   
   <url>
     <loc>https://bestwing.me/tags/contracts/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/tags/linux/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1677,6 +1670,13 @@
   </url>
   
   <url>
+    <loc>https://bestwing.me/tags/John/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/tags/IO-FILE-Pwn/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
@@ -1685,13 +1685,6 @@
   
   <url>
     <loc>https://bestwing.me/tags/houseoforange/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/tags/John/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1845,13 +1838,6 @@
   </url>
   
   <url>
-    <loc>https://bestwing.me/tags/strings/</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://bestwing.me/tags/ELF/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
@@ -1860,6 +1846,13 @@
   
   <url>
     <loc>https://bestwing.me/tags/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/strings/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
