@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/CVE-2024-21626%20%E5%AE%B9%E5%99%A8%E9%80%83%E9%80%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html</loc>
+    <lastmod>2024-02-01</lastmod>
+  </url>
+  <url>
+    <loc>https://bestwing.me/CVE-2019-5736-Docker-escape.html</loc>
+    <lastmod>2024-02-01</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/CVE-2023-4966-Citrix-memory-leak.html</loc>
     <lastmod>2023-10-24</lastmod>
   </url>
@@ -210,10 +218,6 @@
   </url>
   <url>
     <loc>https://bestwing.me/CVE-2019-14271-docker-escape.html</loc>
-    <lastmod>2020-06-22</lastmod>
-  </url>
-  <url>
-    <loc>https://bestwing.me/CVE-2019-5736-Docker-escape.html</loc>
     <lastmod>2020-06-22</lastmod>
   </url>
   <url>
