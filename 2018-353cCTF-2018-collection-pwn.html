@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 <meta property="og:description" content="35c3 Python escape">
 <meta property="og:locale">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-a50547bb5ef637c2641ef6e43add3806-174d5b.png">
 <meta property="article:published_time" content="2018-12-31T16:58:22.000Z">
-<meta property="article:modified_time" content="2019-10-28T13:28:44.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:57:06.529Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="35c3">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-a50547bb5ef637c2641ef6e43add3806-174d5b.png">
     
     
       
@@ -190,7 +190,7 @@
 <p>我们可以得知，这他删掉了 os 模块，只留下了 id ,hex ,print ,range。我们第一思路就是，突破口在 </p>
 <p>Collection.cpython-36m-x86_64-linux-gnu.so 这个扩展库里。于是我们先去逆向这个文件</p>
 <h2 id="对-Collection-逆向"><a href="#对-Collection-逆向" class="headerlink" title="对 Collection 逆向"></a>对 Collection 逆向</h2><p>我们可以清晰的看到这个文件保留了符号：</p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190101151855.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-a50547bb5ef637c2641ef6e43add3806-174d5b.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-a50547bb5ef637c2641ef6e43add3806-174d5b.png" alt="img"></a></p>
 <p>由于是用来作为Python扩展库，方便用来直接 import 所以保留符号应该是其一个原因之一。由于以前没有用C写过Python的扩展库。所以了解了一下：</p>
 <p><a href="https://docs.python.org/3/extending/building.html#building-c-and-c-extensions">Building C and C++ Extensions</a></p>
 <p>从中我们大概可以得知的是 PyInit_Collection初始化<code>Collection</code>将要实现的此类型的自定义类型。</p>

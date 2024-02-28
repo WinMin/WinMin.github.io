@@ -11,20 +11,20 @@
 <meta property="og:url" content="https://bestwing.me/IO_FILE_Pwn.html">
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 <meta property="og:locale">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302033603.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302042933.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190303231240.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305030416.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305033957.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305034058.png">
-<meta property="og:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190313005638.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1e7f7308e71144576ac01a57aba29c81-0cc709.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-7f5bc134159fa9de3f62d26bfa1be167-f84fbf.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-6f46dd1423c89ffd91bc0d878db255f5-4ba611.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-4128a667b72278b7487ad17e90278547-57b582.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-31577117eac8c1f7b307fac7d526993a-51f0a9.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-524f4d9b37762df53ce512d909d094bb-e657f3.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1da6fe6aac1d5307475c7d14d5bc72b5-e1e753.png">
 <meta property="article:published_time" content="2019-03-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-09-24T14:01:21.000Z">
+<meta property="article:modified_time" content="2024-02-28T07:02:51.013Z">
 <meta property="article:author" content="Swing">
 <meta property="article:tag" content="IO_FILE Pwn">
 <meta property="article:tag" content="houseoforange">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302033603.png">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1e7f7308e71144576ac01a57aba29c81-0cc709.png">
     
     
       
@@ -215,10 +215,10 @@
 
 
 <p>根据调用流程，我们需要fake 一个io file ，所以首先，我们将 fp-&gt; name buffer，因为这是我们可以控制的数据流。</p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302033603.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302033603.png"></a></p>
-<p>​                       <a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302042933.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190302042933.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1e7f7308e71144576ac01a57aba29c81-0cc709.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1e7f7308e71144576ac01a57aba29c81-0cc709.png" alt="img"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-7f5bc134159fa9de3f62d26bfa1be167-f84fbf.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-7f5bc134159fa9de3f62d26bfa1be167-f84fbf.png" alt="img"></a></p>
 <p>根据调试我们可以知道，我们需要构造的结构如下：</p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190303231240.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190303231240.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-6f46dd1423c89ffd91bc0d878db255f5-4ba611.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-6f46dd1423c89ffd91bc0d878db255f5-4ba611.png" alt="img"></a></p>
 <p>记录下调试过程：</p>
 <ul>
 <li><p>覆盖 *fp</p>
@@ -278,7 +278,7 @@
 
 <h2 id="0x02-houseoforange"><a href="#0x02-houseoforange" class="headerlink" title="0x02 houseoforange"></a>0x02 houseoforange</h2><p>这其实是一种，在没有 free 的情况下，构造 unsorted bin 进行 libc leak的方法。</p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><a href="https://code.woboq.org/userspace/glibc/malloc/malloc.c.html#4173">https://code.woboq.org/userspace/glibc/malloc/malloc.c.html#4172</a></p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305030416.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305030416.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-4128a667b72278b7487ad17e90278547-57b582.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-4128a667b72278b7487ad17e90278547-57b582.png" alt="img"></a></p>
 <p>当用户申请的 chunk， top  chunk 不能满足的时候，有可能使用 sysmalloc 进行内存分配，当调用 sysmalloc 分配的时候，这里有两个选择</p>
 <ol>
 <li>mmap</li>
@@ -327,13 +327,13 @@
 <p>程序逻辑还比较清晰的，一共可以<code>build</code>四次，然后每次<code>build</code>的话就是3次堆分配，两次<code>malloc</code>，一次<code>calloc</code>，其中一次<code>malloc</code>是固定分配<code>0x10</code>字节作为控制堆块，里面存放着<code>name</code>和<code>color</code>的信息，另外按输入分配<code>name</code>的大小。</p>
 </li>
 </ul>
-<p>  <a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305033957.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305033957.png"></a></p>
+<p>  <a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-31577117eac8c1f7b307fac7d526993a-51f0a9.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-31577117eac8c1f7b307fac7d526993a-51f0a9.png" alt="img"></a></p>
 <ul>
 <li><p>upgrade</p>
 </li>
 </ul>
 <p>在<code>upgrade</code>函数中，修改<code>name</code>时候不顾实际<code>chunk</code>的堆大小是多少，直接进行编辑，最大可编辑<code>0x1000</code>大小，因而存在溢出。</p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305034058.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190305034058.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-524f4d9b37762df53ce512d909d094bb-e657f3.png" title="img" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-524f4d9b37762df53ce512d909d094bb-e657f3.png" alt="img"></a></p>
 <p>由于没有 free ，所以这里我们采用上述原理的方法进行 free chunk to unsorte bin</p>
 <h3 id="利用-1"><a href="#利用-1" class="headerlink" title="利用"></a>利用</h3><h4 id="overwrite-the-top-chunk"><a href="#overwrite-the-top-chunk" class="headerlink" title="overwrite the top chunk"></a>overwrite the top chunk</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">build(<span class="string">&#x27;0&#x27;</span> * <span class="number">8</span>, <span class="number">0x90</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">pay = <span class="string">&#x27;c&#x27;</span> * <span class="number">0x90</span></span><br><span class="line">pay += p64(<span class="number">0</span>) + p64(<span class="number">0x21</span>)</span><br><span class="line">pay += p32(<span class="number">0</span>) + p32(<span class="number">0x20</span>) + p64(<span class="number">0</span>)</span><br><span class="line">pay += p64(<span class="number">0</span>) + p64(<span class="number">0xf21</span>)</span><br></pre></td></tr></table></figure>
 
@@ -487,7 +487,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> attribute_hidden</span><br><span class="line">_IO_vtable_check (<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> SHARED</span></span><br><span class="line">  <span class="comment">/* Honor the compatibility flag.  */</span></span><br><span class="line">  <span class="keyword">void</span> (*flag) (<span class="keyword">void</span>) = atomic_load_relaxed (&amp;IO_accept_foreign_vtables);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> PTR_DEMANGLE</span></span><br><span class="line">  PTR_DEMANGLE (flag);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  <span class="keyword">if</span> (flag == &amp;_IO_vtable_check)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">/* In case this libc copy is in a non-default namespace, we always</span></span><br><span class="line"><span class="comment">     need to accept foreign vtables because there is always a</span></span><br><span class="line"><span class="comment">     possibility that FILE * objects are passed across the linking</span></span><br><span class="line"><span class="comment">     boundary.  */</span></span><br><span class="line">  &#123;</span><br><span class="line">    Dl_info di;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">link_map</span> *<span class="title">l</span>;</span></span><br><span class="line">    <span class="keyword">if</span> (!rtld_active ()</span><br><span class="line">        || (_dl_addr (_IO_vtable_check, &amp;di, &amp;l, <span class="literal">NULL</span>) != <span class="number">0</span></span><br><span class="line">            &amp;&amp; l-&gt;l_ns != LM_ID_BASE))</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* !SHARED */</span></span></span><br><span class="line">  <span class="comment">/* We cannot perform vtable validation in the static dlopen case</span></span><br><span class="line"><span class="comment">     because FILE * handles might be passed back and forth across the</span></span><br><span class="line"><span class="comment">     boundary.  Therefore, we disable checking in this case.  */</span></span><br><span class="line">  <span class="keyword">if</span> (__dlopen != <span class="literal">NULL</span>)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  __libc_fatal (<span class="string">&quot;Fatal error: glibc detected an invalid stdio handle\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>两段 check：</p>
-<p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190313005638.png" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/blog-img/20190313005638.png"></a></p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1da6fe6aac1d5307475c7d14d5bc72b5-e1e753.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2024-02-28-1da6fe6aac1d5307475c7d14d5bc72b5-e1e753.png"></a></p>
 <p>这里，angelboy 提出来了两种bypass 方法</p>
 <ul>
 <li><p>overwrite IO_accept_foreign_vtables </p>
