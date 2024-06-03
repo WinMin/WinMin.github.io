@@ -166,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h1><p>之前搭过以qemu+gdb搭内核调试环境，在这次学习<code>Ubuntu 16.04 ebpf arbitrary read/write </code>的分析的时候，换了一个以 VMware 和 GDB的环境进行调试。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h1><p>之前搭过以qemu+gdb搭内核调试环境，在这次学习<code>Ubuntu 16.04 ebpf arbitrary read/write </code>的分析的时候，换了一个以 VMware 和 GDB的环境进行调试。</p>
 <h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><p>Host: Mac OS X  , VMware Fusion</p>
 <p>Guest: Ubuntu Linux 14.04 x64</p>
 <h2 id="Step-1-Configure-your-host"><a href="#Step-1-Configure-your-host" class="headerlink" title="Step 1: Configure your host"></a>Step 1: Configure your host</h2><p>第一步当然是要安装VMware 和安装相应内核的linux系统。当我们安装完之后，在虚拟机的目录下找到xxx.vmx文件，添加一行内容。<br><code>debugStub.listen.guest64 = &quot;1&quot;</code> 如果是32位环境，将64进行替换。</p>

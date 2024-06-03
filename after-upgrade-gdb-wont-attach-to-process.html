@@ -167,7 +167,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg"></a></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><a href="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg" class="gallery-item"><img src="https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/fix-gdb-01.jpg"></a></p>
 <p>发现 <code>gdb.attach</code>弹不出gdb窗口了…</p>
 <p> 后来发现问题出在ubuntu身上，</p>
 <p>Ubuntu引入了一个补丁来禁止非root用户对非子进程的追踪 - 即。只有作为另一个进程的父进程的进程可以为普通用户追踪它，而root仍然可以追踪每个进程。所以为什么你可以使用gdb来通过sudo来附加。</p>

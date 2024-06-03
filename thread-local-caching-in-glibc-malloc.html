@@ -166,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="thread-local-caching-in-glibc-malloc"><a href="#thread-local-caching-in-glibc-malloc" class="headerlink" title="thread local caching in glibc malloc"></a>thread local caching in glibc malloc</h1><h2 id="TCACHE-2-26"><a href="#TCACHE-2-26" class="headerlink" title="TCACHE (2.26+)"></a>TCACHE (2.26+)</h2><p>Thread local storage caching</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="thread-local-caching-in-glibc-malloc"><a href="#thread-local-caching-in-glibc-malloc" class="headerlink" title="thread local caching in glibc malloc"></a>thread local caching in glibc malloc</h1><h2 id="TCACHE-2-26"><a href="#TCACHE-2-26" class="headerlink" title="TCACHE (2.26+)"></a>TCACHE (2.26+)</h2><p>Thread local storage caching</p>
 <p>Singly linked list in chunk’s <code>fd</code> (sim. to FastBins)</p>
 <p>All sizes</p>
 <p>Major performance enhancement</p>
@@ -215,13 +215,13 @@
 <li><p>fake chunk 的 next chunk 的大小不能小于 <code>2 * SIZE_SZ</code>，同时也不能大于<code>av-&gt;system_mem</code> 。</p>
 </li>
 <li><p>fake chunk 对应的 fastbin 链表头部不能是该 fake chunk，即不能构成 double free 的情况。</p>
-</li>
-</ul>
-<p>  然而在 tcahe 的机制下只需要满足：</p>
+<p>然而在 tcahe 的机制下只需要满足：</p>
 <ul>
 <li>它是一个<code>2*SIZE_SZ</code>对齐的地址</li>
 <li>其值<code>MINSIZE</code>在最大缓存块大小（1032/516字节）之间。</li>
 <li>在x64上，它也不能有第四个LSB集。</li>
+</ul>
+</li>
 </ul>
 <h3 id="Overlapping-chunks"><a href="#Overlapping-chunks" class="headerlink" title="Overlapping chunks"></a>Overlapping chunks</h3><p>我们知道 在 GLIBC Pwn 中 OVerlapping chunks是一个常见的利用技术。我们通常是可以通过覆盖堆的头部，比如覆盖一个已经释放的 chunk 的 size 域。在这个机制下，我们仍然也可以用这个方法。</p>
 <h3 id="tcache-poisoning"><a href="#tcache-poisoning" class="headerlink" title="tcache poisoning"></a>tcache poisoning</h3><p>tache中的垃圾回收机制如下：</p>

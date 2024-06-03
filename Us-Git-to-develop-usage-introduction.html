@@ -167,7 +167,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Git是目前世界上最先进的分布式版本控制系统，由Linux创始人Linus在2005年开发，用于对抗商业版的版本控制工具BitKeeper，历史比较有意思，感兴趣的师傅们可以搜索了解一下。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Git是目前世界上最先进的分布式版本控制系统，由Linux创始人Linus在2005年开发，用于对抗商业版的版本控制工具BitKeeper，历史比较有意思，感兴趣的师傅们可以搜索了解一下。</p>
 <ul>
 <li>分布式<br>首先要说明的是Git是一个分布式版本控制系统，重点在于分布式。也就是说我们从github上每clone下来一个项目，都是clone下一个完整的仓库，里面包含了远程仓库的所有信息。我们在clone的目录下会发现一个.git目录，这个目录就是本地仓库所在的位置，注意不要去修改这个目录，如果删除了这个目录，本地仓库及其相关信息都会消失。</li>
 <li>工作区和版本库<br>这里的工作区指的是不包括.git目录的所有文件，你可以对工作区进行任意的修改，都不会影响到本地的仓库。<br>.git目录是本地仓库，也叫作版本库。版本库可以粗略的分为两个部分——暂存区和分支区，这两个区域是相互独立的。<br>我们使用“git add”命令把工作区的文件修改添加到暂存区，使用“git commit”命令把暂存区的文件修改提交到当前分支。如下面两幅图，暂存区译为stage。</li>
@@ -189,19 +189,29 @@
 <ul>
 <li>设置本地仓库<br>这一步克隆分支到本地，并且切换到dev分支，随后建立自己的分支。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd [项目路径] </span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;FlappyPig&#x2F;pigcrypto  </span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git checkout -b [MEMBER_NAME]  # [MEMBER_NAME] 是自己的分支名称</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 git checkout的-b参数表示新建分支，无参数表示切换到现有分支。</li>
-<li>更新本地仓库<br>在这一步进行代码的开发，阶段性开发完成后将代码添加到本地仓库，注意提交注释写的尽量具体，add和commit的作用在第一节说明了。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add .  #这里可以列出具体要添加的文件，也可以使用.添加所有新增文件</span><br><span class="line">$ git commit -m &quot;提交注释&quot;</span><br></pre></td></tr></table></figure></li>
+<li><pre><code>更新本地仓库
+</code></pre>
+在这一步进行代码的开发，阶段性开发完成后将代码添加到本地仓库，注意提交注释写的尽量具体，add和commit的作用在第一节说明了。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add .  #这里可以列出具体要添加的文件，也可以使用.添加所有新增文件</span><br><span class="line">$ git commit -m &quot;提交注释&quot;</span><br></pre></td></tr></table></figure></li>
 <li>m参数后接注释，注释尽量写英文吧233</li>
-<li>将自己的分支合并到本地dev分支<br>本步是在阶段性开发完成后，将自己的分支合并到本地dev分支，准备推送到远程。自己的分支开发完成后，首先我们需要切换回dev分支，随后将自己分支的修改合并到dev分支。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout dev</span><br><span class="line">$ git merge --no-ff [MEMBER_NAME] -m &quot;提交注释&quot;  # [MEMBER_NAME] 是自己的分支名称</span><br></pre></td></tr></table></figure></li>
+<li><pre><code>将自己的分支合并到本地dev分支
+</code></pre>
+本步是在阶段性开发完成后，将自己的分支合并到本地dev分支，准备推送到远程。自己的分支开发完成后，首先我们需要切换回dev分支，随后将自己分支的修改合并到dev分支。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout dev</span><br><span class="line">$ git merge --no-ff [MEMBER_NAME] -m &quot;提交注释&quot;  # [MEMBER_NAME] 是自己的分支名称</span><br></pre></td></tr></table></figure></li>
 <li>-no-ff参数表示强制生成merge日志。</li>
-<li>将本地dev分支推送到远程<br><code>$ git push</code><br>使用该命令之前注意自己的本地分支是否在dev之下（git status查看）。</li>
+<li><pre><code>将本地dev分支推送到远程
+</code></pre>
+<code>$ git push</code><br>使用该命令之前注意自己的本地分支是否在dev之下（git status查看）。</li>
 </ul>
 <p>如果在推送过程中提示与远程dev分支发生冲突，需要先将远程dev分支同步到本地，解决冲突后再推送，平时尽量避免不同开发人员修改同一个文件。<br>处理代码如下，首先我们使用pull命令同步远程仓库到本地，此时git会提示你处理冲突，处理完成后保存文件。再使用add命令添加处理完的文件，随后commit提交本次冲突处理，然后再去push。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git push </span><br><span class="line">       #                                               # 遇到错误</span><br><span class="line">$ git pull</span><br><span class="line">       # …                                               # 解决冲突</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add .  #添加修改后的文件到本地仓库</span><br><span class="line">$ git commit -m &quot;solve conflict:由于XX原因出错，修改XX文件解决问题&quot;</span><br><span class="line">$ git push</span><br></pre></td></tr></table></figure>
 <ul>
-<li>删除自己的分支（可选）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -d [MEMBER_NAME]  # [MEMBER_NAME] 是自己的分支名称</span><br></pre></td></tr></table></figure>
+<li><pre><code>删除自己的分支（可选）
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -d [MEMBER_NAME]  # [MEMBER_NAME] 是自己的分支名称</span><br></pre></td></tr></table></figure>
 自己的本地分支的存在不会影响远程分支。</li>
-<li>常用查询命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch                          # 查看自己所在分支 以及自己所拥有的分支</span><br><span class="line">$ git log --graph                      # 查看自己的提交记录</span><br><span class="line">$ git reflog                                            # 查看自己的操作历史</span><br><span class="line">$ git status                                        # 查看本地仓库当前的文件状态</span><br><span class="line">$ git blame [FILE_PATH]                  # 查看文件的每一部分最后由谁改动</span><br></pre></td></tr></table></figure>
+<li><pre><code>常用查询命令
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch                          # 查看自己所在分支 以及自己所拥有的分支</span><br><span class="line">$ git log --graph                      # 查看自己的提交记录</span><br><span class="line">$ git reflog                                            # 查看自己的操作历史</span><br><span class="line">$ git status                                        # 查看本地仓库当前的文件状态</span><br><span class="line">$ git blame [FILE_PATH]                  # 查看文件的每一部分最后由谁改动</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {

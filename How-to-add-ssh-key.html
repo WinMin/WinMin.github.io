@@ -167,7 +167,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h2><p>客户机 生成公钥<br>        <code>ssh-keygen -t rsa</code></p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h2><p>客户机 生成公钥<br>        <code>ssh-keygen -t rsa</code></p>
 <h2 id="第二步："><a href="#第二步：" class="headerlink" title="第二步："></a>第二步：</h2><p>将公钥传到服务器<br><code>scp id_rsa.pub root@ip:/root/.ssh/</code><br>    将公钥导入keys文件<br><code>cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</code></p>
 <h2 id="第三步："><a href="#第三步：" class="headerlink" title="第三步："></a>第三步：</h2><p>修改ssh配置文件<br>        <code>Vim /etc/ssh/sshd_config</code></p>
 <p><a href="http://oayoilchh.bkt.clouddn.com/17-8-16/92667768.jpg" class="gallery-item"><img src="http://oayoilchh.bkt.clouddn.com/17-8-16/92667768.jpg"></a></p>

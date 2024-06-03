@@ -167,7 +167,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="checksec及其包含的保护机制"><a href="#checksec及其包含的保护机制" class="headerlink" title="checksec及其包含的保护机制"></a>checksec及其包含的保护机制</h2><p>今天由于编译程序的时候，老是不知道怎么只开启自己想要的保护，所以稍微查阅了一些资料。<br>安全机制包括DEP、ASLR等。在编写漏洞利用代码的时候，需要特别注意目标进程是否开启了DEP（Linux下对应NX）、ASLR（Linux下对应PIE）等机制，例如存在DEP（NX）的话就不能直接执行栈上的数据，存在ASLR的话各个系统调用的地址就是随机化的。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="checksec及其包含的保护机制"><a href="#checksec及其包含的保护机制" class="headerlink" title="checksec及其包含的保护机制"></a>checksec及其包含的保护机制</h2><p>今天由于编译程序的时候，老是不知道怎么只开启自己想要的保护，所以稍微查阅了一些资料。<br>安全机制包括DEP、ASLR等。在编写漏洞利用代码的时候，需要特别注意目标进程是否开启了DEP（Linux下对应NX）、ASLR（Linux下对应PIE）等机制，例如存在DEP（NX）的话就不能直接执行栈上的数据，存在ASLR的话各个系统调用的地址就是随机化的。</p>
 <h2 id="一、checksec"><a href="#一、checksec" class="headerlink" title="一、checksec"></a>一、checksec</h2><p>checksec是一个脚本软件，也就是用脚本写的一个文件，不到2000行，可用来学习shell。<br>源码下载地址：<br><a href="http://www.trapkit.de/tools/checksec.html">http://www.trapkit.de/tools/checksec.html</a><br><a href="https://github.com/slimm609/checksec.sh/">https://github.com/slimm609/checksec.sh/</a><br>下载地址：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/slimm609/checksec.sh/archive/1.6.tar.gz</span><br></pre></td></tr></table></figure>
 

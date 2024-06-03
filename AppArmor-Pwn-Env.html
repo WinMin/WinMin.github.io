@@ -163,7 +163,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>最近接触了下AppArmor以及刚好最近部署某比赛，突然不想用docker做权限隔离，所以做了个记录</p>
 <h2 id="AppArmor"><a href="#AppArmor" class="headerlink" title="AppArmor"></a>AppArmor</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><code>sudo apt-get install apparmor-profiles apparmor-utils</code></p>
 <h3 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h3><p>在生成配置文件前，需要做个软连接，因为aa-autodep是通过Path去寻找目标程序的。所以我这里先</p>
 <p><code>sudo ln -s /home/binfile /usr/local/bin/binfile</code></p>

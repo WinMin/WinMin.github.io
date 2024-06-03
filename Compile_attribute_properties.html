@@ -166,7 +166,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前端时间，在打geekpwn的时候，需要做后门，一开始我做的是macos的后门，用的是 macos dylib注入（劫持？）。</p>
 <p>这里可以提一下，我这里用的是这个项目<a href="https://github.com/Tyilo/insert_dylib">insert_dylib</a>，曾经看过有人用这个项目，去掉了macos上企业微信的水印，所以一直有点印象。</p>
 <p>使用方式如下：insert @executable_path src dst</p>
 <p>最后能类似这样的一个效果：</p>
@@ -181,8 +181,8 @@
 <p>接着如何利用该编译属性达到我们想要的效果？</p>
 <p>这里我们要认识两个编译属性</p>
 <ol>
-<li><strong>attribute</strong>((constructor))</li>
-<li><strong>attribute</strong>((destructor))</li>
+<li> <strong>attribute</strong>((constructor))</li>
+<li> <strong>attribute</strong>((destructor))</li>
 </ol>
 <p>这两个带着  <code>__attribute__</code> 编译属性的标识并不相同，一个是constructor 一个是 destructor。</p>
 <p>从字面上理解 constructor 是构造器的意思，destructor 是 a refuse-burning furnace（焚化炉的意思？），我们可以简单的理解其为c++ 函数里的构造函数和析构函数，其特点就是在于：</p>

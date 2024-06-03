@@ -165,7 +165,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="ubuntu-添加新硬盘"><a href="#ubuntu-添加新硬盘" class="headerlink" title="ubuntu 添加新硬盘"></a>ubuntu 添加新硬盘</h1><p>查看硬盘：</p>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="ubuntu-添加新硬盘"><a href="#ubuntu-添加新硬盘" class="headerlink" title="ubuntu 添加新硬盘"></a>ubuntu 添加新硬盘</h1><p>查看硬盘：</p>
 <pre><code># fdisk -l
 ...
 Disk /dev/sdb: 274.9 GB, 274877906944 bytes
@@ -175,7 +175,8 @@ Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disk identifier: 0x00000000
 
-Disk /dev/sdb doesn&#39;t contain a valid partition table</code></pre>
+Disk /dev/sdb doesn&#39;t contain a valid partition table
+</code></pre>
 <p>可以看到，有一块大小为256G的磁盘未初始化</p>
 <p>格式化硬盘（如果需要多个分区，请先创建磁盘分区）：</p>
 <pre><code># mkfs.ext4 /dev/sdb
@@ -201,22 +202,27 @@ Superblock backups stored on blocks:
 Allocating group tables: done
 Writing inode tables: done
 Creating journal (32768 blocks): done
-Writing superblocks and filesystem accounting information: done</code></pre>
+Writing superblocks and filesystem accounting information: done
+</code></pre>
 <p>查看磁盘的UUID：</p>
 <pre><code># blkid
 /dev/sda1: UUID=&quot;05003145-9b91-4943-aaa8-22cb496fd4d8&quot; TYPE=&quot;ext4&quot;
 /dev/sda5: UUID=&quot;ca0012ba-2bf1-4d0b-94d3-3e4043746a14&quot; TYPE=&quot;swap&quot;
-/dev/sdb: UUID=&quot;e23a1c1e-8d91-4df8-8fba-f0656a1080ab&quot; TYPE=&quot;ext4&quot;</code></pre>
+/dev/sdb: UUID=&quot;e23a1c1e-8d91-4df8-8fba-f0656a1080ab&quot; TYPE=&quot;ext4&quot;
+</code></pre>
 <p>记录下/dev/sdb（刚才格式化的分区）的UUID。</p>
 <p><em>注意：你看到的UUID的值与例子不同</em></p>
 <p>编辑/etc/fstab</p>
-<pre><code># editor /etc/fstab</code></pre>
+<pre><code># editor /etc/fstab
+</code></pre>
 <p>添加以下行</p>
-<pre><code>UUID=e23a1c1e-8d91-4df8-8fba-f0656a1080ab    /home    ext4    defaults,errors=remount-ro    0    1</code></pre>
+<pre><code>UUID=e23a1c1e-8d91-4df8-8fba-f0656a1080ab    /home    ext4    defaults,errors=remount-ro    0    1
+</code></pre>
 <p><strong><em>注意：UUID替换为上一步你获取到的值</em></strong></p>
 <p><em>P.S.<code>/home</code>为你要挂载的目标目录</em></p>
 <p>现在重启电脑，应用新的磁盘配置</p>
-<pre><code># reboot</code></pre>
+<pre><code># reboot
+</code></pre>
 <p>查看磁盘配置：</p>
 <pre><code># df -h
 Filesystem      Size  Used Avail Use% Mounted on
@@ -227,7 +233,8 @@ tmpfs           1.7G  492K  1.7G   1% /run
 none            5.0M  8.0K  5.0M   1% /run/lock
 none            8.2G     0  8.2G   0% /run/shm
 none            100M     0  100M   0% /run/user
-/dev/sdb        252G   60M  239G   1% /home</code></pre>
+/dev/sdb        252G   60M  239G   1% /home
+</code></pre>
 </div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
         var options = {
             selector: '.gallery-item'
