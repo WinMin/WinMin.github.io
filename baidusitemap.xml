@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bestwing.me/Exploiting%20File%20Writes%20in%20Hardened%20Environments.html</loc>
+    <lastmod>2024-10-21</lastmod>
+  </url>
+  <url>
     <loc>https://bestwing.me/RWCTF-6th-Router4-Writeup.html</loc>
     <lastmod>2024-06-03</lastmod>
   </url>
