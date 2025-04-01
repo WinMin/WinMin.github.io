@@ -6,7 +6,7 @@
   <link href="https://bestwing.me/atom.xml" rel="self"/>
   
   <link href="https://bestwing.me/"/>
-  <updated>2025-04-01T03:36:36.252Z</updated>
+  <updated>2025-04-01T03:39:25.367Z</updated>
   <id>https://bestwing.me/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://bestwing.me/Security-Equipment-Vulnerability-Research.html"/>
     <id>https://bestwing.me/Security-Equipment-Vulnerability-Research.html</id>
     <published>2025-03-31T16:00:00.000Z</published>
-    <updated>2025-04-01T03:36:36.252Z</updated>
+    <updated>2025-04-01T03:39:25.367Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>…</p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个议题内容在 2024年10月10日的华为 “安全光网”网络安全技术论坛和 2024年11月9日的先知沙龙-北京站分享过。</p><p>当时北京沙龙为了篇幅砍了很多 slide 的页数， 这次分享是<strong>比较</strong>完整的 95 页（ 做太多了…), 主要的内容是从各个类型的安全设备切入，分析他们的攻击面以及一些公开的 1day的漏洞分析， 主要大纲如下：</p><ol><li>安全邮件网关</li><li>网关</li><li>防火墙</li><li>VPN设备</li></ol><p>…</p><h2 id="公开-slide"><a href="#公开-slide" class="headerlink" title="公开 slide"></a>公开 slide</h2><p>这里公开 slide ， 感兴趣的同学可以自行阅读</p><div class="row"><iframe src="https://drive.google.com/file/d/1W6kVh6zJ-R61WR69xX7V02mmESTuwPJO/preview" style="width:100%; height:550px"></iframe></div></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>…</p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个议题内容在 2024年10月10日的华为 “安全光网”网络安全技术论坛和 2024年11月9日的先知沙龙-北京站分享过。</p><p>当时北京沙龙为了篇幅砍了很多 slide 的页数， 这次分享是<strong>比较</strong>完整的 95 页（ 做太多了…), 主要的内容是从各个类型的安全设备切入，分析他们的攻击面以及一些公开的 1day的漏洞分析， 主要大纲如下：</p><ol><li>安全邮件网关</li><li>网关</li><li>防火墙</li><li>VPN设备</li></ol><p>……</p><h2 id="公开-slide"><a href="#公开-slide" class="headerlink" title="公开 slide"></a>公开 slide</h2><p>这里公开 slide ， 感兴趣的同学可以自行阅读</p><div class="row"><iframe src="https://drive.google.com/file/d/1W6kVh6zJ-R61WR69xX7V02mmESTuwPJO/preview" style="width:100%; height:550px"></iframe></div></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
     
     
       
