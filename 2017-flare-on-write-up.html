@@ -208,7 +208,7 @@ https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-flare-on-result.jp
 
 <p>可以发现KERNEL32被跳过了。patch掉此处，便于动态调试。</p>
 <p>对于被调用的函数，我们可以用Flare-IDA中的Shellcode-hashes脚本来辅助分析。静态分析后发现，程序在遍历%USERPROFILE%/flareon2016challenge目录下的文件，检查其时间是否符合特征值。如果符合，就提取出其中的八个字节到key.bin中，以此类推。Swings师傅提醒后，发现正确的文件是从去年的题目包中下载的（P.S 我觉得这个题设计的一般）。释放文件后再次执行程序，会弹出对话框：</p>
-<p><a href="mailto:&#x62;&#108;&#52;&#x35;&#55;&#95;&#x66;&#114;&#48;&#109;&#x5f;&#x74;&#x68;&#x33;&#x5f;&#x70;&#x34;&#x35;&#x37;&#64;&#102;&#x6c;&#97;&#x72;&#101;&#45;&#111;&#110;&#x2e;&#99;&#x6f;&#x6d;">&#x62;&#108;&#52;&#x35;&#55;&#95;&#x66;&#114;&#48;&#109;&#x5f;&#x74;&#x68;&#x33;&#x5f;&#x70;&#x34;&#x35;&#x37;&#64;&#102;&#x6c;&#97;&#x72;&#101;&#45;&#111;&#110;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<p><a href="mailto:&#x62;&#x6c;&#x34;&#53;&#x37;&#95;&#x66;&#114;&#x30;&#109;&#95;&#x74;&#104;&#51;&#x5f;&#x70;&#52;&#x35;&#55;&#x40;&#102;&#108;&#97;&#x72;&#x65;&#x2d;&#x6f;&#x6e;&#46;&#99;&#111;&#x6d;">&#x62;&#x6c;&#x34;&#53;&#x37;&#95;&#x66;&#114;&#x30;&#109;&#95;&#x74;&#104;&#51;&#x5f;&#x70;&#52;&#x35;&#55;&#x40;&#102;&#108;&#97;&#x72;&#x65;&#x2d;&#x6f;&#x6e;&#46;&#99;&#111;&#x6d;</a></p>
 <h2 id="Pewpewboat"><a href="#Pewpewboat" class="headerlink" title="Pewpewboat"></a>Pewpewboat</h2><p>这是一个linux下的游戏<br>关卡有100关，<br>我们在静态分析下main函数</p>
 <div align=center>
 ![](https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/17-flare-on-pewpewboat-01.jpg)
@@ -249,7 +249,7 @@ https://blog-1252049492.cos.ap-hongkong.myqcloud.com/img/2017-flare-on-result.jp
 <p>的提示</p>
 <p>重新组织地图字母FHGUZREJVO得到OHGJURERVFGUREHZ<br>rot13之后得到BUTWHEREISTHERUM</p>
 <p>直接输入到程序中就得到flag了。。</p>
-<p><a href="mailto:&#121;&#48;&#x75;&#x5f;&#95;&#115;&#85;&#110;&#x4b;&#x5f;&#x6d;&#89;&#95;&#x5f;&#x50;&#51;&#x57;&#112;&#x33;&#x77;&#x5f;&#98;&#x30;&#52;&#x74;&#64;&#x66;&#x6c;&#x61;&#114;&#101;&#x2d;&#x6f;&#x6e;&#46;&#99;&#x6f;&#x6d;">&#121;&#48;&#x75;&#x5f;&#95;&#115;&#85;&#110;&#x4b;&#x5f;&#x6d;&#89;&#95;&#x5f;&#x50;&#51;&#x57;&#112;&#x33;&#x77;&#x5f;&#98;&#x30;&#52;&#x74;&#64;&#x66;&#x6c;&#x61;&#114;&#101;&#x2d;&#x6f;&#x6e;&#46;&#99;&#x6f;&#x6d;</a></p>
+<p><a href="mailto:&#121;&#x30;&#117;&#95;&#95;&#x73;&#x55;&#x6e;&#x4b;&#95;&#109;&#89;&#x5f;&#95;&#x50;&#51;&#x57;&#112;&#x33;&#x77;&#95;&#98;&#48;&#x34;&#116;&#x40;&#102;&#108;&#x61;&#114;&#101;&#x2d;&#x6f;&#x6e;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x30;&#117;&#95;&#95;&#x73;&#x55;&#x6e;&#x4b;&#95;&#109;&#89;&#x5f;&#95;&#x50;&#51;&#x57;&#112;&#x33;&#x77;&#95;&#98;&#48;&#x34;&#116;&#x40;&#102;&#108;&#x61;&#114;&#101;&#x2d;&#x6f;&#x6e;&#x2e;&#99;&#x6f;&#x6d;</a></p>
 <p>今晚先写到这。。明天继续写</p>
 <h2 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h2><h2 id="突然发现国内有有人写的挺完整的-我就不继续往下写了"><a href="#突然发现国内有有人写的挺完整的-我就不继续往下写了" class="headerlink" title="突然发现国内有有人写的挺完整的 我就不继续往下写了"></a>突然发现国内有有人写的挺完整的 我就不继续往下写了</h2><p>突然发现国内有有人写的挺完整的 我就不继续往下写了<br>附上连接<br><a href="http://blog.nsfocus.net/flare-onchallenge4th/">http://blog.nsfocus.net/flare-onchallenge4th/</a></p>
 </div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
