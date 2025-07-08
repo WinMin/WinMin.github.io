@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang=EN>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Real World CTF 5th writeup">
+<meta property="og:url" content="https://bestwing.me/RWCTF-5th-Writeup.html">
+<meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
+<meta property="og:locale">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png">
+<meta property="og:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png">
+<meta property="article:published_time" content="2023-05-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-25T11:58:13.932Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="CVE-2023-24805">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Real World CTF 5th writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 浮生若梦" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/How-to-hacked-sqlite.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/CVE-2022-32548-DrayTeck-BufferOverflow.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/RWCTF-5th-Writeup.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/RWCTF-5th-Writeup.html&text=Real World CTF 5th writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/RWCTF-5th-Writeup.html&is_video=false&description=Real World CTF 5th writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Real World CTF 5th writeup&body=Check out this article: https://bestwing.me/RWCTF-5th-Writeup.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/RWCTF-5th-Writeup.html&name=Real World CTF 5th writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/RWCTF-5th-Writeup.html&t=Real World CTF 5th writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Printer2"><span class="toc-number">1.</span> <span class="toc-text">Printer2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hardened-Redis"><span class="toc-number">2.</span> <span class="toc-text">Hardened Redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference-link"><span class="toc-number">3.</span> <span class="toc-text">Reference link</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Real World CTF 5th writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-05-16T16:00:00.000Z" itemprop="datePublished">2023-05-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/CVE-2023-24805/" rel="tag">CVE-2023-24805</a>, <a class="tag-link-link" href="/tags/pwn/" rel="tag">pwn</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>这次 RWCTF 比赛我一共出了两个题: 「Printer2」 和 「Hardened Redis」。至于为什么今天才在博客更新这个Writeup一个原因就是 Pritner2 相关的漏洞今天终于发布了正式补丁。</p>
+<h2 id="Printer2"><a href="#Printer2" class="headerlink" title="Printer2"></a>Printer2</h2><p>这是 <code>OpenPrinting</code> 项目中 <code>cups-filters</code> 模块下的 Backend Error Handler（简称 beh）存在的漏洞。这里是关于 <a href="https://wiki.linuxfoundation.org/openprinting/database/backenderrorhandler">beh</a> 的介绍</p>
+<p>漏洞点位于 <a href="https://github.com/OpenPrinting/cups-filters/blob/5c9498a57d3b331d9b1aa59df206b26a9510f335/backend/beh.c#L288">cups-filters/backed/beh.c#L288</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// (context: argv = beh &lt;job-id&gt; &lt;user&gt; &lt;title&gt; &lt;copies&gt; &lt;options&gt; [file])</span></span><br><span class="line">  <span class="built_in">snprintf</span>(cmdline, <span class="keyword">sizeof</span>(cmdline),</span><br><span class="line">  <span class="string">&quot;%s/backend/%s &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; &#x27;%s&#x27; %s&quot;</span>,</span><br><span class="line">  cups_serverbin, scheme, argv[<span class="number">1</span>], argv[<span class="number">2</span>], argv[<span class="number">3</span>],</span><br><span class="line">        ...</span><br><span class="line">  (argc == <span class="number">6</span> ? <span class="string">&quot;1&quot;</span> : argv[<span class="number">4</span>]),</span><br><span class="line">  argv[<span class="number">5</span>], filename);</span><br><span class="line">        ...</span><br><span class="line">retval = system(cmdline) &gt;&gt; <span class="number">8</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里有一个明显的命令注入， 当用户控制 user 或者 title 字段的时候可以造成任意命令执行。更详细的细节可以看我提交给官方的报告：</p>
+<p><a href="https://github.com/OpenPrinting/cups-filters/security/advisories/GHSA-gpxc-v2m8-fr3x">report a command inject Vulnerabilities in cups-filters </a></p>
+<h2 id="Hardened-Redis"><a href="#Hardened-Redis" class="headerlink" title="Hardened Redis"></a>Hardened Redis</h2><p>这是题目考点是在较高版本的情况下在有访问 <code>Redis</code> 的情况下如何获取  <code>Redis</code> 所在系统 shell 权限。 在高版本的 Redis 已经不能使用主从复制来获取 shell了（印象中），另外我也禁用了一些 <code>Redis</code> 的方法。 但是由于对 Redis 的熟知程度不够， 其次也是去年参加 CTF 少了， 被 <a href="https://hackmd.io/@Xion/goq_22s_authors_writeup">2022 Spring GoN Open Qual CTF</a> 的一个 <code>Redis</code> 题的解法非预期了。</p>
+<p>下次有机会可以和大家详细分享下这个解法。</p>
+<p>这里接着讲我的预期解法，讲到 <code>Redis</code> ， 如果大家有印象，应该会想到 <code>CVE-2022-0543</code> 。 当时这个漏洞影响了 Debian 系列的 Linux 发行版系统的包管理器所安装的 <code>Redis</code> 。因为 Debian 系列由于打包问题，Redis在Lua解析器初始化后，package变量没有被正确清除，导致攻击者可以利用它来进行Lua沙箱逃逸，从而执行任意系统命令。</p>
+<p>这个时候我们注意到了这 Debian 系列用的 <code>Redis</code> （即使用 apt 安装 ) 所使用的 lua 解析器是 lua 5.1 ， 而且是存在一个 2015 年漏洞的 lua 解析器，虽然这个漏洞在 2015 年就被 <a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a"><code>Redis</code>官方修复了</a>， 但是 lua 5.1 解析器并没有修复。</p>
+<p><code>apt</code> 命令安装的redis使用的是单独的 liblua5.1.so.0</p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png" title="image-20230524155200264" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-24-b443c11f82ebe41d313bbaf1c058f8b8-87e7f8.png" alt="image-20230524155200264"></a></p>
+<p>2015 年这个漏洞是 <code>CVE-2015-4335</code>， 另外 HN 评论区当时也提到了这个问题， </p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-7d5da9fdabc3b657f586d9f14af353b8-7a3f85.png"></a></p>
+<p><a href="https://news.ycombinator.com/item?id=30617641">I think this is still ‘broken’ because Redis have applied custom patches to the )</a></p>
+<p>虽然当时我也给  ubuntu 和 Debian 发了邮件提醒了这件事，但是他们的回复看起来是不是很想单独修复。</p>
+<p><a href="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png" title="image-20230518002900794" class="gallery-item"><img src="https://sw-blog.oss-cn-hongkong.aliyuncs.com/img/2023-05-18-e8eca39e1e8091cb3cd4123d47d5736a-1bc0a2.png" alt="image-20230518002900794"></a></p>
+<p>进一步的漏洞利用与分析可以参考我 chu 师父 的博客， <a href="https://mp.weixin.qq.com/s/JxZC5pqi92xEOUT3BKdyWg">Redis CVE-2015-4335分析 </a>， 我就不赘述了。 没想到隔了这么久还是依然能受到 chu 师父的照顾。</p>
+<h2 id="Reference-link"><a href="#Reference-link" class="headerlink" title="Reference link"></a>Reference link</h2><p><a href="https://github.com/OpenPrinting/cups-filters/blob/5c9498a57d3b331d9b1aa59df206b26a9510f335/backend/beh.c#L288">cups-filters/backed/beh.c#L288</a></p>
+<p><a href="https://github.com/OpenPrinting/cups-filters/security/advisories/GHSA-gpxc-v2m8-fr3x">report a command inject Vulnerabilities in cups-filters</a></p>
+<p><a href="https://hackmd.io/@Xion/goq_22s_authors_writeup">2022 Spring GoN Open Qual CTF</a></p>
+<p><a href="https://news.ycombinator.com/item?id=30617641">I think this is still ‘broken’ because Redis have applied custom patches to the … | Hacker News (ycombinator.com)</a></p>
+<p><a href="https://github.com/redis/redis/commit/49efe300af258e83f377cd8142d2c67d66fc2e3a">disable loading lua bytecode</a></p>
+<p><a href="https://mp.weixin.qq.com/s/JxZC5pqi92xEOUT3BKdyWg">Redis CVE-2015-4335分析 </a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Printer2"><span class="toc-number">1.</span> <span class="toc-text">Printer2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hardened-Redis"><span class="toc-number">2.</span> <span class="toc-text">Hardened Redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference-link"><span class="toc-number">3.</span> <span class="toc-text">Reference link</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/RWCTF-5th-Writeup.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/RWCTF-5th-Writeup.html&text=Real World CTF 5th writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/RWCTF-5th-Writeup.html&is_video=false&description=Real World CTF 5th writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Real World CTF 5th writeup&body=Check out this article: https://bestwing.me/RWCTF-5th-Writeup.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/RWCTF-5th-Writeup.html&title=Real World CTF 5th writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/RWCTF-5th-Writeup.html&name=Real World CTF 5th writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/RWCTF-5th-Writeup.html&t=Real World CTF 5th writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133464311-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-133464311-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

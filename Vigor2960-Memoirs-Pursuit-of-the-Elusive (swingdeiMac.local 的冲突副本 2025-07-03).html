@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang=EN>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day">
+<meta property="og:url" content="https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html">
+<meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-03-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-01T03:48:29.000Z">
+<meta property="article:author" content="Swing">
+<meta property="article:tag" content="DrayTek">
+<meta property="article:tag" content="Vigor2960">
+<meta property="article:tag" content="长沙CPS">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Swing&#39;Blog 浮生若梦" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Security-Equipment-Vulnerability-Research.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/CVE-2025-0282-Ivanti-Connect-Secure-VPN-stack-overflow.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&text=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&is_video=false&description=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day&body=Check out this article: https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&name=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&t=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E5%BC%80-slide"><span class="toc-number">2.</span> <span class="toc-text">公开 slide</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Swing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-06T16:00:00.000Z" itemprop="datePublished">2025-03-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/DrayTek/" rel="tag">DrayTek</a>, <a class="tag-link-link" href="/tags/Vigor2960/" rel="tag">Vigor2960</a>, <a class="tag-link-link" href="/tags/%E9%95%BF%E6%B2%99CPS/" rel="tag">长沙CPS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>…</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2024年9月因为<strong>360车联网安全研究院副院长曹颖杰</strong>的关系，受到邀请去了长沙信息物理系统安全技术沙龙水了一个议题，主要是之前对 draytek 2960的漏洞挖掘回顾和一个囤了很久，但是后面被修了的一个漏洞部分详情披露。（PS 这个洞的逻辑后来我出成了华为CTF的某个Pwn题）</p>
+<h2 id="公开-slide"><a href="#公开-slide" class="headerlink" title="公开 slide"></a>公开 slide</h2><p>这里公开 PPT ， 感兴趣的同学可以自行阅读</p>
+
+
+	<div class="row">
+		<iframe src="https://drive.google.com/file/d/1OW0Ntw7V07n3bdnUyWU2zBuXV82QDLSO/preview" style="width:100%; height:550px"></iframe>
+	</div>
+
+
+
+
+
+
+<p>说起来这个洞，之前就已经有个大哥在他博客也提到了，还是太容易被发现了。另外感叹一句长沙还是挺好玩的。</p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E5%BC%80-slide"><span class="toc-number">2.</span> <span class="toc-text">公开 slide</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&text=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&is_video=false&description=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day&body=Check out this article: https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&title=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&name=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html&t=议题分享：Vigor2960 Memoirs \nPursuit of the Elusive 0day &amp; 1day"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Swing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Articles</a></li>
+         
+          <li><a href="/search">Search</a></li>
+         
+          <li><a href="/atom.xml">RSS</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/link">Links</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133464311-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-133464311-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+  <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'swing';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
