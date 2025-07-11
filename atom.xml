@@ -18,8 +18,8 @@
   
   <entry>
     <title>CVE-2025-32023 Redis  漏洞分析</title>
-    <link href="https://bestwing.me/CVE-2025-32023%20Redis-Out-of-bounds-write.html"/>
-    <id>https://bestwing.me/CVE-2025-32023%20Redis-Out-of-bounds-write.html</id>
+    <link href="https://bestwing.me/CVE-2025-32023%20Redis-RCE-Via-Out-of-bounds-write.html"/>
+    <id>https://bestwing.me/CVE-2025-32023%20Redis-RCE-Via-Out-of-bounds-write.html</id>
     <published>2025-07-07T19:32:43.000Z</published>
     <updated>2025-07-11T18:06:49.970Z</updated>
     

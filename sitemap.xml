@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://bestwing.me/CVE-2025-32023%20Redis-Out-of-bounds-write.html</loc>
+    <loc>https://bestwing.me/CVE-2025-32023%20Redis-RCE-Via-Out-of-bounds-write.html</loc>
     
     <lastmod>2025-07-11</lastmod>
     
