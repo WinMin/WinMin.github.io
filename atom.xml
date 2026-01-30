@@ -129,11 +129,11 @@
   </entry>
   
   <entry>
-    <title>议题分享：Vigor2960 Memoirs &#92;nPursuit of the Elusive 0day &amp; 1day</title>
+    <title>议题分享：Vigor2960 Memoirs Pursuit of the Elusive 0day &amp; 1day</title>
     <link href="https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html"/>
     <id>https://bestwing.me/Vigor2960-Memoirs-Pursuit-of-the-Elusive.html</id>
     <published>2025-03-06T16:00:00.000Z</published>
-    <updated>2025-04-01T03:48:29.593Z</updated>
+    <updated>2026-01-30T11:14:51.785Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>…</p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>2024年9月因为<strong>360车联网安全研究院副院长曹颖杰</strong>的关系，受到邀请去了长沙信息物理系统安全技术沙龙水了一个议题，主要是之前对 draytek 2960的漏洞挖掘回顾和一个囤了很久，但是后面被修了的一个漏洞部分详情披露。（PS 这个洞的逻辑后来我出成了华为CTF的某个Pwn题）</p><h2 id="公开-slide"><a href="#公开-slide" class="headerlink" title="公开 slide"></a>公开 slide</h2><p>这里公开 PPT ， 感兴趣的同学可以自行阅读</p><div class="row"><iframe src="https://drive.google.com/file/d/1OW0Ntw7V07n3bdnUyWU2zBuXV82QDLSO/preview" style="width:100%; height:550px"></iframe></div><p>说起来这个洞，之前就已经有个大哥在他博客也提到了，还是太容易被发现了。另外感叹一句长沙还是挺好玩的。</p></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {        var options = {            selector: '.gallery-item'        };        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);        }</script>]]></content>
     
