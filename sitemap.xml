@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://bestwing.me/about/index.html</loc>
+    
+    <lastmod>2026-01-31</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/How-to-patch-a-linux-kernel-bug-zh.html</loc>
+    
+    <lastmod>2026-01-31</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/TP-Link_WR841N_router_%20%20CVE-2023-50224%20and%20CVE-2025-9377.html</loc>
     
     <lastmod>2026-01-31</lastmod>
@@ -17,13 +31,6 @@
   
   <url>
     <loc>https://bestwing.me/link/index.html</loc>
-    
-    <lastmod>2026-01-31</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bestwing.me/about/index.html</loc>
     
     <lastmod>2026-01-31</lastmod>
     
@@ -2383,6 +2390,34 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://bestwing.me/tags/security/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/CVE-2026-22977/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/skbuff/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/usercopy/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -2443,6 +2478,20 @@
   
   <url>
     <loc>https://bestwing.me/categories/Tools/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/categories/%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/categories/%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/</loc>
     <lastmod>2026-01-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
