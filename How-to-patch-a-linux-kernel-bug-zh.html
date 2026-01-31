@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>如何给 Linux 内核提交补丁：一次真实的经历 | Swing&#39;Blog 浮生若梦</title>
+<title>如何给 Linux 内核提交补丁：一次真实的踩坑记录 | Swing&#39;Blog 浮生若梦</title>
 
 
 <meta name="description" content="Know it then hack it!">
@@ -28,7 +28,7 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何给 Linux 内核提交补丁：一次真实的经历">
+<meta property="og:title" content="如何给 Linux 内核提交补丁：一次真实的踩坑记录">
 <meta property="og:url" content="/How-to-patch-a-linux-kernel-bug-zh.html">
 <meta property="og:site_name" content="Swing&#39;Blog 浮生若梦">
 
@@ -37,7 +37,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何给 Linux 内核提交补丁：一次真实的经历">
+<meta name="twitter:title" content="如何给 Linux 内核提交补丁：一次真实的踩坑记录">
 
 <meta name="twitter:description" content="Know it then hack it!">
 
@@ -176,7 +176,7 @@
         <div class="page-layout">
           <article class="post">
   <header class="post-header">
-  <h1 class="post-title">如何给 Linux 内核提交补丁：一次真实的经历</h1>
+  <h1 class="post-title">如何给 Linux 内核提交补丁：一次真实的踩坑记录</h1>
 
   <div class="post-meta">
     <span class="meta-item">
@@ -206,255 +206,174 @@
     <nav class="toc">
   <h3 class="toc-title">Table of Contents</h3>
   <div class="toc-list">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%EF%BC%9A%E8%BF%99%E4%B8%AA-Bug"><span class="toc-text">背景：这个 Bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%B4%A9%E6%BA%83%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="toc-text">分析崩溃偏移量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-text">第一步：环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BB%93%E5%BA%93"><span class="toc-text">克隆正确的仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Git-%E9%82%AE%E4%BB%B6"><span class="toc-text">配置 Git 邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-Mutt%EF%BC%9F%EF%BC%88%E4%B8%8D%E8%A6%81%E7%94%A8-Gmail-%E7%BD%91%E9%A1%B5%E7%89%88%EF%BC%81%EF%BC%89"><span class="toc-text">为什么用 Mutt？（不要用 Gmail 网页版！）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Mutt%EF%BC%88%E7%94%A8%E4%BA%8E%E9%98%85%E8%AF%BB%E5%9B%9E%E5%A4%8D%EF%BC%89"><span class="toc-text">配置 Mutt（用于阅读回复）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E5%88%86%E6%94%AF"><span class="toc-text">第二步：创建工作分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E7%BC%96%E5%86%99%E4%BF%AE%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="toc-text">第三步：编写修复代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E7%BC%96%E8%AF%91%E5%92%8C%E6%B5%8B%E8%AF%95"><span class="toc-text">第四步：编译和测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E8%87%AA%E6%B5%8B%E6%B8%85%E5%8D%95%EF%BC%88%E5%8F%91%E9%80%81%E5%89%8D%E5%BF%85%E5%81%9A%EF%BC%81%EF%BC%89"><span class="toc-text">第五步：自测清单（发送前必做！）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%A3%80%E6%9F%A5"><span class="toc-text">5.1 代码风格检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%BC%96%E8%AF%91%E6%B5%8B%E8%AF%95%EF%BC%88%E5%A4%9A%E7%A7%8D%E9%85%8D%E7%BD%AE%EF%BC%89"><span class="toc-text">5.2 编译测试（多种配置）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%90%AF%E5%8A%A8%E6%B5%8B%E8%AF%95"><span class="toc-text">5.3 启动测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%A4%8D%E7%8E%B0%E5%B9%B6%E9%AA%8C%E8%AF%81%E4%BF%AE%E5%A4%8D"><span class="toc-text">5.4 复现并验证修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E8%BF%90%E8%A1%8C%E7%9B%B8%E5%85%B3-Selftests%EF%BC%88%E5%A6%82%E9%80%82%E7%94%A8%EF%BC%89"><span class="toc-text">5.5 运行相关 Selftests（如适用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E6%8B%BC%E5%86%99%E6%A3%80%E6%9F%A5"><span class="toc-text">5.6 拼写检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E6%AD%A5%EF%BC%9A%E7%BC%96%E5%86%99%E8%A7%84%E8%8C%83%E7%9A%84%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF"><span class="toc-text">第六步：编写规范的提交信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E8%A7%84%E5%88%99%E6%80%BB%E7%BB%93"><span class="toc-text">提交信息规则总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%A0%88%E6%A0%BC%E5%BC%8F%E5%8C%96%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%81%EF%BC%89"><span class="toc-text">调用栈格式化（重要！）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E8%A7%A3%E7%A0%81%E8%B0%83%E7%94%A8%E6%A0%88%EF%BC%81"><span class="toc-text">先解码调用栈！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90%E8%A1%A5%E4%B8%81"><span class="toc-text">第七步：生成补丁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E8%A1%A5%E4%B8%81%E8%B4%A8%E9%87%8F"><span class="toc-text">检查补丁质量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E6%AD%A5%EF%BC%9A%E6%89%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E7%BB%B4%E6%8A%A4%E8%80%85"><span class="toc-text">第八步：找到正确的维护者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E6%AD%A5%EF%BC%9A%E5%8F%91%E9%80%81%E8%A1%A5%E4%B8%81"><span class="toc-text">第九步：发送补丁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E8%A6%81%E6%8A%84%E9%80%81-x73-101-x63-117-114-x69-116-121-64-x6b-x65-114-110-x65-108-x2e-x6f-114-x67"><span class="toc-text">什么时候不要抄送 &amp;#x73;&amp;#101;&amp;#x63;&amp;#117;&amp;#114;&amp;#x69;&amp;#116;&amp;#121;&amp;#64;&amp;#x6b;&amp;#x65;&amp;#114;&amp;#110;&amp;#x65;&amp;#108;&amp;#x2e;&amp;#x6f;&amp;#114;&amp;#x67;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E6%AD%A5%EF%BC%9A%E5%9B%9E%E5%BA%94%E5%8F%8D%E9%A6%88"><span class="toc-text">第十步：回应反馈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9AKernel-Test-Robot-%E5%8F%8D%E9%A6%88"><span class="toc-text">示例：Kernel Test Robot 反馈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9B%9E%E5%BA%94%E5%8F%8D%E9%A6%88"><span class="toc-text">如何回应反馈</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%94%B3%E8%AF%B7-CVE%EF%BC%88%E5%90%88%E5%B9%B6%E5%90%8E%EF%BC%89"><span class="toc-text">第十一步：申请 CVE（合并后）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E7%AD%89%E8%A1%A5%E4%B8%81%E5%90%88%E5%B9%B6%EF%BC%81"><span class="toc-text">先等补丁合并！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8-CVE-%E5%88%86%E9%85%8D"><span class="toc-text">自动 CVE 分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E7%94%B3%E8%AF%B7-CVE"><span class="toc-text">手动申请 CVE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%BE%97-CVE%EF%BC%9F"><span class="toc-text">什么样的问题可以获得 CVE？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E7%9A%84-CVE"><span class="toc-text">我的 CVE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF%EF%BC%88%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%EF%BC%89"><span class="toc-text">我犯的错误（以及如何避免）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-1%EF%BC%9A%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E6%A0%BC%E5%BC%8F%E9%94%99%E8%AF%AF-v1"><span class="toc-text">错误 1：提交信息格式错误 (v1)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-2%EF%BC%9A%E7%BC%BA%E5%B0%91-%E2%80%9CFrom%E2%80%9D-%E5%A4%B4-v2"><span class="toc-text">错误 2：缺少 “From” 头 (v2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-3%EF%BC%9ACC-TO-%E5%9C%B0%E5%9D%80%E9%94%99%E8%AF%AF-v2"><span class="toc-text">错误 3：CC&#x2F;TO 地址错误 (v2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-4%EF%BC%9A%E8%A1%A5%E4%B8%81%E4%BB%A3%E7%A0%81%E9%94%99%E8%AF%AF-v3"><span class="toc-text">错误 4：补丁代码错误 (v3)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-5%EF%BC%9A%E8%BF%87%E5%A4%9A%E7%9A%84-amend"><span class="toc-text">错误 5：过多的 amend</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-6%EF%BC%9A%E5%B0%9D%E8%AF%95%E4%B8%8D%E5%90%8C%E6%96%B9%E6%A1%88"><span class="toc-text">错误 6：尝试不同方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF-7%EF%BC%9A%E5%8E%9F%E5%A7%8B%E8%B0%83%E7%94%A8%E6%A0%88-amp-%E9%94%99%E8%AF%AF%E7%9A%84-CC"><span class="toc-text">错误 7：原始调用栈 &amp; 错误的 CC</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A1%A5%E4%B8%81%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="toc-text">我的补丁时间线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E7%94%A8%E7%9A%84%E8%B5%84%E6%BA%90"><span class="toc-text">有用的资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3"><span class="toc-text">官方文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-text">工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%AE%A8%E8%AE%BA"><span class="toc-text">相关讨论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%8F%82%E8%80%83%EF%BC%9A%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">快速参考：完整流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E5%89%8D%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-text">发送前检查清单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-text">常用命令速查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E4%B8%80%E4%B8%8B%E5%B4%A9%E6%BA%83%E5%81%8F%E7%A7%BB"><span class="toc-text">分析一下崩溃偏移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-text">第一步：环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BB%93%E5%BA%93"><span class="toc-text">克隆正确的仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Git-%E9%82%AE%E4%BB%B6"><span class="toc-text">配置 Git 邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-Mutt%EF%BC%9F"><span class="toc-text">为什么用 Mutt？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%86%99%E4%BF%AE%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="toc-text">第二步：写修复代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%B5%8B%E8%AF%95"><span class="toc-text">第三步：测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E8%87%AA%E6%B5%8B%E6%B8%85%E5%8D%95"><span class="toc-text">第四步：自测清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="toc-text">代码风格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%85%8D%E7%BD%AE%E7%BC%96%E8%AF%91"><span class="toc-text">多配置编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%8B%E8%AF%95"><span class="toc-text">启动测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E4%BF%AE%E5%A4%8D"><span class="toc-text">验证修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%91-selftests"><span class="toc-text">跑 selftests</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%BC%E5%86%99%E6%A3%80%E6%9F%A5"><span class="toc-text">拼写检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E5%86%99%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF"><span class="toc-text">第五步：写提交信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E8%A6%81%E7%82%B9"><span class="toc-text">几个要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%A0%88%E6%80%8E%E4%B9%88%E5%86%99"><span class="toc-text">调用栈怎么写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90%E5%92%8C%E5%8F%91%E9%80%81%E8%A1%A5%E4%B8%81"><span class="toc-text">第六步：生成和发送补丁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%9D%91%EF%BC%9Asecurity-kernel-org"><span class="toc-text">一个坑：security@kernel.org</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E6%AD%A5%EF%BC%9A%E5%A4%84%E7%90%86%E5%8F%8D%E9%A6%88"><span class="toc-text">第七步：处理反馈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E6%AD%A5%EF%BC%9A%E7%94%B3%E8%AF%B7-CVE"><span class="toc-text">第八步：申请 CVE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="toc-text">我踩过的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="toc-text">时间线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
   </div>
 </nav>
 
   
 
   <div class="post-content">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="如何给-Linux-内核提交补丁：一次真实的经历"><a href="#如何给-Linux-内核提交补丁：一次真实的经历" class="headerlink" title="如何给 Linux 内核提交补丁：一次真实的经历"></a>如何给 Linux 内核提交补丁：一次真实的经历</h1><blockquote>
-<p>作者：Weiming Shi (Swing)</p>
-<p>本文记录了我提交 Linux 内核补丁修复一个 bug（skbuff_fclone_cache 的 usercopy 强化违规）的完整经历。从发现 bug 到补丁被接受，我会分享整个过程，包括我犯的所有错误。</p>
-</blockquote>
-<h2 id="背景：这个-Bug"><a href="#背景：这个-Bug" class="headerlink" title="背景：这个 Bug"></a>背景：这个 Bug</h2><p>我发现了一个在启用 <code>CONFIG_HARDENED_USERCOPY</code> 时会触发的内核 panic。<code>skbuff_fclone_cache</code> slab 缓存在创建时没有定义 usercopy 区域，而 <code>skbuff_head_cache</code> 则正确地将 <code>cb[]</code> 字段加入了白名单。</p>
-<p>崩溃发生在以下代码路径：</p>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h1 id="如何给-Linux-内核提交补丁：一次真实的踩坑记录"><a href="#如何给-Linux-内核提交补丁：一次真实的踩坑记录" class="headerlink" title="如何给 Linux 内核提交补丁：一次真实的踩坑记录"></a>如何给 Linux 内核提交补丁：一次真实的踩坑记录</h1><p>最近给 Linux 内核提交了一个补丁，修复 <code>skbuff_fclone_cache</code> 的 usercopy 问题，过程中踩了不少坑。这篇文章记录一下整个流程，希望能帮到想给内核提补丁的朋友。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>事情是这样的，我和@n132之前，发现了一个内核 panic，在启用 <code>CONFIG_HARDENED_USERCOPY</code> 的时候会触发。</p>
+<p>问题出在 <code>skbuff_fclone_cache</code> 这个 slab 缓存创建的时候没有定义 usercopy 区域，但是 <code>skbuff_head_cache</code> 是有的。这就导致内核在尝试把 <code>sk_buff.cb</code> 的数据拷贝到用户空间的时候会 BUG()。</p>
+<p>崩溃的调用链大概是这样：</p>
 <ol>
-<li>TCP 使用 <code>alloc_skb_fclone()</code> 分配 skb（来自 <code>skbuff_fclone_cache</code>）</li>
-<li>通过 <code>skb_clone()</code> 使用预分配的 fclone 克隆 skb</li>
-<li>克隆的 skb 被放入 <code>sk_error_queue</code> 用于时间戳报告</li>
-<li>用户空间通过 <code>recvmsg(MSG_ERRQUEUE)</code> 读取错误队列</li>
-<li><code>sock_recv_errqueue()</code> 调用 <code>put_cmsg()</code> 从 <code>skb-&gt;cb</code> 复制 <code>serr-&gt;ee</code></li>
-<li><code>__check_heap_object()</code> 失败，因为 <code>skbuff_fclone_cache</code> 没有 usercopy 白名单</li>
+<li>TCP 用 <code>alloc_skb_fclone()</code> 分配 skb</li>
+<li><code>skb_clone()</code> 克隆这个 skb</li>
+<li>克隆的 skb 被放到 <code>sk_error_queue</code></li>
+<li>用户空间调用 <code>recvmsg(MSG_ERRQUEUE)</code> 读错误队列</li>
+<li><code>sock_recv_errqueue()</code> 调用 <code>put_cmsg()</code> 拷贝数据</li>
+<li>然后就炸了，<code>__check_heap_object()</code> 检查失败</li>
 </ol>
-<p>崩溃输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[    5.379589] usercopy: Kernel memory exposure attempt detected from SLUB object &#39;skbuff_fclone_cache&#39; (offset 296, size 16)!</span><br><span class="line">[    5.382796] kernel BUG at mm&#x2F;usercopy.c:102!</span><br></pre></td></tr></table></figure>
+<p>崩溃日志长这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usercopy: Kernel memory exposure attempt detected from SLUB object &#39;skbuff_fclone_cache&#39; (offset 296, size 16)!</span><br><span class="line">kernel BUG at mm&#x2F;usercopy.c:102!</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>注意</strong>：这个 bug 被分配了 <a href="https://vulert.com/vuln-db/net--sock--fix-hardened-usercopy-panic-in-sock-recv-errqueue">CVE-2026-22977</a>。该漏洞可能在处理 TCP 连接错误消息时导致系统崩溃（DoS）。</p>
-</blockquote>
-<h3 id="分析崩溃偏移量"><a href="#分析崩溃偏移量" class="headerlink" title="分析崩溃偏移量"></a>分析崩溃偏移量</h3><p>崩溃消息显示 <code>offset 296, size 16</code>。让我们解析一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sizeof(struct sk_buff) &#x3D; 232</span><br><span class="line">offsetof(struct sk_buff, cb) &#x3D; 40</span><br><span class="line"></span><br><span class="line">在 sk_buff_fclones 结构中：</span><br><span class="line">- skb1 从偏移 0 开始</span><br><span class="line">- skb2 从偏移 232 开始 (sizeof(sk_buff))</span><br><span class="line"></span><br><span class="line">skb2.cb 的偏移 &#x3D; 232 + 40 &#x3D; 272</span><br><span class="line">崩溃偏移 296 &#x3D; 272 + 24 (位于 sock_exterr_skb.ee 内部)</span><br></pre></td></tr></table></figure>
+<p>这个 bug 后来被分配了 <a href="https://vulert.com/vuln-db/net--sock--fix-hardened-usercopy-panic-in-sock-recv-errqueue">CVE-2026-22977</a>。</p>
+<h3 id="分析一下崩溃偏移"><a href="#分析一下崩溃偏移" class="headerlink" title="分析一下崩溃偏移"></a>分析一下崩溃偏移</h3><p>崩溃信息里说 <code>offset 296, size 16</code>，我们来算一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sizeof(struct sk_buff) &#x3D; 232</span><br><span class="line">offsetof(struct sk_buff, cb) &#x3D; 40</span><br><span class="line"></span><br><span class="line">sk_buff_fclones 里面：</span><br><span class="line">- skb1 从 0 开始</span><br><span class="line">- skb2 从 232 开始</span><br><span class="line"></span><br><span class="line">所以 skb2.cb 的偏移 &#x3D; 232 + 40 &#x3D; 272</span><br><span class="line">崩溃偏移 296 &#x3D; 272 + 24，刚好在 sock_exterr_skb.ee 里面</span><br></pre></td></tr></table></figure>
 
-<p>这个分析确认了 bug 出在克隆 skb 的 <code>cb</code> 字段。</p>
-<h2 id="第一步：环境配置"><a href="#第一步：环境配置" class="headerlink" title="第一步：环境配置"></a>第一步：环境配置</h2><h3 id="克隆正确的仓库"><a href="#克隆正确的仓库" class="headerlink" title="克隆正确的仓库"></a>克隆正确的仓库</h3><p><strong>重要</strong>：不要只克隆 Linus 的仓库！要克隆你补丁对应子系统的仓库：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 网络子系统 bug 修复（当前版本）：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git</span><br><span class="line"><span class="built_in">cd</span> net</span><br><span class="line"></span><br><span class="line"><span class="comment"># 网络子系统新功能（下一版本）：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通用/其他子系统：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git</span><br></pre></td></tr></table></figure>
+<p>这就确认了问题确实出在克隆 skb 的 <code>cb</code> 字段。</p>
+<h2 id="第一步：环境准备"><a href="#第一步：环境准备" class="headerlink" title="第一步：环境准备"></a>第一步：环境准备</h2><h3 id="克隆正确的仓库"><a href="#克隆正确的仓库" class="headerlink" title="克隆正确的仓库"></a>克隆正确的仓库</h3><p>这里有个坑，<strong>不要直接克隆 Linus 的主仓库</strong>！要根据你的补丁类型选择对应的子系统仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 网络相关的 bug 修复，用这个：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git</span><br><span class="line"><span class="built_in">cd</span> net</span><br><span class="line"></span><br><span class="line"><span class="comment"># 网络相关的新功能，用这个：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他通用的：</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git</span><br></pre></td></tr></table></figure>
 
 <table>
 <thead>
 <tr>
 <th>仓库</th>
-<th>URL</th>
 <th>用途</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><code>net.git</code></td>
-<td>netdev/net.git</td>
 <td>当前版本的 bug 修复</td>
 </tr>
 <tr>
 <td><code>net-next.git</code></td>
-<td>netdev/net-next.git</td>
 <td>下一版本的新功能</td>
 </tr>
 <tr>
 <td><code>linux.git</code></td>
-<td>torvalds/linux.git</td>
-<td>通用内核开发</td>
+<td>通用开发</td>
 </tr>
 </tbody></table>
-<p>对于我的 <code>skbuff_fclone_cache</code> 修复，应该使用 <code>net.git</code>，因为这是一个 bug 修复。</p>
+<p>我这个是 bug 修复，应该用 <code>net.git</code>。</p>
 <h3 id="配置-Git-邮件"><a href="#配置-Git-邮件" class="headerlink" title="配置 Git 邮件"></a>配置 Git 邮件</h3><p>编辑 <code>~/.gitconfig</code>：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[user]</span></span><br><span class="line">    <span class="attr">name</span> = Weiming Shi</span><br><span class="line">    <span class="attr">email</span> = bestswngs@gmail.com</span><br><span class="line"></span><br><span class="line"><span class="section">[sendemail]</span></span><br><span class="line">    <span class="attr">smtpserver</span> = smtp.gmail.com</span><br><span class="line">    <span class="attr">smtpserverport</span> = <span class="number">587</span></span><br><span class="line">    <span class="attr">smtpencryption</span> = tls</span><br><span class="line">    <span class="attr">smtpuser</span> = bestswngs@gmail.com</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>重要</strong>：如果使用 Gmail，需要在 Google 账户安全设置中生成应用专用密码。</p>
-</blockquote>
-<h3 id="为什么用-Mutt？（不要用-Gmail-网页版！）"><a href="#为什么用-Mutt？（不要用-Gmail-网页版！）" class="headerlink" title="为什么用 Mutt？（不要用 Gmail 网页版！）"></a>为什么用 Mutt？（不要用 Gmail 网页版！）</h3><p><strong>绝对不要用 Gmail/Outlook 网页界面发送补丁！</strong> 它们会：</p>
+<p>用 Gmail 的话需要去 Google 账户安全设置里生成一个应用专用密码。</p>
+<h3 id="为什么用-Mutt？"><a href="#为什么用-Mutt？" class="headerlink" title="为什么用 Mutt？"></a>为什么用 Mutt？</h3><p>这里要特别说一下，<strong>千万不要用 Gmail 网页版发补丁</strong>！</p>
+<p>Gmail 网页版会：</p>
 <ul>
 <li>把纯文本转成 HTML</li>
-<li>自动换行（破坏补丁格式）</li>
-<li>把 Tab 替换成空格</li>
-<li>破坏空白字符和编码</li>
+<li>自动换行，直接把补丁搞坏</li>
+<li>把 Tab 换成空格</li>
+<li>各种编码问题</li>
 </ul>
-<p>内核要求<strong>纯文本邮件</strong>，补丁作为内联文本（不是附件）。<a href="https://www.kernel.org/doc/html/latest/process/email-clients.html">内核文档</a>推荐的客户端：</p>
+<p>内核要求纯文本邮件，补丁要内联在邮件里（不是附件）。推荐的组合是：</p>
 <ul>
-<li><code>mutt</code> / <code>neomutt</code></li>
-<li><code>git send-email</code>（推荐用于发送）</li>
-<li>Thunderbird（需特定配置）</li>
+<li><strong><code>git send-email</code></strong> 发补丁</li>
+<li><strong><code>mutt</code></strong> 看维护者回复</li>
 </ul>
-<p>我用 <strong><code>git send-email</code></strong> 发送补丁，用 <strong><code>mutt</code></strong> 阅读维护者的回复。</p>
-<h3 id="配置-Mutt（用于阅读回复）"><a href="#配置-Mutt（用于阅读回复）" class="headerlink" title="配置 Mutt（用于阅读回复）"></a>配置 Mutt（用于阅读回复）</h3><p>创建 <code>~/.muttrc</code>：</p>
+<p>Mutt 配置 <code>~/.muttrc</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">set realname &#x3D; &quot;Weiming Shi&quot;</span><br><span class="line">set from &#x3D; &quot;bestswngs@gmail.com&quot;</span><br><span class="line">set use_from &#x3D; yes</span><br><span class="line">set envelope_from &#x3D; yes</span><br><span class="line"></span><br><span class="line">set my_user &#x3D; &quot;bestswngs@gmail.com&quot;</span><br><span class="line">set my_pass &#x3D; &quot;xxxx xxxx xxxx xxxx&quot;  # 应用专用密码</span><br><span class="line"></span><br><span class="line">set imap_user &#x3D; $my_user</span><br><span class="line">set imap_pass &#x3D; $my_pass</span><br><span class="line">set folder &#x3D; &quot;imaps:&#x2F;&#x2F;imap.gmail.com:993&quot;</span><br><span class="line">set spoolfile &#x3D; &quot;+INBOX&quot;</span><br><span class="line"></span><br><span class="line">set smtp_url &#x3D; &quot;smtps:&#x2F;&#x2F;$my_user:$my_pass@smtp.gmail.com:465&#x2F;&quot;</span><br><span class="line">set ssl_force_tls &#x3D; yes</span><br><span class="line"></span><br><span class="line">set postponed &#x3D; &quot;+[Gmail]&#x2F;Drafts&quot;</span><br><span class="line">set record &#x3D; &quot;+[Gmail]&#x2F;Sent Mail&quot;</span><br><span class="line"></span><br><span class="line">set header_cache &#x3D; ~&#x2F;.mutt&#x2F;cache&#x2F;headers</span><br><span class="line">set message_cachedir &#x3D; ~&#x2F;.mutt&#x2F;cache&#x2F;bodies</span><br><span class="line">set certificate_file &#x3D; ~&#x2F;.mutt&#x2F;certificates</span><br></pre></td></tr></table></figure>
 
-<h2 id="第二步：创建工作分支"><a href="#第二步：创建工作分支" class="headerlink" title="第二步：创建工作分支"></a>第二步：创建工作分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b fix-skbuff-fclone-usercopy</span><br></pre></td></tr></table></figure>
+<h2 id="第二步：写修复代码"><a href="#第二步：写修复代码" class="headerlink" title="第二步：写修复代码"></a>第二步：写修复代码</h2><p>创建工作分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b fix-skbuff-fclone-usercopy</span><br></pre></td></tr></table></figure>
 
-<h2 id="第三步：编写修复代码"><a href="#第三步：编写修复代码" class="headerlink" title="第三步：编写修复代码"></a>第三步：编写修复代码</h2><p>我的修复很简单——用 <code>kmem_cache_create_usercopy()</code> 替换 <code>kmem_cache_create()</code>：</p>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">diff --git a/net/core/skbuff.c b/net/core/skbuff.c</span></span><br><span class="line"><span class="comment">--- a/net/core/skbuff.c</span></span><br><span class="line"><span class="comment">+++ b/net/core/skbuff.c</span></span><br><span class="line"><span class="meta">@@ -5157,10 +5157,12 @@</span> void __init skb_init(void)</span><br><span class="line"> 					      NULL);</span><br><span class="line"> 	skbuff_cache_size = kmem_cache_size(net_hotdata.skbuff_cache);</span><br><span class="line"></span><br><span class="line"><span class="deletion">-	net_hotdata.skbuff_fclone_cache = kmem_cache_create(&quot;skbuff_fclone_cache&quot;,</span></span><br><span class="line"><span class="addition">+	net_hotdata.skbuff_fclone_cache = kmem_cache_create_usercopy(&quot;skbuff_fclone_cache&quot;,</span></span><br><span class="line"> 						sizeof(struct sk_buff_fclones),</span><br><span class="line"> 						0,</span><br><span class="line"> 						SLAB_HWCACHE_ALIGN|SLAB_PANIC,</span><br><span class="line"><span class="addition">+						offsetof(struct sk_buff, cb),</span></span><br><span class="line"><span class="addition">+						sizeof(struct sk_buff) + sizeof_field(struct sk_buff, cb),</span></span><br><span class="line"> 						NULL);</span><br></pre></td></tr></table></figure>
+<p>修复其实很简单，把 <code>kmem_cache_create()</code> 换成 <code>kmem_cache_create_usercopy()</code>：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-	net_hotdata.skbuff_fclone_cache = kmem_cache_create(&quot;skbuff_fclone_cache&quot;,</span></span><br><span class="line"><span class="addition">+	net_hotdata.skbuff_fclone_cache = kmem_cache_create_usercopy(&quot;skbuff_fclone_cache&quot;,</span></span><br><span class="line"> 						sizeof(struct sk_buff_fclones),</span><br><span class="line"> 						0,</span><br><span class="line"> 						SLAB_HWCACHE_ALIGN|SLAB_PANIC,</span><br><span class="line"><span class="addition">+						offsetof(struct sk_buff, cb),</span></span><br><span class="line"><span class="addition">+						sizeof(struct sk_buff) + sizeof_field(struct sk_buff, cb),</span></span><br><span class="line"> 						NULL);</span><br></pre></td></tr></table></figure>
 
-<h2 id="第四步：编译和测试"><a href="#第四步：编译和测试" class="headerlink" title="第四步：编译和测试"></a>第四步：编译和测试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置内核启用 HARDENED_USERCOPY</span></span><br><span class="line">make menuconfig</span><br><span class="line"><span class="comment"># 启用 CONFIG_HARDENED_USERCOPY=y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">make -j$(nproc)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用 QEMU 测试</span></span><br><span class="line">qemu-system-x86_64 \</span><br><span class="line">    -kernel arch/x86/boot/bzImage \</span><br><span class="line">    -initrd /path/to/initramfs.cpio.gz \</span><br><span class="line">    -append <span class="string">&quot;console=ttyS0 nokaslr&quot;</span> \</span><br><span class="line">    -nographic</span><br></pre></td></tr></table></figure>
+<h2 id="第三步：测试"><a href="#第三步：测试" class="headerlink" title="第三步：测试"></a>第三步：测试</h2><p>编译：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make menuconfig  <span class="comment"># 启用 CONFIG_HARDENED_USERCOPY=y</span></span><br><span class="line">make -j$(nproc)</span><br></pre></td></tr></table></figure>
 
-<h2 id="第五步：自测清单（发送前必做！）"><a href="#第五步：自测清单（发送前必做！）" class="headerlink" title="第五步：自测清单（发送前必做！）"></a>第五步：自测清单（发送前必做！）</h2><p><strong>这很关键！</strong> 发送补丁前必须完成这些检查：</p>
-<h3 id="5-1-代码风格检查"><a href="#5-1-代码风格检查" class="headerlink" title="5.1 代码风格检查"></a>5.1 代码风格检查</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/checkpatch.pl --strict 0001-your-patch.patch</span><br></pre></td></tr></table></figure>
+<p>测试的话推荐用 <code>virtme-ng</code>，比手动搞 initramfs 方便太多了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">sudo apt install qemu-system-x86 qemu-kvm</span><br><span class="line">pip install virtme-ng</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接启动，不用 initramfs</span></span><br><span class="line">vng --build --run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 跑 PoC 验证</span></span><br><span class="line">vng --build --run -- ./poc_put_cmsg</span><br></pre></td></tr></table></figure>
 
-<p>修复所有错误和警告。常见问题：</p>
-<ul>
-<li>行超过 80/100 字符</li>
-<li>缩进错误（用 tab，不是空格）</li>
-<li>行尾空白</li>
-<li>缺少 Signed-off-by</li>
-</ul>
-<h3 id="5-2-编译测试（多种配置）"><a href="#5-2-编译测试（多种配置）" class="headerlink" title="5.2 编译测试（多种配置）"></a>5.2 编译测试（多种配置）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认配置</span></span><br><span class="line">make defconfig &amp;&amp; make -j$(nproc)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用所有调试选项</span></span><br><span class="line">make allyesconfig &amp;&amp; make -j$(nproc)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果涉及架构相关代码，进行交叉编译</span></span><br><span class="line">make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig</span><br><span class="line">make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)</span><br></pre></td></tr></table></figure>
+<h2 id="第四步：自测清单"><a href="#第四步：自测清单" class="headerlink" title="第四步：自测清单"></a>第四步：自测清单</h2><p>发补丁之前一定要过一遍这个清单，我就是因为跳过了编译测试，结果收到了 kernel test robot 的构建失败邮件，很尴尬。</p>
+<h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/checkpatch.pl --strict 0001-your-patch.patch</span><br></pre></td></tr></table></figure>
 
-<h3 id="5-3-启动测试"><a href="#5-3-启动测试" class="headerlink" title="5.3 启动测试"></a>5.3 启动测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># QEMU 启动测试 - 验证内核能正常启动</span></span><br><span class="line">qemu-system-x86_64 \</span><br><span class="line">    -kernel arch/x86/boot/bzImage \</span><br><span class="line">    -initrd /path/to/initramfs.cpio.gz \</span><br><span class="line">    -append <span class="string">&quot;console=ttyS0 nokaslr&quot;</span> \</span><br><span class="line">    -nographic</span><br></pre></td></tr></table></figure>
+<p>常见问题：行太长、缩进用了空格（应该用 Tab）、行尾有空白。</p>
+<h3 id="多配置编译"><a href="#多配置编译" class="headerlink" title="多配置编译"></a>多配置编译</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make defconfig &amp;&amp; make -j$(nproc)</span><br><span class="line">make allyesconfig &amp;&amp; make -j$(nproc)</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>技巧：使用 virtme-ng 快速测试</strong></p>
-<p>不用手动创建 initramfs，用 <code>virtme-ng</code> 可以即时启动你的补丁内核：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">sudo apt install qemu-system-x86 qemu-kvm</span><br><span class="line">pip install virtme-ng</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接启动当前内核源码（不需要 initramfs！）</span></span><br><span class="line">vng --build --run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者运行你的 PoC</span></span><br><span class="line">vng --build --run -- ./poc_put_cmsg</span><br></pre></td></tr></table></figure>
+<h3 id="启动测试"><a href="#启动测试" class="headerlink" title="启动测试"></a>启动测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vng --build --run</span><br></pre></td></tr></table></figure>
 
-<p>这在迭代补丁时能节省大量时间。</p>
-</blockquote>
-<h3 id="5-4-复现并验证修复"><a href="#5-4-复现并验证修复" class="headerlink" title="5.4 复现并验证修复"></a>5.4 复现并验证修复</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行你的 PoC 确认 bug 已修复</span></span><br><span class="line"><span class="comment"># 打补丁前：内核 panic</span></span><br><span class="line"><span class="comment"># 打补丁后：无 panic，行为正常</span></span><br><span class="line">./poc_put_cmsg</span><br><span class="line">dmesg | grep -i <span class="string">&quot;usercopy\|BUG\|panic&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="验证修复"><a href="#验证修复" class="headerlink" title="验证修复"></a>验证修复</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./poc_put_cmsg</span><br><span class="line">dmesg | grep -i <span class="string">&quot;usercopy\|BUG\|panic&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="5-5-运行相关-Selftests（如适用）"><a href="#5-5-运行相关-Selftests（如适用）" class="headerlink" title="5.5 运行相关 Selftests（如适用）"></a>5.5 运行相关 Selftests（如适用）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 网络相关补丁</span></span><br><span class="line">make -C tools/testing/selftests/net run_tests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特定子系统</span></span><br><span class="line">make -C tools/testing/selftests TARGETS=&lt;subsystem&gt; run_tests</span><br></pre></td></tr></table></figure>
+<p>打补丁前会 panic，打完应该没事了。</p>
+<h3 id="跑-selftests"><a href="#跑-selftests" class="headerlink" title="跑 selftests"></a>跑 selftests</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -C tools/testing/selftests/net run_tests</span><br></pre></td></tr></table></figure>
 
-<h3 id="5-6-拼写检查"><a href="#5-6-拼写检查" class="headerlink" title="5.6 拼写检查"></a>5.6 拼写检查</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查提交信息拼写</span></span><br><span class="line">codespell your-patch.patch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 aspell</span></span><br><span class="line">aspell check your-commit-message.txt</span><br></pre></td></tr></table></figure>
+<h3 id="拼写检查"><a href="#拼写检查" class="headerlink" title="拼写检查"></a>拼写检查</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codespell your-patch.patch</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>我的教训</strong>：v2 时我跳过了编译测试，结果收到了 kernel test robot 的构建失败报告。一定要先在本地测试！</p>
-</blockquote>
-<h2 id="第六步：编写规范的提交信息"><a href="#第六步：编写规范的提交信息" class="headerlink" title="第六步：编写规范的提交信息"></a>第六步：编写规范的提交信息</h2><p>这是我犯错最多的地方。规范的提交信息应该是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">net: skbuff: add usercopy region to skbuff_fclone_cache</span><br><span class="line"></span><br><span class="line">skbuff_fclone_cache was created without defining a usercopy region, [1]</span><br><span class="line">unlike skbuff_head_cache which properly whitelists the cb[] field.  [2]</span><br><span class="line">This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is enabled</span><br><span class="line">and the kernel attempts to copy sk_buff.cb data to userspace via</span><br><span class="line">sock_recv_errqueue() -&gt; put_cmsg().</span><br><span class="line"></span><br><span class="line">The crash occurs when:</span><br><span class="line">1. TCP allocates an skb using alloc_skb_fclone()</span><br><span class="line">   (from skbuff_fclone_cache) [1]</span><br><span class="line">2. The skb is cloned via skb_clone() using the pre-allocated fclone [3]</span><br><span class="line">3. The cloned skb is queued to sk_error_queue for timestamp reporting</span><br><span class="line">4. Userspace reads the error queue via recvmsg(MSG_ERRQUEUE)</span><br><span class="line">5. sock_recv_errqueue() calls put_cmsg() to copy serr-&gt;ee from skb-&gt;cb [4]</span><br><span class="line">6. __check_heap_object() fails because skbuff_fclone_cache has no</span><br><span class="line">   usercopy whitelist [5]</span><br><span class="line"></span><br><span class="line">[崩溃日志...]</span><br><span class="line"></span><br><span class="line">Fix by using kmem_cache_create_usercopy() with the same cb[] region</span><br><span class="line">whitelist as skbuff_head_cache.</span><br><span class="line"></span><br><span class="line">[1] https:&#x2F;&#x2F;elixir.bootlin.com&#x2F;linux&#x2F;v6.12.62&#x2F;source&#x2F;net&#x2F;ipv4&#x2F;tcp.c#L885</span><br><span class="line">[2] https:&#x2F;&#x2F;elixir.bootlin.com&#x2F;linux&#x2F;v6.12.62&#x2F;source&#x2F;net&#x2F;core&#x2F;skbuff.c#L5104</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Fixes: 6d07d1cd300f (&quot;usercopy: Restrict non-usercopy caches to size 0&quot;)</span><br><span class="line">Reported-by: Xiang Mei &lt;xmei5@asu.edu&gt;</span><br><span class="line">Signed-off-by: Weiming Shi &lt;bestswngs@gmail.com&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="第五步：写提交信息"><a href="#第五步：写提交信息" class="headerlink" title="第五步：写提交信息"></a>第五步：写提交信息</h2><p>这是我踩坑最多的地方。</p>
+<p>一个合格的提交信息长这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">net: skbuff: add usercopy region to skbuff_fclone_cache</span><br><span class="line"></span><br><span class="line">skbuff_fclone_cache was created without defining a usercopy region,</span><br><span class="line">unlike skbuff_head_cache which properly whitelists the cb[] field.</span><br><span class="line">This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is enabled...</span><br><span class="line"></span><br><span class="line">[精简后的崩溃日志]</span><br><span class="line"></span><br><span class="line">Fix by using kmem_cache_create_usercopy() with the same cb[] region</span><br><span class="line">whitelist as skbuff_head_cache.</span><br><span class="line"></span><br><span class="line">Fixes: 6d07d1cd300f (&quot;usercopy: Restrict non-usercopy caches to size 0&quot;)</span><br><span class="line">Reported-by: Xiang Mei &lt;xmei5@asu.edu&gt;</span><br><span class="line">Signed-off-by: Weiming Shi &lt;bestswngs@gmail.com&gt;</span><br></pre></td></tr></table></figure>
 
-<h3 id="提交信息规则总结"><a href="#提交信息规则总结" class="headerlink" title="提交信息规则总结"></a>提交信息规则总结</h3><ol>
-<li><strong>主题行格式</strong>：<code>子系统: 简短描述</code>（不超过 72 字符）</li>
-<li><strong>正文</strong>：解释问题、根因和解决方案</li>
-<li><strong>行宽</strong>：<strong>每行最多 75 字符</strong>（非常重要！）</li>
-<li><strong>Fixes 标签</strong>：引用引入 bug 的提交</li>
-<li><strong>Reported-by</strong>：致谢 bug 报告者（邮箱用尖括号）</li>
+<h3 id="几个要点"><a href="#几个要点" class="headerlink" title="几个要点"></a>几个要点</h3><ol>
+<li><strong>标题格式</strong>：<code>子系统: 简短描述</code>，不超过 72 字符</li>
+<li><strong>正文每行不超过 75 字符</strong>，这个很重要！可以用 vim 的 <code>:set cc=75</code> 画条线</li>
+<li><strong>Fixes 标签</strong>：指向引入 bug 的那个提交</li>
 <li><strong>Signed-off-by</strong>：你的名字和邮箱</li>
 </ol>
+<h3 id="调用栈怎么写"><a href="#调用栈怎么写" class="headerlink" title="调用栈怎么写"></a>调用栈怎么写</h3><p>Eric Dumazet 给我的反馈：</p>
 <blockquote>
-<p><strong>技巧</strong>：使用 vim 的颜色列功能来可视化 75 字符限制：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">set</span> <span class="keyword">cc</span>=<span class="number">75</span></span><br></pre></td></tr></table></figure>
-<p>这会在第 75 列画一条竖线，方便看到哪些行太长了。</p>
+<p><em>“下次发调用栈之前，先跑一下 scripts/decode_stacktrace.sh 拿到有意义的符号。”</em></p>
 </blockquote>
-<h3 id="调用栈格式化（重要！）"><a href="#调用栈格式化（重要！）" class="headerlink" title="调用栈格式化（重要！）"></a>调用栈格式化（重要！）</h3><p>根据<a href="https://www.kernel.org/doc/html/latest/process/submitting-patches.html">提交补丁文档</a>，<strong>不要原样复制完整的 dmesg 输出</strong>。要提炼相关信息：</p>
-<p><strong>错误示范</strong>（太冗长）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[    5.379589] usercopy: Kernel memory exposure attempt detected...</span><br><span class="line">[    5.382796] kernel BUG at mm&#x2F;usercopy.c:102!</span><br><span class="line">[    5.383923] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI</span><br><span class="line">[    5.384903] CPU: 1 UID: 0 PID: 138 Comm: poc_put_cmsg Not tainted 6.12.57 #7</span><br><span class="line">[    5.384903] RAX: 000000000000006f RBX: ffff88800f0ad2a8 RCX: 1ffffffff0f72e74</span><br><span class="line">...（还有 20 多行寄存器信息）</span><br></pre></td></tr></table></figure>
-
-<p><strong>正确示范</strong>（精炼后）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">usercopy: Kernel memory exposure attempt detected from SLUB object</span><br><span class="line">&#39;skbuff_fclone_cache&#39; (offset 296, size 16)!</span><br><span class="line">kernel BUG at mm&#x2F;usercopy.c:102!</span><br><span class="line">Call Trace:</span><br><span class="line"> __check_heap_object</span><br><span class="line"> __check_object_size</span><br><span class="line"> put_cmsg</span><br><span class="line"> sock_recv_errqueue</span><br></pre></td></tr></table></figure>
-
-<p>删除：时间戳、寄存器转储、模块列表、完整栈跟踪。保留：错误信息、关键调用链。</p>
-<h3 id="先解码调用栈！"><a href="#先解码调用栈！" class="headerlink" title="先解码调用栈！"></a>先解码调用栈！</h3><p>在提交信息中包含调用栈之前，先通过以下命令处理：</p>
+<p>所以要先处理一下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/decode_stacktrace.sh vmlinux &lt; raw_stack_trace.txt</span><br></pre></td></tr></table></figure>
 
-<p>这会将原始地址转换为带有 文件:行号 信息的有意义符号。Eric Dumazet 对我补丁的反馈：</p>
+<p>然后<strong>精简</strong>，不要把整个 dmesg 贴上去。删掉时间戳、寄存器 dump、模块列表，只保留错误信息和关键调用链：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">usercopy: Kernel memory exposure attempt detected from SLUB object</span><br><span class="line">&#39;skbuff_fclone_cache&#39; (offset 296, size 16)!</span><br><span class="line">kernel BUG at mm&#x2F;usercopy.c:102!</span><br><span class="line">Call Trace:</span><br><span class="line"> __check_heap_object</span><br><span class="line"> __check_object_size</span><br><span class="line"> put_cmsg</span><br><span class="line"> sock_recv_errqueue</span><br></pre></td></tr></table></figure>
+
+<h2 id="第六步：生成和发送补丁"><a href="#第六步：生成和发送补丁" class="headerlink" title="第六步：生成和发送补丁"></a>第六步：生成和发送补丁</h2><p>生成补丁：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git format-patch -1 -v4 --subject-prefix=<span class="string">&quot;PATCH net&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>-v4</code> 表示第 4 版。</p>
+<p>检查一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/checkpatch.pl *.patch</span><br></pre></td></tr></table></figure>
+
+<p>找维护者：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/get_maintainer.pl net/core/skbuff.c</span><br></pre></td></tr></table></figure>
+
+<p>发送：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git send-email \</span><br><span class="line">    --to=<span class="string">&quot;davem@davemloft.net&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;edumazet@google.com&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;kuba@kernel.org&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;pabeni@redhat.com&quot;</span> \</span><br><span class="line">    --cc=<span class="string">&quot;netdev@vger.kernel.org&quot;</span> \</span><br><span class="line">    --cc=<span class="string">&quot;linux-kernel@vger.kernel.org&quot;</span> \</span><br><span class="line">    *.patch</span><br></pre></td></tr></table></figure>
+
+<h3 id="一个坑：security-kernel-org"><a href="#一个坑：security-kernel-org" class="headerlink" title="一个坑：security@kernel.org"></a>一个坑：<code>security@kernel.org</code></h3><p>Eric Dumazet 还跟我说：</p>
 <blockquote>
-<p><em>“小建议：下次发送调用栈时，请先通过 scripts/decode_stacktrace.sh 处理，以获得有意义的符号。”</em></p>
+<p><em>“如果你已经在公开邮件列表上发了，就不要再抄送 <a href="mailto:&#115;&#x65;&#99;&#117;&#114;&#x69;&#116;&#121;&#64;&#107;&#x65;&#x72;&#x6e;&#101;&#x6c;&#x2e;&#111;&#x72;&#x67;">&#115;&#x65;&#99;&#117;&#114;&#x69;&#116;&#121;&#64;&#107;&#x65;&#x72;&#x6e;&#101;&#x6c;&#x2e;&#111;&#x72;&#x67;</a> 了，没用。”</em></p>
 </blockquote>
-<h2 id="第七步：生成补丁"><a href="#第七步：生成补丁" class="headerlink" title="第七步：生成补丁"></a>第七步：生成补丁</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git format-patch -1 -v4 --subject-prefix=<span class="string">&quot;PATCH net&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>-v4</code> 表示这是补丁的第 4 个版本。</p>
-<h3 id="检查补丁质量"><a href="#检查补丁质量" class="headerlink" title="检查补丁质量"></a>检查补丁质量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/checkpatch.pl v4-0001-net-skbuff-add-usercopy-region-to-skbuff_fclone_c.patch</span><br></pre></td></tr></table></figure>
-
-<p>这会捕获格式问题：</p>
-<ul>
-<li>超过 80 字符的行</li>
-<li>行尾空白</li>
-<li>错误的代码风格</li>
-</ul>
-<h2 id="第八步：找到正确的维护者"><a href="#第八步：找到正确的维护者" class="headerlink" title="第八步：找到正确的维护者"></a>第八步：找到正确的维护者</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/get_maintainer.pl net/core/skbuff.c</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">David S. Miller &lt;davem@davemloft.net&gt; (maintainer:NETWORKING [GENERAL])</span><br><span class="line">Eric Dumazet &lt;edumazet@google.com&gt; (maintainer:NETWORKING [GENERAL])</span><br><span class="line">Jakub Kicinski &lt;kuba@kernel.org&gt; (maintainer:NETWORKING [GENERAL])</span><br><span class="line">Paolo Abeni &lt;pabeni@redhat.com&gt; (maintainer:NETWORKING [GENERAL])</span><br><span class="line">netdev@vger.kernel.org (open list:NETWORKING [GENERAL])</span><br><span class="line">linux-kernel@vger.kernel.org (open list)</span><br></pre></td></tr></table></figure>
-
-<h2 id="第九步：发送补丁"><a href="#第九步：发送补丁" class="headerlink" title="第九步：发送补丁"></a>第九步：发送补丁</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git send-email \</span><br><span class="line">    --to=<span class="string">&quot;davem@davemloft.net&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;edumazet@google.com&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;kuba@kernel.org&quot;</span> \</span><br><span class="line">    --to=<span class="string">&quot;pabeni@redhat.com&quot;</span> \</span><br><span class="line">    --cc=<span class="string">&quot;netdev@vger.kernel.org&quot;</span> \</span><br><span class="line">    --cc=<span class="string">&quot;linux-kernel@vger.kernel.org&quot;</span> \</span><br><span class="line">    v4-0001-net-skbuff-add-usercopy-region-to-skbuff_fclone_c.patch</span><br></pre></td></tr></table></figure>
-
-<h3 id="什么时候不要抄送-x73-101-x63-117-114-x69-116-121-64-x6b-x65-114-110-x65-108-x2e-x6f-114-x67"><a href="#什么时候不要抄送-x73-101-x63-117-114-x69-116-121-64-x6b-x65-114-110-x65-108-x2e-x6f-114-x67" class="headerlink" title="什么时候不要抄送 &#x73;&#101;&#x63;&#117;&#114;&#x69;&#116;&#121;&#64;&#x6b;&#x65;&#114;&#110;&#x65;&#108;&#x2e;&#x6f;&#114;&#x67;"></a>什么时候不要抄送 <a href="mailto:&#x73;&#101;&#x63;&#117;&#114;&#x69;&#116;&#121;&#64;&#x6b;&#x65;&#114;&#110;&#x65;&#108;&#x2e;&#x6f;&#114;&#x67;">&#x73;&#101;&#x63;&#117;&#114;&#x69;&#116;&#121;&#64;&#x6b;&#x65;&#114;&#110;&#x65;&#108;&#x2e;&#x6f;&#114;&#x67;</a></h3><p>Eric Dumazet 的反馈：</p>
-<blockquote>
-<p><em>“下次如果你已经在公开邮件列表（如 <a href="mailto:&#110;&#101;&#116;&#100;&#x65;&#118;&#64;&#107;&#x65;&#114;&#110;&#101;&#108;&#x2e;&#x6f;&#x72;&#x67;">&#110;&#101;&#116;&#100;&#x65;&#118;&#64;&#107;&#x65;&#114;&#110;&#101;&#108;&#x2e;&#x6f;&#x72;&#x67;</a>）上公开了 bug，请不要再抄送 <a href="mailto:&#115;&#101;&#99;&#x75;&#x72;&#x69;&#x74;&#121;&#64;&#107;&#x65;&#114;&#x6e;&#x65;&#108;&#46;&#x6f;&#x72;&#103;">&#115;&#101;&#99;&#x75;&#x72;&#x69;&#x74;&#121;&#64;&#107;&#x65;&#114;&#x6e;&#x65;&#108;&#46;&#x6f;&#x72;&#103;</a>，因为 <a href="mailto:&#115;&#101;&#99;&#x75;&#x72;&#105;&#116;&#121;&#64;&#107;&#x65;&#x72;&#110;&#x65;&#108;&#46;&#111;&#114;&#x67;">&#115;&#101;&#99;&#x75;&#x72;&#105;&#116;&#121;&#64;&#107;&#x65;&#x72;&#110;&#x65;&#108;&#46;&#111;&#114;&#x67;</a> 帮不了什么忙。”</em></p>
-</blockquote>
-<p><strong>规则</strong>：</p>
+<p>规则：</p>
 <ul>
 <li>私下披露 → 抄送 <code>security@kernel.org</code></li>
-<li>已在邮件列表公开 → 不要抄送 <code>security@kernel.org</code></li>
+<li>已经公开 → 不要抄送</li>
 </ul>
-<h2 id="第十步：回应反馈"><a href="#第十步：回应反馈" class="headerlink" title="第十步：回应反馈"></a>第十步：回应反馈</h2><p>发送补丁后，你会收到来自以下方面的反馈：</p>
-<ol>
-<li><strong>Kernel Test Robot (0day CI)</strong> - 自动构建测试</li>
-<li><strong>维护者</strong> - 代码审查和建议</li>
-<li><strong>其他开发者</strong> - 评论和问题</li>
+<h2 id="第七步：处理反馈"><a href="#第七步：处理反馈" class="headerlink" title="第七步：处理反馈"></a>第七步：处理反馈</h2><p>发完补丁会收到各种反馈：</p>
+<ul>
+<li><strong>Kernel Test Robot</strong>：自动构建测试，会告诉你编译有没有问题</li>
+<li><strong>维护者</strong>：代码审查</li>
+<li><strong>其他开发者</strong>：评论</li>
+</ul>
+<p>我的 v2 就收到了 robot 的构建失败报告，因为函数参数传错了。教训就是本地一定要先编译测试。</p>
+<p>收到反馈后：</p>
+<ul>
+<li>不要在邮件里直接回复修复代码，发新版本</li>
+<li>用 <code>-v3</code>、<code>-v4</code> 标记版本</li>
+<li>在 <code>---</code> 下面加更新日志说明改了什么</li>
+</ul>
+<h2 id="第八步：申请-CVE"><a href="#第八步：申请-CVE" class="headerlink" title="第八步：申请 CVE"></a>第八步：申请 CVE</h2><p><strong>等补丁合并之后再说</strong>。</p>
+<p>根据<a href="https://docs.kernel.org/process/cve.html">内核 CVE 文档</a>，未修复的问题不会分配 CVE，要等补丁进了 stable 树才行。</p>
+<p>大多数情况下 CVE 会自动分配，内核 CVE 团队（Greg KH、Sasha Levin、Lee Jones）会审查每个进 stable 的补丁。如果他们觉得是安全问题就会自动分配 CVE，公告在 <a href="https://lore.kernel.org/linux-cve-announce/">linux-cve-announce</a>。</p>
+<p>如果漏了，可以发邮件到 <code>cve@kernel.org</code>。注意这个地址<strong>只用于已合并的修复</strong>，未修复的安全问题发 <code>security@kernel.org</code>。</p>
+<p>我这个补丁合并后被分配了 CVE-2026-22977。</p>
+<h2 id="我踩过的坑"><a href="#我踩过的坑" class="headerlink" title="我踩过的坑"></a>我踩过的坑</h2><ol>
+<li><strong>v1：提交信息格式全错</strong>，标题写成了 <code>Signed-off-by:</code>，离谱</li>
+<li><strong>v2：漏了 From 头</strong>，<code>.gitconfig</code> 没配好</li>
+<li><strong>v2：忘了抄送邮件列表</strong>，一定要跑 <code>get_maintainer.pl</code></li>
+<li><strong>v3：代码写错了</strong>，偏移量算错，本地没测就发了</li>
+<li><strong>v4：amend 了十几次</strong>，说明提交前应该检查更仔细</li>
+<li><strong>调用栈没解码</strong>，被 Eric 提醒了</li>
+<li>**不该抄送 security@**，已经公开了还抄送没意义</li>
 </ol>
-<h3 id="示例：Kernel-Test-Robot-反馈"><a href="#示例：Kernel-Test-Robot-反馈" class="headerlink" title="示例：Kernel Test Robot 反馈"></a>示例：Kernel Test Robot 反馈</h3><p>我的 v2 补丁收到了 kernel test robot 的构建失败报告：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">From: kernel test robot &lt;lkp@intel.com&gt;</span><br><span class="line">Subject: Re: [PATCH v2] net: skbuff: add usercopy region to skbuff_fclone_cache</span><br><span class="line"></span><br><span class="line">Hi Weiming,</span><br><span class="line"></span><br><span class="line">kernel test robot noticed the following build errors:</span><br><span class="line"></span><br><span class="line">net&#x2F;core&#x2F;skbuff.c:5160:65: error: passing argument 5 of</span><br><span class="line">&#39;kmem_cache_create_usercopy&#39; makes integer from pointer without a cast</span><br><span class="line">net&#x2F;core&#x2F;skbuff.c:5160:9: error: too few arguments to function</span><br><span class="line">&#39;kmem_cache_create_usercopy&#39;</span><br></pre></td></tr></table></figure>
-
-<p>这是因为我在需要无符号整数的地方传了 <code>NULL</code>，并且漏掉了必需的参数。机器人会在多个分支（net-next、net、linus/master 等）上测试补丁。</p>
-<p><strong>教训</strong>：发送前一定要在本地编译测试！</p>
-<h3 id="如何回应反馈"><a href="#如何回应反馈" class="headerlink" title="如何回应反馈"></a>如何回应反馈</h3><p>收到反馈时：</p>
-<ol>
-<li><strong>不要内联回复</strong>修复 - 发送新版本</li>
-<li><strong>使用 <code>-v3</code>、<code>-v4</code></strong> 等标记新版本</li>
-<li>在 <code>---</code> 行下方<strong>添加更新日志</strong>说明改动内容</li>
-<li><strong>感谢审查者</strong>但保持简洁</li>
-</ol>
-<h2 id="第十一步：申请-CVE（合并后）"><a href="#第十一步：申请-CVE（合并后）" class="headerlink" title="第十一步：申请 CVE（合并后）"></a>第十一步：申请 CVE（合并后）</h2><h3 id="先等补丁合并！"><a href="#先等补丁合并！" class="headerlink" title="先等补丁合并！"></a>先等补丁合并！</h3><p>根据 <a href="https://docs.kernel.org/process/cve.html">Linux 内核 CVE 文档</a>：</p>
-<blockquote>
-<p><em>“未修复的安全问题不会自动分配 CVE。只有在修复可用并应用到 stable 内核树后才会分配。”</em></p>
-</blockquote>
-<p><strong>建议</strong>：不要急于申请 CVE。等你的补丁合并到主线/stable 后再说。</p>
-<h3 id="自动-CVE-分配"><a href="#自动-CVE-分配" class="headerlink" title="自动 CVE 分配"></a>自动 CVE 分配</h3><p>内核 CVE 团队（Greg Kroah-Hartman、Sasha Levin、Lee Jones）会人工审查每个进入 stable 树的补丁。如果他们认为与安全相关，CVE 会被<strong>自动分配</strong>并在以下列表公布：</p>
-<ul>
-<li>邮件列表：<a href="https://lore.kernel.org/linux-cve-announce/">linux-cve-announce</a></li>
-</ul>
-<h3 id="手动申请-CVE"><a href="#手动申请-CVE" class="headerlink" title="手动申请 CVE"></a>手动申请 CVE</h3><p>如果你的修复已合并但没有自动获得 CVE，发邮件到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cve@kernel.org</span><br></pre></td></tr></table></figure>
-
-<p><strong>重要</strong>：</p>
-<ul>
-<li><code>cve@kernel.org</code> <strong>仅用于</strong>为<strong>已合并的修复</strong>分配 CVE</li>
-<li>不要发送未修复的安全问题到这个地址</li>
-<li>未修复的问题应发送到 <code>security@kernel.org</code></li>
-</ul>
-<h3 id="什么样的问题可以获得-CVE？"><a href="#什么样的问题可以获得-CVE？" class="headerlink" title="什么样的问题可以获得 CVE？"></a>什么样的问题可以获得 CVE？</h3><p>非完整列表：</p>
-<ul>
-<li>缓冲区溢出</li>
-<li>释放后使用（UAF）</li>
-<li>数据损坏/泄露</li>
-<li>崩溃（BUG、oops、panic）</li>
-<li>拒绝服务（DoS）</li>
-<li>双重释放</li>
-<li>死锁</li>
-</ul>
-<h3 id="我的-CVE"><a href="#我的-CVE" class="headerlink" title="我的 CVE"></a>我的 CVE</h3><p>我修复 <code>skbuff_fclone_cache</code> usercopy 违规的补丁在合并后被分配了 <a href="https://vulert.com/vuln-db/net--sock--fix-hardened-usercopy-panic-in-sock-recv-errqueue">CVE-2026-22977</a>。</p>
-<h2 id="我犯的错误（以及如何避免）"><a href="#我犯的错误（以及如何避免）" class="headerlink" title="我犯的错误（以及如何避免）"></a>我犯的错误（以及如何避免）</h2><h3 id="错误-1：提交信息格式错误-v1"><a href="#错误-1：提交信息格式错误-v1" class="headerlink" title="错误 1：提交信息格式错误 (v1)"></a>错误 1：提交信息格式错误 (v1)</h3><p>我第一次尝试时，主题行只写了 <code>Signed-off-by:</code> 而没有实际的主题。始终遵循格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">子系统: 简短描述</span><br></pre></td></tr></table></figure>
-
-<h3 id="错误-2：缺少-“From”-头-v2"><a href="#错误-2：缺少-“From”-头-v2" class="headerlink" title="错误 2：缺少 “From” 头 (v2)"></a>错误 2：缺少 “From” 头 (v2)</h3><p>Git send-email 需要正确的作者信息。确保 <code>.gitconfig</code> 中有正确的 <code>user.name</code> 和 <code>user.email</code>。</p>
-<h3 id="错误-3：CC-TO-地址错误-v2"><a href="#错误-3：CC-TO-地址错误-v2" class="headerlink" title="错误 3：CC/TO 地址错误 (v2)"></a>错误 3：CC/TO 地址错误 (v2)</h3><p>我忘了抄送邮件列表。始终运行 <code>get_maintainer.pl</code> 并包含：</p>
-<ul>
-<li>所有维护者作为 <code>--to</code></li>
-<li>邮件列表作为 <code>--cc</code></li>
-</ul>
-<h3 id="错误-4：补丁代码错误-v3"><a href="#错误-4：补丁代码错误-v3" class="headerlink" title="错误 4：补丁代码错误 (v3)"></a>错误 4：补丁代码错误 (v3)</h3><p>我最初的修复偏移量计算错误。发送前一定要彻底测试补丁。</p>
-<h3 id="错误-5：过多的-amend"><a href="#错误-5：过多的-amend" class="headerlink" title="错误 5：过多的 amend"></a>错误 5：过多的 amend</h3><p>看看我的 git reflog：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f9ac7befe5f1 HEAD@&#123;0&#125;: commit: net: skbuff: add usercopy region to skbuff_fclone_cache</span><br><span class="line">845d95dc36f3 HEAD@&#123;2&#125;: commit (amend): ...</span><br><span class="line">c1a30325e021 HEAD@&#123;3&#125;: commit (amend): ...</span><br><span class="line">4fdfe3e6aabe HEAD@&#123;4&#125;: commit (amend): ...</span><br><span class="line">...（还有 8 次 amend）</span><br></pre></td></tr></table></figure>
-
-<p>我在本地 amend 了 10 多次。虽然这保持了历史整洁，但说明我应该在提交前更仔细地检查工作。</p>
-<h3 id="错误-6：尝试不同方案"><a href="#错误-6：尝试不同方案" class="headerlink" title="错误 6：尝试不同方案"></a>错误 6：尝试不同方案</h3><p>我还尝试了另一种修复方案 (v5)，在 <code>net/core/sock.c</code> 中使用 bounce buffer：</p>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-	serr = SKB_EXT_ERR(skb);</span></span><br><span class="line"><span class="deletion">-	put_cmsg(msg, level, type, sizeof(serr-&gt;ee), &amp;serr-&gt;ee);</span></span><br><span class="line"><span class="addition">+	/* 对于 CONFIG_HARDENED_USERCOPY=y 必须使用 bounce buffer */</span></span><br><span class="line"><span class="addition">+	ee = SKB_EXT_ERR(skb)-&gt;ee;</span></span><br><span class="line"><span class="addition">+	put_cmsg(msg, level, type, sizeof(ee), &amp;ee);</span></span><br></pre></td></tr></table></figure>
-
-<p>维护者可能更喜欢某种方案。要准备好根据反馈重做补丁。</p>
-<h3 id="错误-7：原始调用栈-amp-错误的-CC"><a href="#错误-7：原始调用栈-amp-错误的-CC" class="headerlink" title="错误 7：原始调用栈 &amp; 错误的 CC"></a>错误 7：原始调用栈 &amp; 错误的 CC</h3><p>我收到了 Eric Dumazet（Google，netdev 维护者）的反馈：</p>
-<ol>
-<li><strong>原始调用栈</strong>：我没有在包含调用栈前运行 <code>scripts/decode_stacktrace.sh</code></li>
-<li><strong>抄送了 <a href="mailto:&#x73;&#x65;&#x63;&#117;&#x72;&#x69;&#x74;&#x79;&#64;&#x6b;&#x65;&#x72;&#x6e;&#x65;&#108;&#46;&#111;&#x72;&#103;">&#x73;&#x65;&#x63;&#117;&#x72;&#x69;&#x74;&#x79;&#64;&#x6b;&#x65;&#x72;&#x6e;&#x65;&#108;&#46;&#111;&#x72;&#103;</a></strong>：由于我已经在 netdev 公开发布，抄送 security@ 毫无意义</li>
-</ol>
-<p>这些是”小问题”，但说明在内核开发中注重细节很重要。</p>
-<h2 id="我的补丁时间线"><a href="#我的补丁时间线" class="headerlink" title="我的补丁时间线"></a>我的补丁时间线</h2><table>
+<h2 id="时间线"><a href="#时间线" class="headerlink" title="时间线"></a>时间线</h2><table>
 <thead>
 <tr>
 <th>日期</th>
@@ -465,63 +384,58 @@
 <tbody><tr>
 <td>12月15日</td>
 <td>v1</td>
-<td>初次提交，提交格式错误</td>
+<td>初次提交，格式全错</td>
 </tr>
 <tr>
 <td>12月16日</td>
 <td>v2</td>
-<td>修复提交信息</td>
+<td>修了提交信息</td>
 </tr>
 <tr>
 <td>12月16日</td>
 <td>v3</td>
-<td>添加 From 头，修复 CC/TO</td>
+<td>加了 From 头，修了 CC/TO</td>
 </tr>
 <tr>
 <td>12月16日</td>
 <td>v4</td>
-<td>修复实际的补丁代码</td>
+<td>修了代码</td>
 </tr>
 <tr>
 <td>12月24日</td>
 <td>v5</td>
-<td>尝试另一种方案（bounce buffer）</td>
+<td>试了另一种方案</td>
 </tr>
 </tbody></table>
-<h2 id="有用的资源"><a href="#有用的资源" class="headerlink" title="有用的资源"></a>有用的资源</h2><h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>发补丁前过一遍这个清单：</p>
+<ul>
+<li>克隆了正确的子系统仓库（net.git / net-next.git / linux.git）</li>
+<li>代码能编译，多配置都试过</li>
+<li>内核能启动，PoC 不再触发 bug</li>
+<li><code>checkpatch.pl</code> 通过</li>
+<li>提交信息格式对，每行 75 字符以内</li>
+<li>调用栈用 <code>decode_stacktrace.sh</code> 解码过，精简过</li>
+<li>有 Fixes 标签、Signed-off-by</li>
+<li>用 <code>get_maintainer.pl</code> 找到了维护者</li>
+<li>拼写检查过</li>
+</ul>
+<p>常用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vng --build --run                              <span class="comment"># 快速测试</span></span><br><span class="line">./scripts/checkpatch.pl --strict *.patch       <span class="comment"># 风格检查</span></span><br><span class="line">./scripts/decode_stacktrace.sh vmlinux &lt; trace <span class="comment"># 解码调用栈</span></span><br><span class="line">git format-patch -1 -v2 --subject-prefix=<span class="string">&quot;PATCH net&quot;</span></span><br><span class="line">./scripts/get_maintainer.pl net/core/skbuff.c</span><br><span class="line">git send-email --to=xxx --cc=yyy *.patch</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://www.kernel.org/doc/html/latest/process/submitting-patches.html">提交补丁文档</a></li>
 <li><a href="https://www.kernel.org/doc/html/latest/process/email-clients.html">邮件客户端配置</a></li>
-<li><a href="https://lwn.net/Articles/727322/">Hardened Usercopy 白名单 (LWN)</a></li>
-<li><a href="https://docs.kernel.org/process/cve.html">Linux 内核 CVE 流程</a></li>
-</ul>
-<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
-<li><a href="https://elixir.bootlin.com/">Elixir Bootlin</a> - 带超链接浏览内核源码</li>
-<li><a href="https://patchwork.kernel.org/">Patchwork</a> - 跟踪补丁状态</li>
-<li><a href="https://lkml.org/">LKML 存档</a> - 搜索邮件列表讨论</li>
+<li><a href="https://docs.kernel.org/process/cve.html">内核 CVE 流程</a></li>
+<li><a href="https://elixir.bootlin.com/">Elixir Bootlin</a> - 带超链接的内核源码浏览</li>
 <li><a href="https://lore.kernel.org/linux-cve-announce/">linux-cve-announce</a> - CVE 公告</li>
+<li><a href="https://lkml.org/lkml/2025/12/20/364">我的 v2 被 robot 打回的邮件</a></li>
 </ul>
-<h3 id="相关讨论"><a href="#相关讨论" class="headerlink" title="相关讨论"></a>相关讨论</h3><ul>
-<li><a href="https://lkml.org/lkml/2025/12/20/364">LKML：kernel test robot 对我 v2 补丁的反馈</a></li>
-<li><a href="https://lore.kernel.org/patchwork/patch/885781/">原始 skbuff_head_cache 白名单补丁</a></li>
-</ul>
-<h2 id="快速参考：完整流程"><a href="#快速参考：完整流程" class="headerlink" title="快速参考：完整流程"></a>快速参考：完整流程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    LINUX 内核补丁提交流程                             │</span><br><span class="line">├─────────────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                                      │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 1. 准备      │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • git clone 内核源码                                       │</span><br><span class="line">│         │  • git checkout -b fix-xxx                                 │</span><br><span class="line">│         │  • 编写修复代码                                             │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 2. 测试      │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • make defconfig &amp;&amp; make -j$(nproc)                       │</span><br><span class="line">│         │  • vng --build --run  (或 QEMU)                            │</span><br><span class="line">│         │  • 运行 PoC 验证修复                                        │</span><br><span class="line">│         │  • .&#x2F;scripts&#x2F;checkpatch.pl --strict *.patch                │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 3. 提交      │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • 编写规范的提交信息（每行 75 字符！）                       │</span><br><span class="line">│         │  • 包含：Fixes:, Reported-by:, Signed-off-by:              │</span><br><span class="line">│         │  • 精简调用栈（用 decode_stacktrace.sh）                    │</span><br><span class="line">│         │  • git commit -s                                           │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 4. 格式化    │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • git format-patch -1 --subject-prefix&#x3D;&quot;PATCH xxx&quot;        │</span><br><span class="line">│         │  • .&#x2F;scripts&#x2F;checkpatch.pl *.patch                         │</span><br><span class="line">│         │  • .&#x2F;scripts&#x2F;get_maintainer.pl &lt;文件&gt;                      │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 5. 发送      │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • git send-email --to&#x3D;维护者 --cc&#x3D;邮件列表 *.patch         │</span><br><span class="line">│         │  • 不要用 Gmail 网页版！                                    │</span><br><span class="line">│         │  • 已公开就不要抄送 security@                               │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 6. 回应反馈  │                                                    │</span><br><span class="line">│  └──────┬───────┘                                                    │</span><br><span class="line">│         │  • 用 mutt 阅读回复                                         │</span><br><span class="line">│         │  • 发送新版本（-v2, -v3）修复问题                            │</span><br><span class="line">│         │  • 在 --- 行下方添加更新日志                                 │</span><br><span class="line">│         ▼                                                            │</span><br><span class="line">│  ┌──────────────┐                                                    │</span><br><span class="line">│  │ 7. CVE      │  （合并后）                                          │</span><br><span class="line">│  └──────────────┘                                                    │</span><br><span class="line">│         • 等待补丁合并到 stable                                       │</span><br><span class="line">│         • CVE 自动分配，或邮件 cve@kernel.org                         │</span><br><span class="line">│                                                                      │</span><br><span class="line">└─────────────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
-
-<h3 id="发送前检查清单"><a href="#发送前检查清单" class="headerlink" title="发送前检查清单"></a>发送前检查清单</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ ] 代码编译无警告（多种配置）</span><br><span class="line">[ ] 内核能正常启动</span><br><span class="line">[ ] PoC 不再触发 bug</span><br><span class="line">[ ] .&#x2F;scripts&#x2F;checkpatch.pl 通过</span><br><span class="line">[ ] 提交信息格式正确（每行 75 字符）</span><br><span class="line">[ ] 调用栈已解码并精简</span><br><span class="line">[ ] Fixes: 标签指向正确的提交</span><br><span class="line">[ ] 包含 Signed-off-by:</span><br><span class="line">[ ] 通过 get_maintainer.pl 找到维护者</span><br><span class="line">[ ] 拼写检查通过</span><br></pre></td></tr></table></figure>
-
-<h3 id="常用命令速查"><a href="#常用命令速查" class="headerlink" title="常用命令速查"></a>常用命令速查</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 准备（使用你子系统对应的仓库！）</span></span><br><span class="line">git <span class="built_in">clone</span> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git  <span class="comment"># 网络修复</span></span><br><span class="line">git checkout -b fix-xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">vng --build --run                              <span class="comment"># 快速启动测试</span></span><br><span class="line">./scripts/checkpatch.pl --strict *.patch       <span class="comment"># 代码风格检查</span></span><br><span class="line">./scripts/decode_stacktrace.sh vmlinux &lt; trace <span class="comment"># 解码调用栈</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交 &amp; 格式化</span></span><br><span class="line">git commit -s                                  <span class="comment"># -s 自动添加 Signed-off-by</span></span><br><span class="line">git format-patch -1 -v2 --subject-prefix=<span class="string">&quot;PATCH net&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送</span></span><br><span class="line">./scripts/get_maintainer.pl net/core/skbuff.c</span><br><span class="line">git send-email --to=xxx --cc=yyy *.patch</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>提交 Linux 内核补丁是一次学习经历。流程严格是有原因的——内核需要稳定和可维护。关键要点：</p>
-<ol>
-<li><strong>先阅读文档</strong></li>
-<li><strong>彻底测试</strong> - 编译、启动、验证修复</li>
-<li><strong>严格遵循格式</strong> - 提交信息格式</li>
-<li><strong>使用工具</strong> - <code>checkpatch.pl</code>、<code>get_maintainer.pl</code></li>
-<li><strong>耐心等待</strong> - 维护者很忙，补丁可能需要多次修订</li>
-<li><strong>从反馈中学习</strong> - 维护者的评论很有价值</li>
-</ol>
-<p>我的补丁最终以提交 <code>f9ac7befe5f1</code> 合并到 Linux 6.19-rc1。从发现 bug 到补丁被合并的这段旅程，让我学到的内核开发知识比任何教程都多。</p>
 <hr>
-<p><em>提交：f9ac7befe5f1 (“net: skbuff: add usercopy region to skbuff_fclone_cache”)</em></p>
+<p>最后，Eric Dumazet 在邮件里说了一句，那个时候看到这句话的时候还蛮开心的（毕竟小心翼翼搞补丁，还是半夜的时间）</p>
+<blockquote>
+<p><em>“Congratulations on your first linux contribution!”</em></p>
+</blockquote>
+<p>从发现 bug 到补丁被合并（commit <code>f9ac7befe5f1</code>），这个过程学到的东西比看任何教程都多，实践了才有体会，另外感谢 @n132手把手的教我</p>
 </div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
         var options = {
             selector: '.gallery-item'
@@ -534,7 +448,7 @@
   <footer class="post-footer">
   
     <div class="post-categories">
-      <span class="meta-label">Categories: </span>
+      <span class="meta-label">分类: </span>
       
         <a href="/categories/%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91/" class="category">内核开发</a>
       
@@ -544,7 +458,7 @@
   
   
     <div class="post-tags">
-      <span class="meta-label">Tags: </span>
+      <span class="meta-label">标签: </span>
       
         <a href="/tags/linux-kernel/" class="tag">linux-kernel</a>
       

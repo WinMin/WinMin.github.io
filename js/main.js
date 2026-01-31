@@ -52,9 +52,44 @@
   // ========================================
   // Code Copy Button
   // ========================================
-  document.querySelectorAll('figure.highlight, pre').forEach(function(block) {
+  // Only add to figure.highlight, not to inner pre elements
+  document.querySelectorAll('figure.highlight').forEach(function(block) {
     // Skip if already has button
     if (block.querySelector('.copy-button')) return;
+
+    var button = document.createElement('button');
+    button.className = 'copy-button';
+    button.textContent = 'Copy';
+    button.type = 'button';
+
+    button.addEventListener('click', function() {
+      var code = block.querySelector('.code code, code');
+      var text = code ? code.textContent : block.textContent;
+
+      navigator.clipboard.writeText(text).then(function() {
+        button.textContent = 'Copied!';
+        button.classList.add('copied');
+
+        setTimeout(function() {
+          button.textContent = 'Copy';
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(function() {
+        button.textContent = 'Failed';
+        setTimeout(function() {
+          button.textContent = 'Copy';
+        }, 2000);
+      });
+    });
+
+    block.style.position = 'relative';
+    block.appendChild(button);
+  });
+
+  // Add copy button to standalone pre (not inside figure.highlight)
+  document.querySelectorAll('pre').forEach(function(block) {
+    // Skip if inside figure.highlight or already has button
+    if (block.closest('figure.highlight') || block.querySelector('.copy-button')) return;
 
     var button = document.createElement('button');
     button.className = 'copy-button';
