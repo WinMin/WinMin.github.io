@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://bestwing.me/TP-Link_WR841N_router_%20%20CVE-2023-50224%20and%20CVE-2025-9377.html</loc>
+    
+    <lastmod>2026-01-31</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bestwing.me/categories/index.html</loc>
     
     <lastmod>2026-01-31</lastmod>
@@ -2357,6 +2364,20 @@
   
   <url>
     <loc>https://bestwing.me/tags/i%E6%98%A5%E7%A7%8B/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/CVE-2023-50224/</loc>
+    <lastmod>2026-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bestwing.me/tags/CVE-2025-9377/</loc>
     <lastmod>2026-01-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
