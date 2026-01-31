@@ -127,12 +127,17 @@ th {
   font-weight: 600;
 }
 .container {
-  max-width: 52rem;
+  max-width: var(--page-width, 52rem);
   margin: 0 auto;
   padding: 0 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--mobile-padding, 20px);
+  }
 }
 .main {
   flex: 1;
@@ -144,8 +149,9 @@ th {
 }
 .home-layout.vertical {
   flex-direction: column;
-  max-width: 800px;
+  max-width: var(--content-width, 800px);
   margin: 0 auto;
+  width: 100%;
 }
 .home-layout.vertical .sidebar {
   margin-bottom: 20px;
@@ -177,8 +183,9 @@ th {
   min-width: 0;
 }
 .page-layout {
-  max-width: 720px;
+  max-width: var(--content-width, 720px);
   margin: 0 auto;
+  width: 100%;
 }
 .header {
   position: sticky;
@@ -189,9 +196,14 @@ th {
   z-index: 100;
 }
 .header-inner {
-  max-width: 52rem;
+  max-width: var(--page-width, 52rem);
   margin: 0 auto;
   padding: 0 20px;
+}
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 0 var(--mobile-padding, 20px);
+  }
 }
 .header-brand {
   display: flex;
@@ -564,6 +576,13 @@ th {
 .column-post-item:hover .post-link {
   color: #d480aa;
 }
+@media (max-width: 480px) {
+  .column-post-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
 .post-link {
   color: #c9cacc;
   flex: 1;
@@ -572,11 +591,24 @@ th {
   white-space: nowrap;
   transition: color 0.15s ease;
 }
+@media (max-width: 480px) {
+  .post-link {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    order: 1;
+  }
+}
 .post-date {
   color: #908d8d;
   font-size: 13px;
   font-family: "SF Mono", "Fira Code", "Monaco", "Menlo", "Consolas", monospace;
   flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .post-date {
+    order: 2;
+  }
 }
 .view-all {
   display: inline-block;
@@ -616,6 +648,13 @@ th {
 .post-list-item:last-child {
   border-bottom: none;
 }
+@media (max-width: 480px) {
+  .post-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
 .post-list-item .post-link {
   color: #c9cacc;
   flex: 1;
@@ -625,6 +664,13 @@ th {
 }
 .post-list-item .post-link:hover {
   color: #d480aa;
+}
+@media (max-width: 480px) {
+  .post-list-item .post-link {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
 }
 .post-list-item .post-date {
   color: #908d8d;
@@ -880,12 +926,24 @@ th {
 .archive-post-item:hover .post-link {
   color: #d480aa;
 }
+@media (max-width: 480px) {
+  .archive-post-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
 .archive-post-date {
   width: 80px;
   flex-shrink: 0;
   font-size: 13px;
   font-family: "SF Mono", "Fira Code", "Monaco", "Menlo", "Consolas", monospace;
   color: #908d8d;
+}
+@media (max-width: 480px) {
+  .archive-post-date {
+    width: auto;
+  }
 }
 .archive-post-link {
   flex: 1;
@@ -894,6 +952,13 @@ th {
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.15s ease;
+}
+@media (max-width: 480px) {
+  .archive-post-link {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
 }
 .archive-post-link:hover {
   color: #d480aa;
